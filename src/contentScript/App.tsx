@@ -1,5 +1,3 @@
-// import { useState } from "react";
-
 import { useEffect, useRef, useState } from "react";
 import Navbar from "./ui/Navbar";
 import { Thread, ThreadInternalProps } from "./types/Threads";
@@ -29,14 +27,13 @@ function App() {
   }
   function handleMouseMove(e: MouseEvent) {
     if (!isPicking) return;
-    const mouseY = e.clientY;
-    const mouseX = e.clientX;
+    const mouseY = e.pageY;
+    const mouseX = e.pageX;
 
     document.body.style.cursor = "hidden";
     (temporalThreadBubble.current as HTMLButtonElement).style.display = "block";
-    (
-      temporalThreadBubble.current as HTMLButtonElement
-    ).style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+    (temporalThreadBubble.current as HTMLButtonElement).style.transform =
+      `translate3d(${mouseX}px, ${mouseY}px, 0)`;
   }
 
   async function handleMouseClick(e: MouseEvent) {
@@ -51,8 +48,8 @@ function App() {
 
     setTempThreadCreationIntent({
       target,
-      x: e.clientX,
-      y: e.clientY,
+      x: e.pageX,
+      y: e.pageY,
     });
     e.preventDefault();
     e.stopPropagation();
@@ -79,7 +76,10 @@ function App() {
   }
 
   async function createNewThread(comment: string) {
+    console.log("Creating new thread", comment);
+
     if (!tempThreadCreationIntent) return;
+    setTempThreadCreationIntent(null);
     createThread(
       comment,
       tempThreadCreationIntent?.target,

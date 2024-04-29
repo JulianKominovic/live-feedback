@@ -28,6 +28,7 @@ export default defineManifest({
     {
       matches: ["http://*/*", "https://*/*"],
       js: ["src/contentScript/index.tsx"],
+      run_at: "document_idle",
     },
   ],
   web_accessible_resources: [
@@ -41,5 +42,6 @@ export default defineManifest({
       matches: [],
     },
   ],
-  permissions: ["storage"],
+  host_permissions: ["<all_urls>"],
+  permissions: ["storage", "activeTab"],
 });

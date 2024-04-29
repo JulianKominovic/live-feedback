@@ -103,7 +103,7 @@ const ThreadBubble = ({
             >
               <textarea
                 name="comment"
-                className="lf-border lf-rounded-md lf-border-neutral-300"
+                className="lf-border lf-rounded-md lf-bg-transparent lf-border-neutral-300"
               />
               <button
                 type="submit"

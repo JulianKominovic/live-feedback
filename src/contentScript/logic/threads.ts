@@ -57,10 +57,12 @@ export async function createThread(
     const GHissueId = issueResponse.data.number;
     console.log("Uploading dom & element photos");
     const domPhotoUpload = await uploadDomPhoto(GHissueId.toString());
+    if (!domPhotoUpload) return null;
     const elementPhotoUpload = await uploadElementPhoto(
       element,
       GHissueId.toString()
     );
+    if (!elementPhotoUpload) return null;
 
     const issueBody = `
 # ${thread.title}

@@ -31,7 +31,6 @@ const TemporalThreadBubble = forwardRef(
         <Popover.Root
           open={isCreatingThreadPromptOpen}
           onOpenChange={setIsCreatingThreadPromptOpen}
-          modal
         >
           <Popover.Trigger
             style={{
@@ -60,7 +59,7 @@ const TemporalThreadBubble = forwardRef(
               >
                 <textarea
                   name="comment"
-                  className="lf-border lf-rounded-md lf-border-neutral-300"
+                  className="lf-border lf-rounded-md lf-bg-transparent lf-border-neutral-300"
                 />
                 <button
                   type="submit"

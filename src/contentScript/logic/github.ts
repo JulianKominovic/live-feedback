@@ -1,18 +1,23 @@
-import { dataURL } from "@gripeless/pico";
+// import { dataURL } from "@gripeless/pico";
 import { uploadFile } from "../integrations/github/files";
 import { GH_OWNER, GH_REPO, GH_TEMP_FILES_PATH_FOLDER } from "../const";
-import html2canvas from "html2canvas";
+// import html2canvas from "html2canvas";
 import {
   createIssueComment,
   getIssueComments,
 } from "../integrations/github/issues";
 import { Thread } from "../types/Threads";
+import {
+  takeElementScreenshot,
+  takeTabScreenshot,
+} from "../integrations/background/tabs";
 
 export async function uploadDomPhoto(id: string) {
-  const domPhoto = (await dataURL(window)).value.replace(
+  const domPhoto = (await takeTabScreenshot())?.replace(
     "data:image/png;base64,",
     ""
   );
+  if (!domPhoto) return;
   const uploadResponse = await uploadFile({
     fileContent: domPhoto,
     repo: GH_REPO,
@@ -24,9 +29,11 @@ export async function uploadDomPhoto(id: string) {
 }
 
 export async function uploadElementPhoto(element: HTMLElement, id: string) {
-  const elementPhoto = (await html2canvas(element))
-    .toDataURL()
-    .replace("data:image/png;base64,", "");
+  const elementPhoto = (await takeElementScreenshot(element))?.replace(
+    "data:image/png;base64,",
+    ""
+  );
+  if (!elementPhoto) return;
   const uploadResponse = await uploadFile({
     fileContent: elementPhoto,
     repo: GH_REPO,
