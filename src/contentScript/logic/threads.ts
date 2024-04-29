@@ -65,6 +65,14 @@ export async function createThread(
     const issueBody = `
 # ${thread.title}
 
+## Info
+- **Date**: ${new Date(thread.date).toLocaleString()}
+- **User Agent**: ${navigator.userAgent}
+- **URL**: ${window.location.href}
+- **OS**: ${navigator.platform}
+- **Browser**: ${navigator.appVersion}
+- **Resolution**: ${window.screen.width}w x${window.screen.height}h
+
 ## Images
 ### DOM Photo
 ![Dom Photo](${domPhotoUpload.data.content?.download_url})
