@@ -5,7 +5,6 @@ import {
 } from "../integrations/github/issues";
 import { Thread } from "../types/Threads";
 import { uploadDomPhoto, uploadElementPhoto } from "./github";
-import { GH_OWNER, GH_REPO } from "../const";
 import { getCssSelector } from "css-selector-generator";
 import { sha256 } from "../utils";
 
@@ -51,9 +50,8 @@ export async function createThread(
     const issueResponse = await createIssue({
       body: "",
       title: thread.title,
-      repo: GH_REPO,
-      owner: GH_OWNER,
     });
+    if (!issueResponse) return null;
     const GHissueId = issueResponse.data.number;
     console.log("Uploading dom & element photos");
     const domPhotoUpload = await uploadDomPhoto(GHissueId.toString());
@@ -83,8 +81,6 @@ ${JSON.stringify(thread.tracking)}
     await updateIssue({
       body: issueBody,
       title: thread.title,
-      repo: GH_REPO,
-      owner: GH_OWNER,
       issue_number: GHissueId,
     });
     thread.GHissueId = GHissueId + "";
@@ -96,17 +92,16 @@ ${JSON.stringify(thread.tracking)}
 }
 
 export async function getThreads() {
-  const issues = await getIssues({ owner: GH_OWNER, repo: GH_REPO });
+  const issues = await getIssues();
+  if (!issues) return [];
   return issues.data
     .filter(
       (issue) =>
         issue.state === "open" && issue.title.startsWith("[LIVE FEEDBACK]")
     )
     .map((issue) => {
-      console.log("Issue body", issue.body);
       const trackingJSON =
         issue.body?.split("```json")[1].split("```")[0].trim() || "{}";
-      console.log("Tracking JSON", trackingJSON);
       const tracking = JSON.parse(trackingJSON);
       const thread: Thread = {
         GHissueId: issue.number + "",

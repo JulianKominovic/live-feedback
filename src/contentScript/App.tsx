@@ -39,11 +39,9 @@ function App() {
   async function handleMouseClick(e: MouseEvent) {
     if (!isPicking) return;
     const target = e.target as HTMLElement;
-    console.log("CLICKED", target);
     target.style.outline = "none";
     const tempThreadBubble = temporalThreadBubble.current as HTMLButtonElement;
     tempThreadBubble.style.display = "none";
-    console.log("STOPPING PICKING");
     setIsPicking(false);
 
     setTempThreadCreationIntent({
@@ -99,9 +97,28 @@ function App() {
         (temporalThreadBubble.current as HTMLButtonElement).style.left = "0px";
       });
   }
-
-  useEffect(() => {
+  function fetchThreads() {
     getThreads().then((threads) => setThreads(threads));
+  }
+  function handleStorageChange(
+    changes: { [key: string]: chrome.storage.StorageChange },
+    areaName: "local" | "sync" | "managed" | "session"
+  ) {
+    if (areaName !== "local") return;
+    if (
+      changes.gh_token?.newValue ||
+      changes.repo?.newValue ||
+      changes.owner?.newValue
+    ) {
+      fetchThreads();
+    }
+  }
+  useEffect(() => {
+    fetchThreads();
+    chrome.storage.onChanged.addListener(handleStorageChange);
+    return () => {
+      chrome.storage.onChanged.removeListener(handleStorageChange);
+    };
   }, []);
 
   useEffect(() => {

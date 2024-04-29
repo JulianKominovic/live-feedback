@@ -1,6 +1,9 @@
 import { Octokit } from "@octokit/core";
-const GH_TOKEN = import.meta.env.VITE_GH_TOKEN;
-const octokit = new Octokit({
-  auth: GH_TOKEN,
-});
+import { GH_TOKEN } from "../../const";
+
+function octokit() {
+  return new Octokit({
+    auth: GH_TOKEN(),
+  });
+}
 export default octokit;

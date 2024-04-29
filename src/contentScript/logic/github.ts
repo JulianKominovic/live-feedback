@@ -1,6 +1,6 @@
 // import { dataURL } from "@gripeless/pico";
 import { uploadFile } from "../integrations/github/files";
-import { GH_OWNER, GH_REPO, GH_TEMP_FILES_PATH_FOLDER } from "../const";
+import { GH_TEMP_FILES_PATH_FOLDER } from "../const";
 // import html2canvas from "html2canvas";
 import {
   createIssueComment,
@@ -20,10 +20,7 @@ export async function uploadDomPhoto(id: string) {
   if (!domPhoto) return;
   const uploadResponse = await uploadFile({
     fileContent: domPhoto,
-    repo: GH_REPO,
     path: `${GH_TEMP_FILES_PATH_FOLDER}/${id}-dom-photo.png`,
-
-    owner: GH_OWNER,
   });
   return uploadResponse;
 }
@@ -36,9 +33,7 @@ export async function uploadElementPhoto(element: HTMLElement, id: string) {
   if (!elementPhoto) return;
   const uploadResponse = await uploadFile({
     fileContent: elementPhoto,
-    repo: GH_REPO,
     path: `${GH_TEMP_FILES_PATH_FOLDER}/${id}-element-photo.png`,
-    owner: GH_OWNER,
   });
   return uploadResponse;
 }
@@ -46,10 +41,9 @@ export async function uploadElementPhoto(element: HTMLElement, id: string) {
 export async function getComments(thread: Thread) {
   if (!thread.GHissueId) return thread;
   const comments = await getIssueComments({
-    repo: GH_REPO,
-    owner: GH_OWNER,
     issue_number: Number(thread.GHissueId),
   });
+  if (!comments) return thread;
   thread.comments = comments.data.map((comment) => ({
     body: comment.body_html,
     user: {
@@ -64,11 +58,10 @@ export async function getComments(thread: Thread) {
 export async function addComment(thread: Thread, comment: string) {
   if (!thread.GHissueId) return thread;
   const commentResponse = await createIssueComment({
-    repo: GH_REPO,
-    owner: GH_OWNER,
     issue_number: Number(thread.GHissueId),
     body: comment,
   });
+  if (!commentResponse) return thread;
   thread.comments?.push({
     body: comment,
     user: {

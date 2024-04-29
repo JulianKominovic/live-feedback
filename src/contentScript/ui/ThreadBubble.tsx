@@ -1,8 +1,8 @@
 import * as Popover from "@radix-ui/react-popover";
 import { Cross2Icon, PaperPlaneIcon } from "@radix-ui/react-icons";
 import { Thread } from "../types/Threads";
-import { GH_OWNER, GH_REPO } from "../const";
 import { useState } from "react";
+import { GH_OWNER, GH_REPO } from "../const";
 
 const ThreadBubble = ({
   thread,
@@ -48,7 +48,7 @@ const ThreadBubble = ({
             <a
               className="lf-px-3 lf-font-medium lf-underline"
               target="_blank"
-              href={`https://github.com/${GH_OWNER}/${GH_REPO}/issues/${thread.GHissueId}`}
+              href={`https://github.com/${GH_OWNER()}/${GH_REPO()}/issues/${thread.GHissueId}`}
             >
               <h2>{thread.title.replace("[LIVE FEEDBACK] - ", "")}</h2>
             </a>

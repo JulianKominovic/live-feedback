@@ -10,7 +10,6 @@ const Navbar = ({ setIsPicking, isPicking }: NavbarProps) => {
     >
       <button
         onClick={(e) => {
-          console.log("click");
           e.preventDefault();
           e.stopPropagation();
           setIsPicking(!isPicking);
