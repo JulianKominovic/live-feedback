@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Navbar from "./ui/Navbar";
 import useGithubStore from "./store/threads";
 import ThreadBubbles from "./ui/ThreadBubbles";
+import TemporalThreadBubble from "./ui/TemporalThreadBubble";
 
 function RegisterEvents() {
   const {
@@ -36,6 +37,11 @@ function RegisterEvents() {
     // const tempThreadBubble = temporalThreadBubble.current as HTMLButtonElement;
     // tempThreadBubble.style.display = "none";
     setIsPicking(false);
+    console.log({
+      target,
+      x: e.pageX,
+      y: e.pageY,
+    });
 
     setTempThreadCreationIntent({
       target,
@@ -92,18 +98,7 @@ function App() {
     <>
       <RegisterEvents />
       <Navbar />
-      {/* <TemporalThreadBubble
-        x={tempThreadCreationIntent?.x}
-        y={tempThreadCreationIntent?.y}
-        createThread={(comment) => createNewThread(comment)}
-        isCreatingThreadPromptOpen={tempThreadCreationIntent !== null}
-        setIsCreatingThreadPromptOpen={(isOpen) =>
-          isOpen
-            ? setTempThreadCreationIntent(tempThreadCreationIntent)
-            : setTempThreadCreationIntent(null)
-        }
-        ref={temporalThreadBubble}
-      /> */}
+      <TemporalThreadBubble />
       <ThreadBubbles />
     </>
   );

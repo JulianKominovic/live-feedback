@@ -18,6 +18,10 @@ export async function createThread(
   const outerHTML = element.outerHTML || "";
   const textContentHash = await sha256(textContent);
   const outerHTMLHash = await sha256(outerHTML);
+  const xPercentageFromSelectedElement =
+    ((clickXCoord - element.offsetLeft) / element.offsetWidth) * 100;
+  const yPercentageFromSelectedElement =
+    ((clickYCoord - element.offsetTop) / element.offsetHeight) * 100;
 
   const thread: Thread = {
     title: "[LIVE FEEDBACK] - " + title,
@@ -39,8 +43,8 @@ export async function createThread(
         "aria-hidden": element.getAttribute("aria-hidden"),
         "aria-expanded": element.getAttribute("aria-expanded"),
       },
-      x: clickXCoord,
-      y: clickYCoord,
+      xPercentageFromSelectedElement: xPercentageFromSelectedElement + "%",
+      yPercentageFromSelectedElement: yPercentageFromSelectedElement + "%",
       url: window.location.href,
     },
   };

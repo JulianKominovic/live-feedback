@@ -12,8 +12,8 @@ export type ThreadInternalProps = {
     "aria-expanded": string | null;
   };
   show?: boolean;
-  x: number;
-  y: number;
+  xPercentageFromSelectedElement: string;
+  yPercentageFromSelectedElement: string;
   url: string;
 };
 export type ThreadComment = {

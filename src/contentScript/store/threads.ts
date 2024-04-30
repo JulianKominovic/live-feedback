@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Thread, ThreadInternalProps } from "../types/Threads";
+import { Thread } from "../types/Threads";
 import {
   checkThreadsBubbles,
   createThread,
@@ -17,13 +17,13 @@ export type ThreadsStore = {
   checkThreadsVisibility: () => void;
   createThreadComment: (thread: Thread, comment: string) => void;
   // Temporal creation threads
-  tempThreadCreationIntent:
-    | (Pick<ThreadInternalProps, "x" | "y"> & { target: HTMLElement })
-    | null;
+  tempThreadCreationIntent: {
+    x: number;
+    y: number;
+    target: HTMLElement;
+  } | null;
   setTempThreadCreationIntent: (
-    intent:
-      | (Pick<ThreadInternalProps, "x" | "y"> & { target: HTMLElement })
-      | null
+    intent: { x: number; y: number; target: HTMLElement } | null
   ) => void;
   isPicking: boolean;
   setIsPicking: (isPicking: boolean) => void;
