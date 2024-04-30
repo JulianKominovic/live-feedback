@@ -62,9 +62,6 @@ const useThreadsStore = create<ThreadsStore>((set, get) => ({
     if (!get().tempThreadCreationIntent) return;
     console.log("Creating new thread", comment);
     const tempThreadBubble = get().tempThreadCreationIntent!;
-    set({
-      tempThreadCreationIntent: null,
-    });
     return createThread(
       comment,
       tempThreadBubble?.target,
