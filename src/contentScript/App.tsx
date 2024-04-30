@@ -1,19 +1,22 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import Navbar from "./ui/Navbar";
-import { Thread, ThreadInternalProps } from "./types/Threads";
-import ThreadBubble from "./ui/ThreadBubble";
-import { checkThreadsBubbles, createThread, getThreads } from "./logic/threads";
-import TemporalThreadBubble from "./ui/TemporalThreadBubble";
-import { addComment, getComments } from "./logic/github";
+import useGithubStore from "./store/threads";
+import ThreadBubbles from "./ui/ThreadBubbles";
 
-function App() {
-  const [isPicking, setIsPicking] = useState(false);
-  const [threads, setThreads] = useState<Thread[]>([]);
-  const [tempThreadCreationIntent, setTempThreadCreationIntent] = useState<
-    (Pick<ThreadInternalProps, "x" | "y"> & { target: HTMLElement }) | null
-  >(null);
-  const temporalThreadBubble = useRef<HTMLButtonElement>(null);
-
+function RegisterEvents() {
+  const {
+    isPicking,
+    setIsPicking,
+    setTempThreadCreationIntent,
+    populateThreads,
+    checkThreadsVisibility,
+  } = useGithubStore((state) => ({
+    isPicking: state.isPicking,
+    setIsPicking: state.setIsPicking,
+    setTempThreadCreationIntent: state.setTempThreadCreationIntent,
+    populateThreads: state.populateThreads,
+    checkThreadsVisibility: state.checkThreadsVisibility,
+  }));
   function handleMouseOver(e: MouseEvent) {
     if (!isPicking) return;
     const target = e.target as HTMLElement;
@@ -25,23 +28,13 @@ function App() {
     const target = e.target as HTMLElement;
     target.style.outline = "none";
   }
-  function handleMouseMove(e: MouseEvent) {
-    if (!isPicking) return;
-    const mouseY = e.pageY;
-    const mouseX = e.pageX;
-
-    document.body.style.cursor = "hidden";
-    (temporalThreadBubble.current as HTMLButtonElement).style.display = "block";
-    (temporalThreadBubble.current as HTMLButtonElement).style.transform =
-      `translate3d(${mouseX}px, ${mouseY}px, 0)`;
-  }
 
   async function handleMouseClick(e: MouseEvent) {
     if (!isPicking) return;
     const target = e.target as HTMLElement;
     target.style.outline = "none";
-    const tempThreadBubble = temporalThreadBubble.current as HTMLButtonElement;
-    tempThreadBubble.style.display = "none";
+    // const tempThreadBubble = temporalThreadBubble.current as HTMLButtonElement;
+    // tempThreadBubble.style.display = "none";
     setIsPicking(false);
 
     setTempThreadCreationIntent({
@@ -54,52 +47,6 @@ function App() {
     e.stopImmediatePropagation();
   }
 
-  async function loadComments(thread: Thread) {
-    const threadWithComments = await getComments(thread);
-    setThreads((prev) =>
-      prev.map((t) =>
-        t.GHissueId === thread.GHissueId ? threadWithComments : t
-      )
-    );
-  }
-
-  async function createComment(thread: Thread, comment: string) {
-    addComment(thread, comment).then((updatedThread) => {
-      setThreads((prev) =>
-        prev.map((t) =>
-          t.GHissueId === updatedThread.GHissueId ? updatedThread : t
-        )
-      );
-    });
-  }
-
-  async function createNewThread(comment: string) {
-    console.log("Creating new thread", comment);
-
-    if (!tempThreadCreationIntent) return;
-    setTempThreadCreationIntent(null);
-    createThread(
-      comment,
-      tempThreadCreationIntent?.target,
-      tempThreadCreationIntent?.x,
-      tempThreadCreationIntent?.y
-    )
-      .then((createdThread) => {
-        if (createdThread) setThreads((prev) => [...prev, createdThread]);
-        else alert("Thread creation failed");
-      })
-      .finally(() => {
-        setTempThreadCreationIntent(null);
-        setIsPicking(false);
-        (temporalThreadBubble.current as HTMLButtonElement).style.display =
-          "none";
-        (temporalThreadBubble.current as HTMLButtonElement).style.top = "0px";
-        (temporalThreadBubble.current as HTMLButtonElement).style.left = "0px";
-      });
-  }
-  function fetchThreads() {
-    getThreads().then((threads) => setThreads(threads));
-  }
   function handleStorageChange(
     changes: { [key: string]: chrome.storage.StorageChange },
     areaName: "local" | "sync" | "managed" | "session"
@@ -110,11 +57,12 @@ function App() {
       changes.repo?.newValue ||
       changes.owner?.newValue
     ) {
-      fetchThreads();
+      populateThreads();
     }
   }
+
   useEffect(() => {
-    fetchThreads();
+    populateThreads();
     chrome.storage.onChanged.addListener(handleStorageChange);
     return () => {
       chrome.storage.onChanged.removeListener(handleStorageChange);
@@ -122,26 +70,29 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setThreads((prev) => checkThreadsBubbles(prev));
-    }, 1000);
+    const interval = setInterval(checkThreadsVisibility, 1000);
     window.addEventListener("mouseover", handleMouseOver);
     window.addEventListener("mouseout", handleMouseOut);
     window.addEventListener("mousedown", handleMouseClick);
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    // window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => {
       window.removeEventListener("mouseover", handleMouseOver);
       window.removeEventListener("mouseout", handleMouseOut);
       window.removeEventListener("mousedown", handleMouseClick);
-      window.removeEventListener("mousemove", handleMouseMove);
+      // window.removeEventListener("mousemove", handleMouseMove);
       clearInterval(interval);
     };
   }, [isPicking]);
 
+  return null;
+}
+
+function App() {
   return (
     <>
-      <Navbar setIsPicking={setIsPicking} isPicking={isPicking} />
-      <TemporalThreadBubble
+      <RegisterEvents />
+      <Navbar />
+      {/* <TemporalThreadBubble
         x={tempThreadCreationIntent?.x}
         y={tempThreadCreationIntent?.y}
         createThread={(comment) => createNewThread(comment)}
@@ -152,17 +103,8 @@ function App() {
             : setTempThreadCreationIntent(null)
         }
         ref={temporalThreadBubble}
-      />
-      {isPicking === false &&
-        tempThreadCreationIntent === null &&
-        threads.map((thread) => (
-          <ThreadBubble
-            key={thread.GHissueId}
-            thread={thread}
-            loadComments={() => loadComments(thread)}
-            addComment={(comment) => createComment(thread, comment)}
-          />
-        ))}
+      /> */}
+      <ThreadBubbles />
     </>
   );
 }

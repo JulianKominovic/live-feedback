@@ -3,17 +3,14 @@ import { Cross2Icon, PaperPlaneIcon } from "@radix-ui/react-icons";
 import { Thread } from "../types/Threads";
 import { useState } from "react";
 import { GH_OWNER, GH_REPO } from "../const";
+import useThreadsStore from "../store/threads";
 
-const ThreadBubble = ({
-  thread,
-  loadComments,
-  addComment,
-}: {
-  thread: Thread;
-  loadComments: () => void;
-  addComment: (comment: string) => void;
-}) => {
+const ThreadBubble = ({ thread }: { thread: Thread }) => {
   const [open, setOpen] = useState(false);
+  const { addComment, loadComments } = useThreadsStore((state) => ({
+    loadComments: state.populateThreadComments,
+    addComment: state.createThreadComment,
+  }));
 
   return (
     thread.tracking.show && (
@@ -22,7 +19,7 @@ const ThreadBubble = ({
         onOpenChange={(open) => {
           setOpen(open);
           if (open && thread.comments?.filter(Boolean)?.length === 0) {
-            loadComments();
+            loadComments(thread);
           }
         }}
         modal
@@ -97,7 +94,7 @@ const ThreadBubble = ({
                   "comment"
                 );
                 if (comment) {
-                  addComment(comment as string);
+                  addComment(thread, comment as string);
                 }
               }}
             >
@@ -126,4 +123,11 @@ const ThreadBubble = ({
   );
 };
 
-export default ThreadBubble;
+function ThreadBubbles() {
+  const threads = useThreadsStore((state) => state.threads);
+  return threads.map((thread) => (
+    <ThreadBubble key={thread.GHissueId} thread={thread} />
+  ));
+}
+
+export default ThreadBubbles;

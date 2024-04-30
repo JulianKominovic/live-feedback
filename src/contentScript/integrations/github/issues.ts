@@ -1,10 +1,7 @@
 import { GH_OWNER, GH_REPO } from "../../const";
-import { checkForSettingsToExist } from "../../logic/settings";
 import octokit from "./client";
 
 export function getIssue({ issue_number }: { issue_number: number }) {
-  checkForSettingsToExist();
-
   try {
     return octokit().request(
       "GET /repos/{owner}/{repo}/issues/{issue_number}",
@@ -24,8 +21,6 @@ export function getIssue({ issue_number }: { issue_number: number }) {
 }
 
 export function createIssue({ body, title }: { body: string; title: string }) {
-  checkForSettingsToExist();
-
   try {
     return octokit().request("POST /repos/{owner}/{repo}/issues", {
       owner: GH_OWNER(),
@@ -51,7 +46,6 @@ export function updateIssue({
   issue_number: number;
   title: string;
 }) {
-  checkForSettingsToExist();
   try {
     return octokit().request(
       "PATCH /repos/{owner}/{repo}/issues/{issue_number}",
@@ -73,7 +67,6 @@ export function updateIssue({
 }
 
 export function getIssues() {
-  checkForSettingsToExist();
   try {
     return octokit().request("GET /repos/{owner}/{repo}/issues", {
       owner: GH_OWNER(),
@@ -89,7 +82,6 @@ export function getIssues() {
 }
 
 export function getIssueComments({ issue_number }: { issue_number: number }) {
-  checkForSettingsToExist();
   try {
     return octokit().request(
       "GET /repos/{owner}/{repo}/issues/{issue_number}/comments",
@@ -118,7 +110,6 @@ export function createIssueComment({
   body: string;
   issue_number: number;
 }) {
-  checkForSettingsToExist();
   try {
     return octokit().request(
       "POST /repos/{owner}/{repo}/issues/{issue_number}/comments",

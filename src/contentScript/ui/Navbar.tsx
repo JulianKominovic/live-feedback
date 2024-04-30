@@ -1,8 +1,10 @@
-type NavbarProps = {
-  setIsPicking: (isPicking: boolean) => void;
-  isPicking: boolean;
-};
-const Navbar = ({ setIsPicking, isPicking }: NavbarProps) => {
+import useThreadsStore from "../store/threads";
+
+const Navbar = () => {
+  const { isPicking, setIsPicking } = useThreadsStore((state) => ({
+    isPicking: state.isPicking,
+    setIsPicking: state.setIsPicking,
+  }));
   return (
     <nav
       className="lf-fixed lf-h-16 lf--translate-x-1/2 lf-border lf-rounded-full lf-left-1/2 lf-bottom-4 lf-border-neutral-900 lf-bg-neutral-700 lf-w-fit"
