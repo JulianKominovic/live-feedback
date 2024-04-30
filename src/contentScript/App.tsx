@@ -34,14 +34,7 @@ function RegisterEvents() {
     if (!isPicking) return;
     const target = e.target as HTMLElement;
     target.style.outline = "none";
-    // const tempThreadBubble = temporalThreadBubble.current as HTMLButtonElement;
-    // tempThreadBubble.style.display = "none";
     setIsPicking(false);
-    console.log({
-      target,
-      x: e.pageX,
-      y: e.pageY,
-    });
 
     setTempThreadCreationIntent({
       target,
@@ -85,7 +78,6 @@ function RegisterEvents() {
       window.removeEventListener("mouseover", handleMouseOver);
       window.removeEventListener("mouseout", handleMouseOut);
       window.removeEventListener("mousedown", handleMouseClick);
-      // window.removeEventListener("mousemove", handleMouseMove);
       clearInterval(interval);
     };
   }, [isPicking]);

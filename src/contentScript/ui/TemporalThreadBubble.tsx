@@ -3,20 +3,14 @@ import { Cross2Icon, PaperPlaneIcon } from "@radix-ui/react-icons";
 import useThreadsStore from "../store/threads";
 
 const TemporalThreadBubble = () => {
-  const {
-    tempThreadCreationIntent,
-    setTempThreadCreationIntent,
-    createThread,
-  } = useThreadsStore((state) => ({
-    tempThreadCreationIntent: state.tempThreadCreationIntent,
-    setTempThreadCreationIntent: state.setTempThreadCreationIntent,
-    createThread: state.createThread,
-  }));
+  const { tempThreadCreationIntent, createThread } = useThreadsStore(
+    (state) => ({
+      tempThreadCreationIntent: state.tempThreadCreationIntent,
+      setTempThreadCreationIntent: state.setTempThreadCreationIntent,
+      createThread: state.createThread,
+    })
+  );
   const isCreatingThreadPromptOpen = tempThreadCreationIntent !== null;
-  const setIsCreatingThreadPromptOpen = (isOpen: boolean) =>
-    isOpen
-      ? setTempThreadCreationIntent(tempThreadCreationIntent)
-      : setTempThreadCreationIntent(null);
 
   return (
     <>
@@ -24,10 +18,7 @@ const TemporalThreadBubble = () => {
         // @ts-ignore
         className="lf-hidden lf-rounded-[4px_50%_50%_50%] lf-h-8 lf-w-8 lf-aspect-square lf-bg-white lf-shadow-2xl lf-fixed lf-z-[999999] lf-top-1 lf-left-1"
         ></div> */}
-      <Popover.Root
-        open={isCreatingThreadPromptOpen}
-        onOpenChange={setIsCreatingThreadPromptOpen}
-      >
+      <Popover.Root open={isCreatingThreadPromptOpen}>
         <Popover.Trigger
           style={{
             top: tempThreadCreationIntent?.y,

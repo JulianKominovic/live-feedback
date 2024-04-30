@@ -13,7 +13,7 @@ export type ThreadsStore = {
   setThreads: (threads: Thread[]) => void;
   populateThreads: () => void;
   populateThreadComments: (thread: Thread) => void;
-  createThread: (comment: string) => void;
+  createThread: (comment: string) => Promise<void> | undefined;
   checkThreadsVisibility: () => void;
   createThreadComment: (thread: Thread, comment: string) => void;
   // Temporal creation threads

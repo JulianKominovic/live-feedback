@@ -12,7 +12,6 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
     addComment: state.createThreadComment,
   }));
   const [coords, setCoords] = useState({ x: 0, y: 0 });
-
   useEffect(() => {
     const element = document.querySelector(
       thread.tracking.selector
@@ -23,11 +22,13 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
       const x =
         rect.width *
           (parseFloat(thread.tracking.xPercentageFromSelectedElement) / 100) +
-        rect.left;
+        rect.left +
+        window.scrollX;
       const y =
         rect.height *
           (parseFloat(thread.tracking.yPercentageFromSelectedElement) / 100) +
-        rect.top;
+        rect.top +
+        window.scrollY;
       setCoords({ x, y });
     }
     const resizeObserver = new ResizeObserver(calculateCoords);
