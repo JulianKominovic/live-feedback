@@ -1,7 +1,7 @@
 import * as Popover from "@radix-ui/react-popover";
 import { Cross2Icon, PaperPlaneIcon } from "@radix-ui/react-icons";
 import { Thread } from "../types/Threads";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { GH_OWNER, GH_REPO } from "../const";
 import useThreadsStore from "../store/threads";
 
@@ -11,19 +11,37 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
     loadComments: state.populateThreadComments,
     addComment: state.createThreadComment,
   }));
-  const ref = useRef<HTMLButtonElement | null>(null);
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const element = document.querySelector(
       thread.tracking.selector
     ) as HTMLElement;
-    if (!element || !ref.current || thread.tracking.show === false) return;
-    if (element.style.position === "") {
-      element.style.position = "relative";
-      element.appendChild(ref.current as HTMLButtonElement);
+    if (!element || thread.tracking.show === false) return;
+    function calculateCoords() {
+      const rect = element.getBoundingClientRect();
+      const x =
+        rect.width *
+          (parseFloat(thread.tracking.xPercentageFromSelectedElement) / 100) +
+        rect.left;
+      const y =
+        rect.height *
+          (parseFloat(thread.tracking.yPercentageFromSelectedElement) / 100) +
+        rect.top;
+      setCoords({ x, y });
     }
-    return () => {};
-  }, [thread.tracking.selector, thread.tracking.show]);
+    const resizeObserver = new ResizeObserver(calculateCoords);
+    resizeObserver.observe(document.body);
+    calculateCoords();
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [
+    thread.tracking.selector,
+    thread.tracking.xPercentageFromSelectedElement,
+    thread.tracking.yPercentageFromSelectedElement,
+    thread.tracking.show,
+  ]);
 
   return (
     thread.tracking.show && (
@@ -36,15 +54,13 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
             loadComments(thread);
           }
         }}
-        modal
       >
         <Popover.Trigger
-          ref={ref}
           className="lf-w-8 lf-h-8 lf-inline-flex lf-items-center lf-justify-center lf-bg-white lf-text-black lf-shadow-[0_2px_10px] focus:lf-shadow-[0_0_0_2px] lf-rounded-[4px_50%_50%_50%] hover:!lf-z-[99999] focus:lf-shadow-black lf-cursor-default lf-outline-none lf-absolute"
           aria-label="Update dimensions"
           style={{
-            top: thread.tracking.yPercentageFromSelectedElement,
-            left: thread.tracking.xPercentageFromSelectedElement,
+            top: coords.y,
+            left: coords.x,
             zIndex: open ? 999999 : 9999,
           }}
         >
