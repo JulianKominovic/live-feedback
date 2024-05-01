@@ -18,10 +18,12 @@ export async function createThread(
   const outerHTML = element.outerHTML || "";
   const textContentHash = await sha256(textContent);
   const outerHTMLHash = await sha256(outerHTML);
+  const elementRect = element.getBoundingClientRect();
   const xPercentageFromSelectedElement =
-    ((clickXCoord - element.offsetLeft) / element.offsetWidth) * 100;
+    ((clickXCoord - elementRect.left) / elementRect.width) * 100;
   const yPercentageFromSelectedElement =
-    ((clickYCoord - element.offsetTop) / element.offsetHeight) * 100;
+    ((clickYCoord - (elementRect.top + window.scrollY)) / elementRect.height) *
+    100;
 
   const thread: Thread = {
     title: "[LIVE FEEDBACK] - " + title,
@@ -67,28 +69,28 @@ export async function createThread(
     if (!elementPhotoUpload) return null;
 
     const issueBody = `
-# ${thread.title}
+  # ${thread.title}
 
-## Info
-- **Date**: ${new Date(thread.date).toLocaleString()}
-- **User Agent**: ${navigator.userAgent}
-- **URL**: ${window.location.href}
-- **OS**: ${navigator.platform}
-- **Browser**: ${navigator.appVersion}
-- **Resolution**: ${window.screen.width}w x${window.screen.height}h
+  ## Info
+  - **Date**: ${new Date(thread.date).toLocaleString()}
+  - **User Agent**: ${navigator.userAgent}
+  - **URL**: ${window.location.href}
+  - **OS**: ${navigator.platform}
+  - **Browser**: ${navigator.appVersion}
+  - **Resolution**: ${window.screen.width}w x${window.screen.height}h
 
-## Images
-### DOM Photo
-![Dom Photo](${domPhotoUpload.data.content?.download_url})
+  ## Images
+  ### DOM Photo
+  ![Dom Photo](${domPhotoUpload.data.content?.download_url})
 
-### Element Photo
-![Element Photo](${elementPhotoUpload.data.content?.download_url})
+  ### Element Photo
+  ![Element Photo](${elementPhotoUpload.data.content?.download_url})
 
-## Tracking (internal use)
-\`\`\`json
-${JSON.stringify(thread.tracking)}
-\`\`\`
-            `;
+  ## Tracking (internal use)
+  \`\`\`json
+  ${JSON.stringify(thread.tracking)}
+  \`\`\`
+              `;
     console.log("Updating issue");
     await updateIssue({
       body: issueBody,
