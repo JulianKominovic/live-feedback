@@ -27,7 +27,7 @@ const Nav = styled(motion.nav)`
   color: ${COLORS["grey-900-contrast"]};
   background-color: ${COLORS["grey-900"]};
   max-width: 384px;
-  width: 100%;
+  width: fit-content;
   overflow-x: hidden;
   padding-block: 4px;
   ${CSS_FRAGMENTS["box-styles"]};
@@ -49,12 +49,18 @@ const BigPanel = styled(motion.main)`
 `;
 
 function Navbar() {
-  const { isPicking, setIsPicking } = useThreadsStore((state) => ({
+  const { isPicking, setIsPicking, threads } = useThreadsStore((state) => ({
     isPicking: state.isPicking,
     setIsPicking: state.setIsPicking,
+    threads: state.threads,
   }));
   const [showMentions, setShowMentions] = useState(false);
   const showBigPanel = showMentions;
+  const participants = new Set(
+    threads
+      .filter((thread) => thread.tracking.show)
+      .map((thread) => thread.creator)
+  );
   return (
     <Nav
       style={{
@@ -146,11 +152,39 @@ function Navbar() {
           <ArchiveIcon />
         </Button>
         <VerticalDivider layout />
-        <Button variant="flat" layout></Button>
-        <Button variant="flat" layout></Button>
-        <Button variant="flat" layout></Button>
+        {participants.size > 0 ? (
+          <>
+            {Array.from(participants).map((participant, i) => (
+              <Button
+                variant="flat"
+                layout
+                key={"participant" + i + participant}
+                style={{
+                  width: "2rem",
+                  aspectRatio: "1/1",
+                  borderRadius: "50%",
+                  padding: 2,
+                  marginInlineStart: i > 0 ? "-12px" : "0px",
+                  marginInlineEnd: i < participants.size - 1 ? "-12px" : "0px",
+                }}
+              >
+                <img
+                  src={participant?.avatar}
+                  alt={participant?.name}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                    padding: 0,
+                  }}
+                />
+              </Button>
+            ))}
+            <VerticalDivider layout />
+          </>
+        ) : null}
 
-        <VerticalDivider layout />
         <Button variant="flat" layout key="config">
           <GearIcon />
         </Button>
@@ -168,6 +202,7 @@ function Navbar() {
         <motion.span
           style={{
             fontSize: "12px",
+            paddingInlineEnd: "8px",
           }}
           layout
         >
