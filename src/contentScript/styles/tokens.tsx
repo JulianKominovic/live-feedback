@@ -7,6 +7,7 @@
 //In addition a companion set of contrast colours are included for colouring text / icons
 // Example usage
 
+import { Global, css } from "@emotion/react";
 import styled from "@emotion/styled";
 // class="w-full bg-red-600 text-red-600-constrast"
 export const Z_INDEXES = {
@@ -15,7 +16,7 @@ export const Z_INDEXES = {
   BUBBLE: 999_999_997,
 };
 export const CSS_FRAGMENTS = {
-  "box-styles": `background: rgba(0, 0, 0, 0.2);
+  "box-styles": `background: rgba(0, 0, 0, 0.4);
   box-shadow:
     rgba(0, 0, 0, 0.5) 0px 0px 1px 1px,
     rgba(0, 0, 0, 0.25) 0px 4px 4px,
@@ -578,6 +579,34 @@ export const COLORS = {
   "blue-grey-900-contrast": "white",
 };
 
+export const GlobalStyles = () => (
+  <Global
+    styles={css`
+      [data-live-feedback="true"] *::before,
+      [data-live-feedback="true"] *::after,
+      [data-live-feedback="true"] * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        border: none;
+        color: ${COLORS["grey-900-contrast"]};
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Oxygen,
+          Ubuntu,
+          Cantarell,
+          "Open Sans",
+          "Helvetica Neue",
+          sans-serif !important;
+      }
+    `}
+  />
+);
+
 export const ResetCSS = styled.div`
   * {
     margin: 0;
@@ -596,7 +625,8 @@ export const ResetCSS = styled.div`
       Cantarell,
       "Open Sans",
       "Helvetica Neue",
-      sans-serif;
+      sans-serif !important;
+    font-size: 16px;
   }
   button {
     cursor: pointer;

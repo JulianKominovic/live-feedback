@@ -3,7 +3,6 @@ import * as Popover from "@radix-ui/react-popover";
 import { CSS_FRAGMENTS, Z_INDEXES } from "../../styles/tokens";
 
 export const Content = styled(Popover.Content)`
-  width: 256px;
   padding: 0 12px;
   height: 384px;
   display: grid;

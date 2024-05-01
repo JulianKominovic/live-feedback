@@ -10,7 +10,7 @@ export const CloseButton = styled(Popover.Close)`
   align-items: center;
   justify-content: center;
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.2) !important;
   color: white;
   top: 8px;
   right: 8px;

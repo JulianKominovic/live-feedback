@@ -1,9 +1,9 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import Navbar from "./ui/Navbar";
 import useGithubStore from "./store/threads";
 import ThreadBubbles from "./ui/ThreadBubbles";
 import TemporalThreadBubble from "./ui/TemporalThreadBubble";
-import { ResetCSS } from "./styles/tokens";
+import { GlobalStyles, ResetCSS } from "./styles/tokens";
 
 function RegisterEvents() {
   const {
@@ -44,30 +44,33 @@ function RegisterEvents() {
   }
 
   async function handleMouseClick(e: MouseEvent) {
-    if (!isPicking) return;
     const target = e.target as HTMLElement;
     target.style.outline = "none";
-    setIsPicking(false);
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
-
-    let targetIsInsideLiveFeedbackWrapper = false;
-    let currTarget: HTMLElement | null = target;
-    while (currTarget) {
-      if (currTarget.id === "live-feedback") {
-        targetIsInsideLiveFeedbackWrapper = true;
-      }
-      currTarget = currTarget.parentElement;
+    if (target.hasAttribute("data-live-feedback-thread-creation")) {
+      return setIsPicking(!isPicking);
     }
-    console.log(currTarget, targetIsInsideLiveFeedbackWrapper);
-    if (targetIsInsideLiveFeedbackWrapper) return;
+    if (isPicking) {
+      setIsPicking(false);
 
-    setTempThreadCreationIntent({
-      target,
-      x: e.pageX,
-      y: e.pageY,
-    });
+      let targetIsInsideLiveFeedbackWrapper = false;
+      let currTarget: HTMLElement | null = target;
+      while (currTarget) {
+        if (currTarget.id === "live-feedback") {
+          targetIsInsideLiveFeedbackWrapper = true;
+        }
+        currTarget = currTarget.parentElement;
+      }
+      console.log(currTarget, targetIsInsideLiveFeedbackWrapper);
+      if (targetIsInsideLiveFeedbackWrapper) return;
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      setTempThreadCreationIntent({
+        target,
+        x: e.pageX,
+        y: e.pageY,
+      });
+    }
   }
 
   function handleStorageChange(
@@ -115,6 +118,7 @@ function RegisterEvents() {
 function App() {
   return (
     <ResetCSS>
+      <GlobalStyles />
       <RegisterEvents />
       <Navbar />
       <TemporalThreadBubble />

@@ -84,9 +84,7 @@ function Navbar() {
         <Button
           variant="flat"
           key="add-comment"
-          onClick={() => {
-            setIsPicking(!isPicking);
-          }}
+          data-live-feedback-thread-creation
           style={{
             justifyContent: "flex-start",
             width: isPicking ? "fit-content" : "2rem",
@@ -96,6 +94,7 @@ function Navbar() {
           layout
         >
           <motion.div
+            data-live-feedback-thread-creation
             layout="size"
             style={{
               flexShrink: 0,
@@ -104,6 +103,7 @@ function Navbar() {
             }}
           >
             <PlusIcon
+              data-live-feedback-thread-creation
               style={{
                 transform: isPicking ? "rotate(45deg)" : "rotate(0deg)",
                 transition: "transform 0.2s",
@@ -111,7 +111,11 @@ function Navbar() {
             />
           </motion.div>
           <AnimatePresence initial={false}>
-            {isPicking && <motion.span layout>Stop Picking</motion.span>}
+            {isPicking && (
+              <motion.span data-live-feedback-thread-creation layout>
+                Stop Picking
+              </motion.span>
+            )}
           </AnimatePresence>
         </Button>
         <Button
@@ -156,7 +160,7 @@ function Navbar() {
           <>
             {Array.from(participants)
               .slice(0, 4)
-              .map((participant, i) => (
+              .map((participant, i, array) => (
                 <>
                   <Button
                     variant="flat"
@@ -168,7 +172,8 @@ function Navbar() {
                       borderRadius: "50%",
                       padding: 2,
                       marginInlineStart: i > 0 ? "-12px" : "0px",
-                      marginInlineEnd: i < 4 ? "-12px" : "0px",
+                      marginInlineEnd:
+                        i < 4 && i < array.length - 1 ? "-12px" : "0px",
                     }}
                   >
                     <img

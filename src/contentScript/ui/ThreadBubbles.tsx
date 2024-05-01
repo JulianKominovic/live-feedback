@@ -51,7 +51,11 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
             thread.comments?.length
           )}
         </Trigger>
-        <Popover.Portal>
+        <Popover.Portal
+          container={
+            document.querySelector("#live-feedback") || (document.body as any)
+          }
+        >
           <Content data-live-feedback side="bottom">
             <header
               style={{

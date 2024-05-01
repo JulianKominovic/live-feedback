@@ -8,7 +8,7 @@ export const Button = styled<
   >
 >(motion.button)`
   border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.2) !important;
   flex-shrink: 0;
   display: flex;
   justify-content: center;

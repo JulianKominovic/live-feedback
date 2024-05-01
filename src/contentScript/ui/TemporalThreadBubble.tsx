@@ -34,8 +34,13 @@ const TemporalThreadBubble = () => {
             zIndex: 999999,
           }}
         ></Trigger>
-        <Popover.Portal>
+        <Popover.Portal
+          container={
+            document.querySelector("#live-feedback") || (document.body as any)
+          }
+        >
           <Content
+            data-live-feedback
             style={{
               height: "auto",
               paddingBlockStart: "12px",
