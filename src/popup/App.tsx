@@ -33,7 +33,7 @@ function App() {
   }, []);
   return (
     <form
-      className="lf-flex lf-flex-col lf-gap-3 lf-p-3 lf-bg-white lf-rounded-lg lf-shadow-lg"
+      className="!lf-flex !lf-flex-col !lf-gap-3 !lf-p-3 !lf-bg-white !lf-rounded-lg lf-shadow-lg"
       onSubmit={async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -50,7 +50,7 @@ function App() {
     >
       <fieldset>
         <label htmlFor="gh_token">Github token</label>
-        <div className="lf-flex lf-gap-3">
+        <div className="!lf-flex lf-gap-3">
           <input
             defaultValue={formValues.gh_token}
             type={seePassword ? "text" : "password"}
@@ -86,7 +86,7 @@ function App() {
 
       <button
         type="submit"
-        className="lf-bg-blue-500 lf-text-white lf-py-2 lf-px-4 lf-rounded-md"
+        className="!lf-bg-blue-500 !lf-text-white !lf-py-2 !lf-px-4 lf-rounded-md"
       >
         Save
       </button>

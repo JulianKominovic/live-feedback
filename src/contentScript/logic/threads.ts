@@ -27,6 +27,7 @@ export async function createThread(
 
   const thread: Thread = {
     title: "[LIVE FEEDBACK] - " + title,
+    status: "OPEN",
     date: new Date().toISOString(),
     comments: [],
     tracking: {
@@ -59,6 +60,9 @@ export async function createThread(
     });
     if (!issueResponse) return null;
     const GHissueId = issueResponse.data.number;
+    const GHIssueCreatorName =
+      issueResponse.data.user?.name || issueResponse.data.user?.login;
+    const GHIssueCreatorAvatar = issueResponse.data.user?.avatar_url;
     console.log("Uploading dom & element photos");
     const domPhotoUpload = await uploadDomPhoto(GHissueId.toString());
     if (!domPhotoUpload) return null;
@@ -98,6 +102,10 @@ export async function createThread(
       issue_number: GHissueId,
     });
     thread.GHissueId = GHissueId + "";
+    thread.creator = {
+      name: GHIssueCreatorName,
+      avatar: GHIssueCreatorAvatar,
+    };
     return thread;
   } catch (err) {
     console.error(err);
@@ -119,6 +127,11 @@ export async function getThreads() {
       const tracking = JSON.parse(trackingJSON);
       const thread: Thread = {
         GHissueId: issue.number + "",
+        status: issue.state === "open" ? "OPEN" : "CLOSED",
+        creator: {
+          name: issue.user?.name || issue.user?.login,
+          avatar: issue.user?.avatar_url,
+        },
         title: issue.title,
         date: issue.created_at,
         comments: Array.from({ length: issue.comments }),

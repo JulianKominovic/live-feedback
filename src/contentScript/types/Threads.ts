@@ -26,6 +26,11 @@ export type ThreadComment = {
 };
 export type Thread = {
   GHissueId?: string;
+  creator?: {
+    name?: string;
+    avatar?: string;
+  };
+  status: "OPEN" | "CLOSED";
   title: string;
   // ISO date
   date: string;

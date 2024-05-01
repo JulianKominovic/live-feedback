@@ -1,4 +1,5 @@
-import useThreadsStore from "../store/threads";
+import React, { useState } from "react";
+import ReactDOM from "react-dom/client";
 import { clsx } from "clsx";
 import { motion, HTMLMotionProps, AnimatePresence } from "framer-motion";
 import {
@@ -8,10 +9,37 @@ import {
   PlusIcon,
 } from "@radix-ui/react-icons";
 import styled from "@emotion/styled";
-import { COLORS, CSS_FRAGMENTS, Z_INDEXES } from "../styles/tokens";
-import { useState } from "react";
-import { VerticalDivider } from "./atoms/VerticalDivider";
-import { Button } from "./atoms/Button";
+import { COLORS, CSS_FRAGMENTS, ResetCSS } from "./styles/tokens";
+
+// import "./index.css";
+const div = document.createElement("div");
+div.id = "live-feedback";
+document.body.appendChild(div);
+
+ReactDOM.createRoot(div).render(
+  <React.StrictMode>
+    <ResetCSS>
+      <Navbar />
+    </ResetCSS>
+  </React.StrictMode>
+);
+
+const Button = styled(motion.button)`
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 9999px;
+  gap: 12px;
+  padding: 8px;
+  height: 32px;
+  width: 32px;
+  overflow: hidden;
+  object-fit: cover;
+  border: none;
+  white-space: nowrap;
+`;
 
 function MentionsBigPanel() {
   return <>hi!</>;
@@ -19,7 +47,7 @@ function MentionsBigPanel() {
 
 const Nav = styled(motion.nav)`
   position: fixed;
-  z-index: ${Z_INDEXES.TOOLBAR};
+
   left: calc(50% - 384px / 2);
   bottom: 16px;
   padding-inline: 8px;
@@ -29,7 +57,7 @@ const Nav = styled(motion.nav)`
   max-width: 384px;
   width: 100%;
   overflow-x: hidden;
-  padding-block: 4px;
+  padding-block: 12px;
   ${CSS_FRAGMENTS["box-styles"]};
 `;
 
@@ -48,11 +76,15 @@ const BigPanel = styled(motion.main)`
   ${CSS_FRAGMENTS["button-styles"]}
 `;
 
+const VerticalDivider = styled(motion.hr)`
+  width: 1px;
+  height: 80%;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.2);
+`;
+
 function Navbar() {
-  const { isPicking, setIsPicking } = useThreadsStore((state) => ({
-    isPicking: state.isPicking,
-    setIsPicking: state.setIsPicking,
-  }));
+  const [isPicking, setIsPicking] = useState(false);
   const [showMentions, setShowMentions] = useState(false);
   const showBigPanel = showMentions;
   return (
@@ -76,7 +108,6 @@ function Navbar() {
       </AnimatePresence>
       <Toolbar layout>
         <Button
-          variant="flat"
           key="add-comment"
           onClick={() => {
             setIsPicking(!isPicking);
@@ -109,7 +140,6 @@ function Navbar() {
           </AnimatePresence>
         </Button>
         <Button
-          variant="flat"
           disabled
           style={{
             opacity: 0.2,
@@ -131,7 +161,6 @@ function Navbar() {
           </motion.svg>
         </Button>
         <Button
-          variant="flat"
           layout
           disabled
           key="all-threads"
@@ -146,12 +175,18 @@ function Navbar() {
           <ArchiveIcon />
         </Button>
         <VerticalDivider layout />
-        <Button variant="flat" layout></Button>
-        <Button variant="flat" layout></Button>
-        <Button variant="flat" layout></Button>
+        <Button layout>
+          <img src={"https://i.pravatar.cc/300?r=" + Math.random()} alt="" />
+        </Button>
+        <Button layout>
+          <img src={"https://i.pravatar.cc/300?r=" + Math.random()} alt="" />
+        </Button>
+        <Button layout>
+          <img src={"https://i.pravatar.cc/300?r=" + Math.random()} alt="" />
+        </Button>
 
         <VerticalDivider layout />
-        <Button variant="flat" layout key="config">
+        <Button layout key="config">
           <GearIcon />
         </Button>
         <motion.div
@@ -177,4 +212,3 @@ function Navbar() {
     </Nav>
   );
 }
-export default Navbar;

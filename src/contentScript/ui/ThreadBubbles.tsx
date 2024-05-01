@@ -1,9 +1,91 @@
 import * as Popover from "@radix-ui/react-popover";
-import { Cross2Icon, PaperPlaneIcon } from "@radix-ui/react-icons";
+import {
+  ChatBubbleIcon,
+  Cross2Icon,
+  PaperPlaneIcon,
+} from "@radix-ui/react-icons";
 import { Thread } from "../types/Threads";
 import { useEffect, useState } from "react";
 import { GH_OWNER, GH_REPO } from "../const";
 import useThreadsStore from "../store/threads";
+import styled from "@emotion/styled";
+import { COLORS, CSS_FRAGMENTS, Z_INDEXES } from "../styles/tokens";
+import { VerticalDivider } from "./atoms/VerticalDivider";
+import { getRelativeTimeString } from "../utils";
+import { Button } from "./atoms/Button";
+import { TextArea } from "./atoms/TextArea";
+
+/*
+  className="!lf-rounded-full !lf-h-[25px] !lf-w-[25px] !lf-inline-flex !lf-items-center !lf-justify-center !lf-absolute !lf-top-[5px] !lf-right-[5px] focus:!lf-shadow-[0_0_0_2px] !lf-outline-none lf-cursor-default"
+*/
+const CloseButton = styled(Popover.Close)`
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: white;
+  top: 8px;
+  right: 8px;
+  outline: none;
+  cursor: default;
+  ${CSS_FRAGMENTS["button-styles"]};
+`;
+
+const Content = styled(Popover.Content)`
+  width: 256px;
+  padding: 0 12px;
+  height: 384px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  color: white;
+  border-radius: 16px;
+  will-change: transform, opacity;
+  z-index: ${Z_INDEXES.HOVERED_BUBBLE};
+  ${CSS_FRAGMENTS["box-styles"]};
+
+  * {
+    color: white;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 8px 0;
+  }
+  ul {
+    padding-inline: 4px;
+    list-style: none;
+  }
+  li {
+    list-style: none;
+  }
+`;
+
+const Trigger = styled(Popover.Trigger)`
+  width: 32px;
+  height: 32px;
+  padding: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  box-shadow: 0 2px 10px;
+  border-radius: 4px 50% 50% 50%;
+  z-index: ${Z_INDEXES.BUBBLE};
+  position: absolute;
+  color: white;
+  outline: none;
+  ${CSS_FRAGMENTS["button-styles"]};
+  &:hover {
+    z-index: ${Z_INDEXES.HOVERED_BUBBLE};
+  }
+`;
 
 const ThreadBubble = ({ thread }: { thread: Thread }) => {
   const [open, setOpen] = useState(false);
@@ -43,7 +125,7 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
     thread.tracking.yPercentageFromSelectedElement,
     thread.tracking.show,
   ]);
-
+  console.log("coords", coords);
   return (
     thread.tracking.show && (
       <Popover.Root
@@ -56,68 +138,215 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
           }
         }}
       >
-        <Popover.Trigger
-          className="lf-w-8 lf-h-8 lf-inline-flex lf-items-center lf-justify-center lf-bg-white lf-text-black lf-shadow-[0_2px_10px] focus:lf-shadow-[0_0_0_2px] lf-rounded-[4px_50%_50%_50%] hover:!lf-z-[99999] focus:lf-shadow-black lf-cursor-default lf-outline-none lf-absolute"
-          aria-label="Update dimensions"
+        <Trigger
           style={{
             top: coords.y,
             left: coords.x,
-            zIndex: open ? 999999 : 9999,
+            overflow: "hidden",
           }}
         >
-          {thread.comments?.length}
-        </Popover.Trigger>
+          {/* {thread.comments?.length} */}
+          {thread.creator?.avatar ? (
+            <img
+              style={{
+                borderRadius: "50%",
+              }}
+              src={thread.creator.avatar}
+              alt={thread.creator.name}
+            />
+          ) : (
+            thread.comments?.length
+          )}
+        </Trigger>
         <Popover.Portal>
-          <Popover.Content
-            className="lf-w-64 lf-py-3 lf-h-96 lf-grid lf-grid-rows-[auto_auto_1fr_auto_auto] lf-text-black lf-rounded-2xl lf-bg-white lf-shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] lf-will-change-[transform,opacity] lf-z-[999999]"
-            side="bottom"
-          >
-            <a
-              className="lf-px-3 lf-font-medium lf-underline"
-              target="_blank"
-              href={`https://github.com/${GH_OWNER()}/${GH_REPO()}/issues/${thread.GHissueId}`}
+          <Content side="bottom">
+            <header
+              style={{
+                display: "flex",
+                paddingInline: "4px",
+                gap: "8px",
+                alignItems: "center",
+                height: "40px",
+                borderBottom: "1px solid rgba(0,0,0,.1)",
+              }}
             >
-              <h2>{thread.title.replace("[LIVE FEEDBACK] - ", "")}</h2>
-            </a>
-            <span className="lf-px-3 lf-text-xs lf-text-neutral-500">
-              {new Date(thread.date).toLocaleString()}
-            </span>
-            <hr className="lf-my-2" />
-            <ul className="lf-px-3 lf-pb-3 lf-overflow-scroll lf-list-none">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+              >
+                <span
+                  style={{
+                    width: "6px",
+                    height: "6px",
+                    display: "inline-block",
+                    aspectRatio: "1/1",
+                    borderRadius: "50%",
+                    backgroundColor:
+                      thread.status === "OPEN"
+                        ? COLORS["green-500"]
+                        : COLORS["purple-500"],
+                  }}
+                />
+                <span
+                  style={{
+                    fontSize: "12px",
+                  }}
+                >
+                  {thread.status === "OPEN" ? "Open" : "Closed"}
+                </span>
+              </div>
+              <VerticalDivider
+                style={{
+                  height: "50%",
+                }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+              >
+                <ChatBubbleIcon />{" "}
+                <span
+                  style={{
+                    fontSize: "12px",
+                  }}
+                >
+                  {thread.comments?.length}
+                </span>
+              </div>
+              <VerticalDivider
+                style={{
+                  height: "50%",
+                }}
+              />
+              <span
+                style={{
+                  fontSize: "12px",
+                }}
+              >
+                {getRelativeTimeString(new Date(thread.date))}
+              </span>
+            </header>
+
+            <ul
+              style={{
+                overflow: "auto",
+              }}
+            >
+              <li
+                key={thread.GHissueId + "title"}
+                style={{
+                  paddingBlock: "24px",
+                  borderBottom: "1px solid rgba(0,0,0,.1)",
+                }}
+              >
+                <header
+                  style={{
+                    display: "flex",
+                    gap: "8px",
+                    alignItems: "center",
+                  }}
+                >
+                  <img
+                    style={{
+                      width: "18px",
+                      height: "18px",
+                      borderRadius: "50%",
+                    }}
+                    src={thread.creator?.avatar}
+                    alt={thread.creator?.name}
+                  />
+                  <span
+                    style={{
+                      opacity: 0.8,
+                      fontSize: "12px",
+                    }}
+                  >
+                    {thread.creator?.name}
+                  </span>
+                  <span
+                    style={{
+                      opacity: 0.8,
+                      fontSize: "12px",
+                      marginInlineStart: "auto",
+                    }}
+                  >
+                    {getRelativeTimeString(new Date(thread.date))}
+                  </span>
+                </header>
+                <a
+                  target="_blank"
+                  href={`https://github.com/${GH_OWNER()}/${GH_REPO()}/issues/${thread.GHissueId}`}
+                >
+                  <h2>{thread.title.replace("[LIVE FEEDBACK] - ", "")}</h2>
+                </a>
+                <div>Issue opened</div>
+              </li>
               {thread.comments?.map((comment, i) => (
                 <li
-                  className="lf-mt-2"
+                  style={{
+                    paddingBlock: "24px",
+                    borderBottom: "1px solid rgba(0,0,0,.1)",
+                  }}
                   key={thread.GHissueId + "" + i + comment}
                 >
                   {comment?.user?.name && comment?.user?.avatar && (
-                    <div className="lf-flex lf-items-center">
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        marginBlockEnd: "8px",
+                      }}
+                    >
                       {comment.user.avatar && (
                         <img
-                          className="lf-w-6 lf-h-6 lf-mr-2 lf-rounded-full"
+                          style={{
+                            width: "18px",
+                            height: "18px",
+                            borderRadius: "50%",
+                          }}
                           src={comment.user.avatar}
                           alt={comment.user.name}
                         />
                       )}
-                      <span className="lf-text-sm lf-font-medium">
+                      <span style={{ opacity: 0.8, fontSize: "12px" }}>
                         {comment.user.name}
                       </span>
+
+                      {comment?.date && (
+                        <span
+                          style={{
+                            fontSize: "12px",
+                            marginInlineStart: "auto",
+                            opacity: 0.8,
+                          }}
+                        >
+                          {getRelativeTimeString(new Date(comment.date))}
+                        </span>
+                      )}
                     </div>
                   )}
-                  <span className="lf-text-xs lf-text-neutral-500">
-                    {comment?.date}
-                  </span>
                   <div
                     dangerouslySetInnerHTML={{
                       __html: comment?.body || "",
                     }}
-                    className="lf-text-sm"
                   ></div>
                 </li>
               ))}
             </ul>
-            <hr className="lf-my-2" />
             <form
-              className="lf-flex lf-items-center lf-gap-1 lf-px-3"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                marginBlockEnd: "12px",
+              }}
               onSubmit={(e) => {
                 e.preventDefault();
                 const comment = new FormData(e.target as HTMLFormElement).get(
@@ -128,25 +357,35 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
                 }
               }}
             >
-              <textarea
+              <TextArea
                 name="comment"
-                className="lf-border lf-rounded-md lf-bg-transparent lf-border-neutral-300"
+                rows={2}
+                style={{
+                  borderRadius: "6px",
+                  padding: "4px",
+                }}
               />
-              <button
+              <Button
                 type="submit"
-                className="lf-flex lf-items-center lf-justify-center lf-flex-grow lf-h-full lf-rounded-lg lf-w-7 hover:lf-bg-black/10"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexGrow: 1,
+                  borderRadius: "8px",
+                  height: "100%",
+                  width: "40px",
+                }}
               >
                 <PaperPlaneIcon />
-              </button>
+              </Button>
             </form>
-            <Popover.Close
-              className="lf-rounded-full lf-h-[25px] lf-w-[25px] lf-inline-flex lf-items-center lf-justify-center lf-absolute lf-top-[5px] lf-right-[5px] focus:lf-shadow-[0_0_0_2px] lf-outline-none lf-cursor-default"
-              aria-label="Close"
-            >
+
+            <CloseButton aria-label="Close">
               <Cross2Icon />
-            </Popover.Close>
-            <Popover.Arrow className="lf-fill-white" />
-          </Popover.Content>
+            </CloseButton>
+            <Popover.Arrow className="!lf-fill-white" />
+          </Content>
         </Popover.Portal>
       </Popover.Root>
     )

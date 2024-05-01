@@ -3,6 +3,7 @@ import Navbar from "./ui/Navbar";
 import useGithubStore from "./store/threads";
 import ThreadBubbles from "./ui/ThreadBubbles";
 import TemporalThreadBubble from "./ui/TemporalThreadBubble";
+import { ResetCSS } from "./styles/tokens";
 
 function RegisterEvents() {
   const {
@@ -87,12 +88,12 @@ function RegisterEvents() {
 
 function App() {
   return (
-    <>
+    <ResetCSS>
       <RegisterEvents />
       <Navbar />
       <TemporalThreadBubble />
       <ThreadBubbles />
-    </>
+    </ResetCSS>
   );
 }
 
