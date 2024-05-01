@@ -35,6 +35,7 @@ export const CommentForm = ({ action }: CommentFormProps) => {
         style={{
           borderRadius: "6px",
           padding: "4px",
+          resize: "none",
         }}
       />
       <Button

@@ -24,6 +24,16 @@ function RegisterEvents() {
   function handleMouseOver(e: MouseEvent) {
     if (!isPicking) return;
     const target = e.target as HTMLElement;
+    let targetIsInsideLiveFeedbackWrapper = false;
+    let currTarget: HTMLElement | null = target;
+    while (currTarget) {
+      if (currTarget.id === "live-feedback") {
+        targetIsInsideLiveFeedbackWrapper = true;
+      }
+      currTarget = currTarget.parentElement;
+    }
+    console.log(currTarget, targetIsInsideLiveFeedbackWrapper);
+    if (targetIsInsideLiveFeedbackWrapper) return;
     target.style.outline = "2px solid red";
   }
 
@@ -38,15 +48,26 @@ function RegisterEvents() {
     const target = e.target as HTMLElement;
     target.style.outline = "none";
     setIsPicking(false);
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    let targetIsInsideLiveFeedbackWrapper = false;
+    let currTarget: HTMLElement | null = target;
+    while (currTarget) {
+      if (currTarget.id === "live-feedback") {
+        targetIsInsideLiveFeedbackWrapper = true;
+      }
+      currTarget = currTarget.parentElement;
+    }
+    console.log(currTarget, targetIsInsideLiveFeedbackWrapper);
+    if (targetIsInsideLiveFeedbackWrapper) return;
 
     setTempThreadCreationIntent({
       target,
       x: e.pageX,
       y: e.pageY,
     });
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
   }
 
   function handleStorageChange(

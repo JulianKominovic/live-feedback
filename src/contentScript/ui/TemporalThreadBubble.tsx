@@ -15,7 +15,7 @@ const TemporalThreadBubble = () => {
     createThread: state.createThread,
   }));
   const isCreatingThreadPromptOpen = tempThreadCreationIntent !== null;
-
+  if (!isCreatingThreadPromptOpen) return null;
   return (
     <>
       <Popover.Root

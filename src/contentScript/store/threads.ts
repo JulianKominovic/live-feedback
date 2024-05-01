@@ -77,8 +77,12 @@ const useThreadsStore = create<ThreadsStore>((set, get) => ({
       tempThreadBubble?.y
     )
       .then((createdThread) => {
-        if (createdThread) set({ threads: [...get().threads, createdThread] });
-        else alert("Thread creation failed");
+        if (createdThread) {
+          const updatedThreads = [...get().threads, createdThread].map(
+            calculateBubblePosition
+          );
+          set({ threads: updatedThreads });
+        } else alert("Thread creation failed");
       })
       .finally(() => {
         set({
