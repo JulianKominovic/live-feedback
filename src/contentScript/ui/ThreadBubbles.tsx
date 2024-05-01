@@ -1,91 +1,16 @@
 import * as Popover from "@radix-ui/react-popover";
-import {
-  ChatBubbleIcon,
-  Cross2Icon,
-  PaperPlaneIcon,
-} from "@radix-ui/react-icons";
+import { ChatBubbleIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { Thread } from "../types/Threads";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { GH_OWNER, GH_REPO } from "../const";
 import useThreadsStore from "../store/threads";
-import styled from "@emotion/styled";
-import { COLORS, CSS_FRAGMENTS, Z_INDEXES } from "../styles/tokens";
+import { COLORS } from "../styles/tokens";
 import { VerticalDivider } from "./atoms/VerticalDivider";
 import { getRelativeTimeString } from "../utils";
-import { Button } from "./atoms/Button";
-import { TextArea } from "./atoms/TextArea";
-
-/*
-  className="!lf-rounded-full !lf-h-[25px] !lf-w-[25px] !lf-inline-flex !lf-items-center !lf-justify-center !lf-absolute !lf-top-[5px] !lf-right-[5px] focus:!lf-shadow-[0_0_0_2px] !lf-outline-none lf-cursor-default"
-*/
-const CloseButton = styled(Popover.Close)`
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.2);
-  color: white;
-  top: 8px;
-  right: 8px;
-  outline: none;
-  cursor: default;
-  ${CSS_FRAGMENTS["button-styles"]};
-`;
-
-const Content = styled(Popover.Content)`
-  width: 256px;
-  padding: 0 12px;
-  height: 384px;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  color: white;
-  border-radius: 16px;
-  will-change: transform, opacity;
-  z-index: ${Z_INDEXES.HOVERED_BUBBLE};
-  ${CSS_FRAGMENTS["box-styles"]};
-
-  * {
-    color: white;
-  }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 8px 0;
-  }
-  ul {
-    padding-inline: 4px;
-    list-style: none;
-  }
-  li {
-    list-style: none;
-  }
-`;
-
-const Trigger = styled(Popover.Trigger)`
-  width: 32px;
-  height: 32px;
-  padding: 2px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: black;
-  box-shadow: 0 2px 10px;
-  border-radius: 4px 50% 50% 50%;
-  z-index: ${Z_INDEXES.BUBBLE};
-  position: absolute;
-  color: white;
-  outline: none;
-  ${CSS_FRAGMENTS["button-styles"]};
-  &:hover {
-    z-index: ${Z_INDEXES.HOVERED_BUBBLE};
-  }
-`;
+import { Content } from "./bubbles/Content";
+import { CloseButton } from "./bubbles/CloseButton";
+import { CommentForm } from "./bubbles/CommentForm";
+import { Trigger } from "./bubbles/Trigger";
 
 const ThreadBubble = ({ thread }: { thread: Thread }) => {
   const [open, setOpen] = useState(false);
@@ -93,45 +18,13 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
     loadComments: state.populateThreadComments,
     addComment: state.createThreadComment,
   }));
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-  useEffect(() => {
-    const element = document.querySelector(
-      thread.tracking.selector
-    ) as HTMLElement;
-    if (!element || thread.tracking.show === false) return;
-    function calculateCoords() {
-      const rect = element.getBoundingClientRect();
-      const x =
-        rect.width *
-          (parseFloat(thread.tracking.xPercentageFromSelectedElement) / 100) +
-        rect.left +
-        window.scrollX;
-      const y =
-        rect.height *
-          (parseFloat(thread.tracking.yPercentageFromSelectedElement) / 100) +
-        rect.top +
-        window.scrollY;
-      setCoords({ x, y });
-    }
-    const resizeObserver = new ResizeObserver(calculateCoords);
-    resizeObserver.observe(document.body);
-    calculateCoords();
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, [
-    thread.tracking.selector,
-    thread.tracking.xPercentageFromSelectedElement,
-    thread.tracking.yPercentageFromSelectedElement,
-    thread.tracking.show,
-  ]);
-  console.log("coords", coords);
+  const coords = thread.tracking.liveCoords;
   return (
-    thread.tracking.show && (
+    thread.tracking.show &&
+    coords && (
       <Popover.Root
         open={open}
         onOpenChange={(open) => {
-          console.log("open", open);
           setOpen(open);
           if (open && thread.comments?.filter(Boolean)?.length === 0) {
             loadComments(thread);
@@ -139,13 +32,13 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
         }}
       >
         <Trigger
+          data-live-feedback
           style={{
             top: coords.y,
             left: coords.x,
             overflow: "hidden",
           }}
         >
-          {/* {thread.comments?.length} */}
           {thread.creator?.avatar ? (
             <img
               style={{
@@ -159,7 +52,7 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
           )}
         </Trigger>
         <Popover.Portal>
-          <Content side="bottom">
+          <Content data-live-feedback side="bottom">
             <header
               style={{
                 display: "flex",
@@ -276,7 +169,7 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
                       marginInlineStart: "auto",
                     }}
                   >
-                    {getRelativeTimeString(new Date(thread.date))}
+                    {getRelativeTimeString(new Date(thread.date), "narrow")}
                   </span>
                 </header>
                 <a
@@ -327,7 +220,10 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
                             opacity: 0.8,
                           }}
                         >
-                          {getRelativeTimeString(new Date(comment.date))}
+                          {getRelativeTimeString(
+                            new Date(comment.date),
+                            "narrow"
+                          )}
                         </span>
                       )}
                     </div>
@@ -340,46 +236,7 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
                 </li>
               ))}
             </ul>
-            <form
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                marginBlockEnd: "12px",
-              }}
-              onSubmit={(e) => {
-                e.preventDefault();
-                const comment = new FormData(e.target as HTMLFormElement).get(
-                  "comment"
-                );
-                if (comment) {
-                  addComment(thread, comment as string);
-                }
-              }}
-            >
-              <TextArea
-                name="comment"
-                rows={2}
-                style={{
-                  borderRadius: "6px",
-                  padding: "4px",
-                }}
-              />
-              <Button
-                type="submit"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexGrow: 1,
-                  borderRadius: "8px",
-                  height: "100%",
-                  width: "40px",
-                }}
-              >
-                <PaperPlaneIcon />
-              </Button>
-            </form>
+            <CommentForm action={(comment) => addComment(thread, comment)} />
 
             <CloseButton aria-label="Close">
               <Cross2Icon />

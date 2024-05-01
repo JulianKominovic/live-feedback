@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { Thread } from "../types/Threads";
 import {
+  calculateBubblePosition,
   checkThreadsBubbles,
   createThread,
   getThreads,
@@ -13,9 +14,10 @@ export type ThreadsStore = {
   setThreads: (threads: Thread[]) => void;
   populateThreads: () => void;
   populateThreadComments: (thread: Thread) => void;
-  createThread: (comment: string) => Promise<void> | undefined;
+  createThread: (comment: string) => Promise<void>;
   checkThreadsVisibility: () => void;
-  createThreadComment: (thread: Thread, comment: string) => void;
+  createThreadComment: (thread: Thread, comment: string) => Promise<void>;
+  updateThreadCoords: () => Thread[];
   // Temporal creation threads
   tempThreadCreationIntent: {
     x: number;
@@ -34,7 +36,8 @@ const useThreadsStore = create<ThreadsStore>((set, get) => ({
   setThreads: (threads) => set({ threads }),
   populateThreads: async () => {
     const threads = await getThreads();
-    set({ threads });
+    const updatedThreads = threads.map(calculateBubblePosition);
+    set({ threads: updatedThreads });
   },
   populateThreadComments: async (thread: Thread) => {
     const threadWithComments = await getComments(thread);
@@ -45,7 +48,7 @@ const useThreadsStore = create<ThreadsStore>((set, get) => ({
     });
   },
   createThreadComment: async (thread: Thread, comment: string) => {
-    addComment(thread, comment).then((updatedThread) => {
+    return await addComment(thread, comment).then((updatedThread) => {
       set({
         threads: get().threads.map((t) =>
           t.GHissueId === updatedThread.GHissueId ? updatedThread : t
@@ -53,16 +56,21 @@ const useThreadsStore = create<ThreadsStore>((set, get) => ({
       });
     });
   },
+  updateThreadCoords: () => {
+    const updatedThreads = get().threads.map(calculateBubblePosition);
+    set({ threads: updatedThreads });
+    return updatedThreads;
+  },
   checkThreadsVisibility: () => {
     set({
       threads: checkThreadsBubbles(get().threads),
     });
   },
-  createThread: (comment) => {
+  createThread: async (comment) => {
     if (!get().tempThreadCreationIntent) return;
     console.log("Creating new thread", comment);
     const tempThreadBubble = get().tempThreadCreationIntent!;
-    return createThread(
+    return await createThread(
       comment,
       tempThreadBubble?.target,
       tempThreadBubble?.x,

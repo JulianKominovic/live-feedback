@@ -7,6 +7,10 @@ import { Thread } from "../types/Threads";
 import { uploadDomPhoto, uploadElementPhoto } from "./github";
 import { getCssSelector } from "css-selector-generator";
 import { sha256 } from "../utils";
+import {
+  takeElementScreenshot,
+  takeTabScreenshot,
+} from "../integrations/background/tabs";
 
 export async function createThread(
   title: string,
@@ -14,6 +18,14 @@ export async function createThread(
   clickXCoord: number,
   clickYCoord: number
 ) {
+  const elementPhoto = (await takeElementScreenshot(element))?.replace(
+    "data:image/png;base64,",
+    ""
+  );
+  const domPhoto = (await takeTabScreenshot())?.replace(
+    "data:image/png;base64,",
+    ""
+  );
   const textContent = element.textContent || "";
   const outerHTML = element.outerHTML || "";
   const textContentHash = await sha256(textContent);
@@ -64,11 +76,11 @@ export async function createThread(
       issueResponse.data.user?.name || issueResponse.data.user?.login;
     const GHIssueCreatorAvatar = issueResponse.data.user?.avatar_url;
     console.log("Uploading dom & element photos");
-    const domPhotoUpload = await uploadDomPhoto(GHissueId.toString());
+    const domPhotoUpload = await uploadDomPhoto(GHissueId.toString(), domPhoto);
     if (!domPhotoUpload) return null;
     const elementPhotoUpload = await uploadElementPhoto(
-      element,
-      GHissueId.toString()
+      GHissueId.toString(),
+      elementPhoto
     );
     if (!elementPhotoUpload) return null;
 
@@ -215,4 +227,25 @@ export function checkThreadsBubbles(threads: Thread[]) {
     thread.tracking.show = true;
     return thread;
   });
+}
+
+export function calculateBubblePosition(thread: Thread) {
+  const element = document.querySelector(
+    thread.tracking.selector
+  ) as HTMLElement;
+  if (!element) return thread;
+  const rect = element.getBoundingClientRect();
+
+  const x =
+    rect.width *
+      (parseFloat(thread.tracking.xPercentageFromSelectedElement) / 100) +
+    rect.left +
+    window.scrollX;
+  const y =
+    rect.height *
+      (parseFloat(thread.tracking.yPercentageFromSelectedElement) / 100) +
+    rect.top +
+    window.scrollY;
+  thread.tracking.liveCoords = { x, y };
+  return thread;
 }

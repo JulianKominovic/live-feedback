@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import Navbar from "./ui/Navbar";
 import useGithubStore from "./store/threads";
 import ThreadBubbles from "./ui/ThreadBubbles";
@@ -12,12 +12,14 @@ function RegisterEvents() {
     setTempThreadCreationIntent,
     populateThreads,
     checkThreadsVisibility,
+    updateThreadCoords,
   } = useGithubStore((state) => ({
     isPicking: state.isPicking,
     setIsPicking: state.setIsPicking,
     setTempThreadCreationIntent: state.setTempThreadCreationIntent,
     populateThreads: state.populateThreads,
     checkThreadsVisibility: state.checkThreadsVisibility,
+    updateThreadCoords: state.updateThreadCoords,
   }));
   function handleMouseOver(e: MouseEvent) {
     if (!isPicking) return;
@@ -64,8 +66,11 @@ function RegisterEvents() {
   useEffect(() => {
     populateThreads();
     chrome.storage.onChanged.addListener(handleStorageChange);
+    window.addEventListener("resize", updateThreadCoords);
+    updateThreadCoords();
     return () => {
       chrome.storage.onChanged.removeListener(handleStorageChange);
+      window.removeEventListener("resize", updateThreadCoords);
     };
   }, []);
 

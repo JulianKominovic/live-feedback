@@ -16,6 +16,7 @@ export async function sha256(str: string) {
  */
 export function getRelativeTimeString(
   date: Date | number,
+  style: Intl.RelativeTimeFormatOptions["style"] = "short",
   lang = navigator.language
 ): string {
   // Allow dates or times to be passed
@@ -56,6 +57,21 @@ export function getRelativeTimeString(
   const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1;
 
   // Intl.RelativeTimeFormat do its magic
-  const rtf = new Intl.RelativeTimeFormat(lang, { numeric: "auto" });
+  const rtf = new Intl.RelativeTimeFormat(lang, {
+    numeric: "auto",
+    style,
+  });
   return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
+}
+
+export function cancelScrolling() {
+  function handleScrollCancel(e: Event) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+  }
+  window.addEventListener("scroll", handleScrollCancel, { capture: true });
+
+  return () =>
+    window.removeEventListener("scroll", handleScrollCancel, { capture: true });
 }

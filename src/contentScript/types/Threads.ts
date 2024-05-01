@@ -14,6 +14,10 @@ export type ThreadInternalProps = {
   show?: boolean;
   xPercentageFromSelectedElement: string;
   yPercentageFromSelectedElement: string;
+  liveCoords?: {
+    x: number;
+    y: number;
+  };
   url: string;
 };
 export type ThreadComment = {

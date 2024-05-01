@@ -1,10 +1,13 @@
 import { INTERCOM_EVENTS } from "../../types/events";
+import { cancelScrolling } from "../../utils";
 
-export function takeTabScreenshot(): Promise<string | undefined> {
+export function takeTabScreenshot(): Promise<string> {
+  const restoreScrollBehavior = cancelScrolling();
   return new Promise((resolve) => {
     chrome.runtime.sendMessage(
       { type: INTERCOM_EVENTS.TAKE_TAB_SCREENSHOT },
       (response) => {
+        restoreScrollBehavior();
         resolve(response);
       }
     );
@@ -12,9 +15,8 @@ export function takeTabScreenshot(): Promise<string | undefined> {
 }
 
 let canvas: HTMLCanvasElement = document.createElement("canvas");
-export function takeElementScreenshot(
-  element: HTMLElement
-): Promise<string | undefined> {
+export function takeElementScreenshot(element: HTMLElement): Promise<string> {
+  const restoreScrollBehavior = cancelScrolling();
   const devicePixelRatio = window.devicePixelRatio || 1;
   const elementDimensions = element.getBoundingClientRect();
   const dimensions = {
@@ -48,6 +50,7 @@ export function takeElementScreenshot(
           );
           const croppedDataUrl = canvas.toDataURL("image/png");
           resolve(croppedDataUrl);
+          restoreScrollBehavior();
         };
         image.src = dataUrl;
       }

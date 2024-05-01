@@ -154,33 +154,57 @@ function Navbar() {
         <VerticalDivider layout />
         {participants.size > 0 ? (
           <>
-            {Array.from(participants).map((participant, i) => (
+            {Array.from(participants)
+              .slice(0, 4)
+              .map((participant, i) => (
+                <>
+                  <Button
+                    variant="flat"
+                    layout
+                    key={"participant" + i + participant}
+                    style={{
+                      width: "2rem",
+                      aspectRatio: "1/1",
+                      borderRadius: "50%",
+                      padding: 2,
+                      marginInlineStart: i > 0 ? "-12px" : "0px",
+                      marginInlineEnd: i < 4 ? "-12px" : "0px",
+                    }}
+                  >
+                    <img
+                      src={participant?.avatar}
+                      alt={participant?.name}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "50%",
+                        padding: 0,
+                      }}
+                    />
+                  </Button>
+                </>
+              ))}
+            {participants.size > 4 && (
               <Button
                 variant="flat"
                 layout
-                key={"participant" + i + participant}
+                key={"participant+plus"}
                 style={{
                   width: "2rem",
                   aspectRatio: "1/1",
                   borderRadius: "50%",
                   padding: 2,
-                  marginInlineStart: i > 0 ? "-12px" : "0px",
-                  marginInlineEnd: i < participants.size - 1 ? "-12px" : "0px",
+                  marginInlineStart: "-12px",
+                  gap: 0,
+                  background: "rgba(0,0,0,.7)",
+                  backdropFilter: "blur(4px)",
                 }}
               >
-                <img
-                  src={participant?.avatar}
-                  alt={participant?.name}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    borderRadius: "50%",
-                    padding: 0,
-                  }}
-                />
+                <PlusIcon />
+                {participants.size - 4}
               </Button>
-            ))}
+            )}
             <VerticalDivider layout />
           </>
         ) : null}

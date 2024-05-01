@@ -7,32 +7,18 @@ import {
   getIssueComments,
 } from "../integrations/github/issues";
 import { Thread } from "../types/Threads";
-import {
-  takeElementScreenshot,
-  takeTabScreenshot,
-} from "../integrations/background/tabs";
 
-export async function uploadDomPhoto(id: string) {
-  const domPhoto = (await takeTabScreenshot())?.replace(
-    "data:image/png;base64,",
-    ""
-  );
-  if (!domPhoto) return;
+export async function uploadDomPhoto(id: string, base64: string) {
   const uploadResponse = await uploadFile({
-    fileContent: domPhoto,
+    fileContent: base64,
     path: `${GH_TEMP_FILES_PATH_FOLDER}/${id}-dom-photo.png`,
   });
   return uploadResponse;
 }
 
-export async function uploadElementPhoto(element: HTMLElement, id: string) {
-  const elementPhoto = (await takeElementScreenshot(element))?.replace(
-    "data:image/png;base64,",
-    ""
-  );
-  if (!elementPhoto) return;
+export async function uploadElementPhoto(id: string, base64: string) {
   const uploadResponse = await uploadFile({
-    fileContent: elementPhoto,
+    fileContent: base64,
     path: `${GH_TEMP_FILES_PATH_FOLDER}/${id}-element-photo.png`,
   });
   return uploadResponse;
