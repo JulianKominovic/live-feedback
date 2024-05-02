@@ -3,14 +3,14 @@
   "displayName": "Live feedback tool",
   "version": "0.0.0",
   "author": "Julian Kominovic",
-  "description": "Live feedback tool",
+  "description": "Leave feedback on any website and share it with your team 🚀",
   "type": "module",
   "license": "MIT",
   "keywords": [
     "chrome-extension",
     "react",
     "vite",
-    "create-chrome-ext"
+    "live-feedback"
   ],
   "engines": {
     "node": ">=14.18.0"

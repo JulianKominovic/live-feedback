@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { GH_OWNER, GH_REPO, GH_TOKEN } from "../contentScript/const";
+import { ACTIVATED, GH_OWNER, GH_REPO, GH_TOKEN } from "../contentScript/const";
+import { log } from "../contentScript/utils";
 
 function App() {
   const [seePassword, setSeePassword] = useState(false);
@@ -7,12 +8,13 @@ function App() {
     gh_token: GH_TOKEN(),
     repo: GH_REPO(),
     owner: GH_OWNER(),
+    activated: ACTIVATED() ? "true" : "false",
   }));
   function handleChanges(
     changes: { [key: string]: chrome.storage.StorageChange },
     areaName: "local" | "sync" | "managed" | "session"
   ) {
-    console.log("CHANGES IN LOCAL STORAGE received in popup: ", changes);
+    log("CHANGES IN LOCAL STORAGE received in popup: ", changes);
     if (areaName !== "local") return;
     if (changes.gh_token)
       setFormValues((prev) => ({
@@ -23,9 +25,14 @@ function App() {
       setFormValues((prev) => ({ ...prev, repo: changes.repo.newValue }));
     if (changes.owner)
       setFormValues((prev) => ({ ...prev, owner: changes.owner.newValue }));
+    if (changes.activated)
+      setFormValues((prev) => ({
+        ...prev,
+        activated: changes.activated.newValue ? "true" : "false",
+      }));
   }
   useEffect(() => {
-    console.log("MOunted!");
+    log("Mounted!");
     chrome.storage.onChanged.addListener(handleChanges);
     return () => {
       chrome.storage.onChanged.removeListener(handleChanges);
@@ -33,17 +40,29 @@ function App() {
   }, []);
   return (
     <form
+      style={{}}
       className="!lf-flex !lf-flex-col !lf-gap-3 !lf-p-3 !lf-bg-white !lf-rounded-lg lf-shadow-lg"
       onSubmit={async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const { gh_token, repo, owner } = Object.fromEntries(formData);
-        console.log(gh_token, repo, owner);
-        await chrome.storage.local.set({ gh_token, repo, owner });
+        const { gh_token, repo, owner, activated } =
+          Object.fromEntries(formData);
+        log(gh_token, repo, owner, activated);
+        await chrome.storage.local.set({
+          gh_token,
+          repo,
+          owner,
+          activated: activated === "true" ? true : false,
+        });
         alert(
           "Data saved! -> " +
             JSON.stringify(
-              await chrome.storage.local.get(["gh_token", "repo", "owner"])
+              await chrome.storage.local.get([
+                "gh_token",
+                "repo",
+                "owner",
+                "activated",
+              ])
             )
         );
       }}
@@ -82,6 +101,31 @@ function App() {
           name="owner"
           id="owner"
         />
+      </fieldset>
+      <fieldset>
+        <legend>Activate or deactivate extension:</legend>
+
+        <div>
+          <input
+            type="radio"
+            id="true"
+            name="activated"
+            value="true"
+            defaultChecked={formValues.activated === "true"}
+          />
+          <label htmlFor="true">Activate</label>
+        </div>
+
+        <div>
+          <input
+            type="radio"
+            id="false"
+            name="activated"
+            value="false"
+            defaultChecked={formValues.activated === "false"}
+          />
+          <label htmlFor="false">Deactivate</label>
+        </div>
       </fieldset>
 
       <button

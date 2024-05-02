@@ -5,5 +5,5 @@ const div = document.querySelector("#app");
 ReactDOM.createRoot(div!).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
 );

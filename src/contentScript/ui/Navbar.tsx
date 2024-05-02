@@ -1,12 +1,6 @@
 import useThreadsStore from "../store/threads";
-import { clsx } from "clsx";
-import { motion, HTMLMotionProps, AnimatePresence } from "framer-motion";
-import {
-  ArchiveIcon,
-  CaretDownIcon,
-  GearIcon,
-  PlusIcon,
-} from "@radix-ui/react-icons";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArchiveIcon, GearIcon, PlusIcon } from "@radix-ui/react-icons";
 import styled from "@emotion/styled";
 import { COLORS, CSS_FRAGMENTS, Z_INDEXES } from "../styles/tokens";
 import { useState } from "react";
@@ -55,14 +49,14 @@ function Navbar() {
     threads: state.threads,
   }));
   const asyncOperationStatus = useSystemStore(
-    (state) => state.asyncOperationsStatus
+    (state) => state.asyncOperationsStatus,
   );
   const [showMentions, setShowMentions] = useState(false);
   const showBigPanel = showMentions;
   const participants = new Set(
     threads
       .filter((thread) => thread.tracking.show)
-      .map((thread) => thread.creator)
+      .map((thread) => thread.creator),
   );
   return (
     <Nav

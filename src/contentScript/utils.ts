@@ -1,5 +1,3 @@
-import useSystemStore from "./store/system";
-
 export async function sha256(str: string) {
   const buf = await crypto.subtle.digest(
     "SHA-256",
@@ -79,4 +77,8 @@ export function cancelScrolling() {
     window.removeEventListener("scroll", handleScrollCancel, { capture: true });
     window.removeEventListener("wheel", handleScrollCancel, { capture: true });
   };
+}
+
+export function log(...args: any[]) {
+  console.debug("[LIVE FEEDBACK]", new Date(), ...args);
 }

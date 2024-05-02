@@ -180,9 +180,17 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
                   target="_blank"
                   href={`https://github.com/${GH_OWNER()}/${GH_REPO()}/issues/${thread.GHissueId}`}
                 >
-                  <h2>{thread.title.replace("[LIVE FEEDBACK] - ", "")}</h2>
+                  <h2
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "medium",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    {thread.title.replace("[LIVE FEEDBACK] - ", "")}
+                  </h2>
                 </a>
-                <div>Issue opened</div>
+                <div style={{ opacity: 0.5 }}> {"> "}Issue opened</div>
               </li>
               {thread.comments?.map((comment, i) => (
                 <li
@@ -226,7 +234,7 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
                         >
                           {getRelativeTimeString(
                             new Date(comment.date),
-                            "narrow"
+                            "narrow",
                           )}
                         </span>
                       )}

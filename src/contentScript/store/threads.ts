@@ -7,6 +7,7 @@ import {
   getThreads,
 } from "../logic/threads";
 import { addComment, getComments } from "../logic/github";
+import { log } from "../utils";
 
 export type ThreadsStore = {
   // Threads
@@ -69,7 +70,7 @@ const useThreadsStore = create<ThreadsStore>((set, get) => ({
   },
   createThread: async (comment) => {
     if (!get().tempThreadCreationIntent) return;
-    console.log("Creating new thread", comment);
+    log("Creating new thread", comment);
     const tempThreadBubble = get().tempThreadCreationIntent!;
     return await createThread(
       comment,

@@ -75,7 +75,7 @@ function RegisterEvents() {
 
   function handleStorageChange(
     changes: { [key: string]: chrome.storage.StorageChange },
-    areaName: "local" | "sync" | "managed" | "session"
+    areaName: "local" | "sync" | "managed" | "session",
   ) {
     if (areaName !== "local") return;
     if (

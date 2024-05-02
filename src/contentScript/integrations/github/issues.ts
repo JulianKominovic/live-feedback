@@ -1,5 +1,6 @@
 import { GH_OWNER, GH_REPO } from "../../const";
 import useSystemStore from "../../store/system";
+import { log } from "../../utils";
 import octokit from "./client";
 
 export async function getIssue({ issue_number }: { issue_number: number }) {
@@ -21,7 +22,7 @@ export async function getIssue({ issue_number }: { issue_number: number }) {
 
     return response;
   } catch (err) {
-    console.log(err);
+    log(err);
     useSystemStore.getState().setAsyncOperationsStatus("error");
 
     return null;
@@ -54,7 +55,7 @@ export async function createIssue({
 
     return response;
   } catch (err) {
-    console.log(err);
+    log(err);
     useSystemStore.getState().setAsyncOperationsStatus("error");
 
     return null;
@@ -90,7 +91,7 @@ export async function updateIssue({
 
     return response;
   } catch (err) {
-    console.log(err);
+    log(err);
     useSystemStore.getState().setAsyncOperationsStatus("error");
 
     return null;
@@ -115,7 +116,7 @@ export async function getIssues() {
 
     return response;
   } catch (err) {
-    console.log(err);
+    log(err);
     useSystemStore.getState().setAsyncOperationsStatus("error");
 
     return null;
@@ -148,7 +149,7 @@ export async function getIssueComments({
 
     return response;
   } catch (err) {
-    console.log(err);
+    log(err);
     useSystemStore.getState().setAsyncOperationsStatus("error");
 
     return null;
@@ -181,7 +182,7 @@ export async function createIssueComment({
 
     return response;
   } catch (err) {
-    console.log(err);
+    log(err);
     useSystemStore.getState().setAsyncOperationsStatus("error");
 
     return null;

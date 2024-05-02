@@ -6,7 +6,7 @@ import {
 import { Thread } from "../types/Threads";
 import { uploadDomPhoto, uploadElementPhoto } from "./github";
 import { getCssSelector } from "css-selector-generator";
-import { sha256 } from "../utils";
+import { log, sha256 } from "../utils";
 import {
   takeElementScreenshot,
   takeTabScreenshot,
@@ -63,9 +63,9 @@ export async function createThread(
       url: window.location.href,
     },
   };
-  console.log("Thread created", thread);
+  log("Thread created", thread);
   try {
-    console.log("Creating issue");
+    log("Creating issue");
     const issueResponse = await createIssue({
       body: "",
       title: thread.title,
@@ -75,7 +75,7 @@ export async function createThread(
     const GHIssueCreatorName =
       issueResponse.data.user?.name || issueResponse.data.user?.login;
     const GHIssueCreatorAvatar = issueResponse.data.user?.avatar_url;
-    console.log("Uploading dom & element photos");
+    log("Uploading dom & element photos");
     const domPhotoUpload = await uploadDomPhoto(GHissueId.toString(), domPhoto);
     if (!domPhotoUpload) return null;
     const elementPhotoUpload = await uploadElementPhoto(
@@ -107,7 +107,7 @@ export async function createThread(
   ${JSON.stringify(thread.tracking)}
   \`\`\`
               `;
-    console.log("Updating issue");
+    log("Updating issue");
     await updateIssue({
       body: issueBody,
       title: thread.title,
@@ -120,7 +120,7 @@ export async function createThread(
     };
     return thread;
   } catch (err) {
-    console.error(err);
+    log(err);
     return null;
   }
 }
@@ -158,7 +158,7 @@ export function checkThreadsBubbles(threads: Thread[]) {
     const element = document.querySelector(
       thread.tracking.selector
     ) as HTMLElement;
-    // console.log("Element found?", element);
+    // log("Element found?", element);
     if (!element) {
       thread.tracking.show = false;
       return thread;
@@ -178,7 +178,7 @@ export function checkThreadsBubbles(threads: Thread[]) {
     const elementHidden = element.getAttribute("hidden");
     const elementAriaHidden = element.getAttribute("aria-hidden");
     const elementAriaExpanded = element.getAttribute("aria-expanded");
-    // console.log("Same attributes?", {
+    // log("Same attributes?", {
     //   elementDisplay: elementDisplay === thread.tracking.attributes.display,
     //   elementVisibility:
     //     elementVisibility === thread.tracking.attributes.visibility,
@@ -201,7 +201,7 @@ export function checkThreadsBubbles(threads: Thread[]) {
       return thread;
     }
 
-    // console.log("Same URL?", window.location.href, thread.tracking.url);
+    // log("Same URL?", window.location.href, thread.tracking.url);
 
     if (window.location.href !== thread.tracking.url) {
       thread.tracking.show = false;
@@ -212,8 +212,8 @@ export function checkThreadsBubbles(threads: Thread[]) {
     //   thread.tracking.x,
     //   thread.tracking.y
     // );
-    // console.log("Element from points", elementsFromPoints);
-    // console.log(
+    // log("Element from points", elementsFromPoints);
+    // log(
     //   "Element is same node as element from points",
     //   elementsFromPoints.some((el) => el.isSameNode(element))
     // );

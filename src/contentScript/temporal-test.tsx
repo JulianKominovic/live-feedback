@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
-import { clsx } from "clsx";
-import { motion, HTMLMotionProps, AnimatePresence } from "framer-motion";
-import {
-  ArchiveIcon,
-  CaretDownIcon,
-  GearIcon,
-  PlusIcon,
-} from "@radix-ui/react-icons";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArchiveIcon, GearIcon, PlusIcon } from "@radix-ui/react-icons";
 import styled from "@emotion/styled";
 import { COLORS, CSS_FRAGMENTS, ResetCSS } from "./styles/tokens";
 

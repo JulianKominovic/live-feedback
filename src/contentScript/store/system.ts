@@ -3,7 +3,7 @@ import { create } from "zustand";
 export type SystemType = {
   asyncOperationsStatus: "idle" | "pending" | "success" | "error";
   setAsyncOperationsStatus: (
-    status: SystemType["asyncOperationsStatus"]
+    status: SystemType["asyncOperationsStatus"],
   ) => void;
 };
 

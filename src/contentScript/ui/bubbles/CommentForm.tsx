@@ -21,7 +21,7 @@ export const CommentForm = ({ action }: CommentFormProps) => {
         e.preventDefault();
         if (isLoading) return;
         const comment = new FormData(e.target as HTMLFormElement).get(
-          "comment"
+          "comment",
         );
         if (comment) {
           setIsLoading(true);

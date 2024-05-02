@@ -1,5 +1,6 @@
 import { GH_OWNER, GH_REPO } from "../../const";
 import useSystemStore from "../../store/system";
+import { log } from "../../utils";
 import octokit from "./client";
 
 export async function uploadFile({
@@ -28,7 +29,7 @@ export async function uploadFile({
     return response;
   } catch (e) {
     useSystemStore.getState().setAsyncOperationsStatus("error");
-    console.error(e);
+    log(e);
     return null;
   }
 }
