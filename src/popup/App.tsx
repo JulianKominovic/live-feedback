@@ -60,7 +60,6 @@ function App() {
       chrome.storage.onChanged.removeListener(handleChanges);
     };
   }, []);
-  console.log(formValues);
   return (
     <Form
       onSubmit={async (e) => {
