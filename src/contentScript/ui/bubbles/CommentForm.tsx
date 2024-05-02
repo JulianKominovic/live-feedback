@@ -1,14 +1,25 @@
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import { Button } from "../atoms/Button";
 import { TextArea } from "../atoms/TextArea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoadingSpinner } from "../atoms/Loading";
+import { Option, Select } from "../atoms/Select";
+import { getOpenPullRequests } from "../../integrations/github/pull-requests";
 
 type CommentFormProps = {
-  action: (comment: string) => Promise<any>;
+  action: (comment: string, bindedPullRequestId: number) => Promise<any>;
 };
 export const CommentForm = ({ action }: CommentFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [pullRequests, setPullRequests] = useState<
+    { title: string; id: number }[]
+  >([]);
+  useEffect(() => {
+    getOpenPullRequests().then((prs) => {
+      if (prs)
+        setPullRequests(prs.data.map((pr) => ({ title: pr.title, id: pr.id })));
+    });
+  }, []);
   return (
     <form
       style={{
@@ -21,14 +32,29 @@ export const CommentForm = ({ action }: CommentFormProps) => {
         e.preventDefault();
         if (isLoading) return;
         const comment = new FormData(e.target as HTMLFormElement).get(
-          "comment",
+          "comment"
+        );
+        const bindedPullRequest = new FormData(e.target as HTMLFormElement).get(
+          "pull-request-binded"
         );
         if (comment) {
           setIsLoading(true);
-          action(comment as string).finally(() => setIsLoading(false));
+          action(comment as string, Number(bindedPullRequest)).finally(() =>
+            setIsLoading(false)
+          );
         }
       }}
     >
+      <fieldset>
+        <label htmlFor="pull-request-binded">Pull Request</label>
+        <Select name="pull-request-binded">
+          {pullRequests.map((pr) => (
+            <Option key={"pr" + pr.id} value={pr.id}>
+              {pr.title}
+            </Option>
+          ))}
+        </Select>
+      </fieldset>
       <TextArea
         name="comment"
         rows={2}
@@ -36,6 +62,7 @@ export const CommentForm = ({ action }: CommentFormProps) => {
           borderRadius: "6px",
           padding: "4px",
           resize: "none",
+          flexGrow: 1,
         }}
       />
       <Button
@@ -44,11 +71,10 @@ export const CommentForm = ({ action }: CommentFormProps) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          flexGrow: 1,
           borderRadius: "8px",
-          height: "100%",
-          width: "40px",
         }}
+        width="40px"
+        height="40px"
       >
         {isLoading ? <LoadingSpinner /> : <PaperPlaneIcon />}
       </Button>

@@ -2,9 +2,17 @@ import styled from "@emotion/styled";
 import * as Popover from "@radix-ui/react-popover";
 import { CSS_FRAGMENTS, Z_INDEXES } from "../../styles/tokens";
 
-export const Content = styled(Popover.Content)`
+export const Content = styled(Popover.Content)<
+  Popover.PopoverContentProps &
+    React.RefAttributes<HTMLDivElement> & {
+      width?: string;
+      height?: string;
+      "data-live-feedback"?: boolean;
+    }
+>`
   padding: 0 12px;
-  height: 384px;
+  width: ${({ width }) => width || "300px !important"};
+  height: ${({ height }) => height || "384px !important"};
   display: grid;
   grid-template-rows: auto 1fr auto;
   color: white;

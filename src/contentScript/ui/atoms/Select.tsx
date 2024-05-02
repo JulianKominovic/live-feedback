@@ -1,17 +1,12 @@
 import styled from "@emotion/styled";
-import { HTMLMotionProps, motion, ForwardRefComponent } from "framer-motion";
 import { CSS_FRAGMENTS } from "../../styles/tokens";
-export const Button = styled<
-  ForwardRefComponent<
-    HTMLButtonElement,
-    HTMLMotionProps<"button"> & {
-      variant?: "flat";
-
-      height?: string;
-      width?: string;
-    }
-  >
->(motion.button)`
+export const Select = styled.select<
+  React.SelectHTMLAttributes<HTMLSelectElement> & {
+    variant?: "flat";
+    height?: string;
+    width?: string;
+  }
+>`
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.2) !important;
   flex-shrink: 0;
@@ -26,8 +21,8 @@ export const Button = styled<
   overflow: hidden;
   object-fit: cover;
   border: none;
-  white-space: nowrap;
   cursor: pointer;
   ${({ variant }) =>
     variant === "flat" ? "" : CSS_FRAGMENTS["button-styles"]};
 `;
+export const Option = styled.option``;
