@@ -8,6 +8,7 @@ import {
   LOCKED_REPO,
 } from "../contentScript/const";
 import { log } from "../contentScript/utils";
+import { Form } from "./ui/Form";
 
 function App() {
   const [seePassword, setSeePassword] = useState(false);
@@ -61,9 +62,7 @@ function App() {
   }, []);
   console.log(formValues);
   return (
-    <form
-      style={{}}
-      className="!lf-flex !lf-flex-col !lf-gap-3 !lf-p-3 !lf-bg-white !lf-rounded-lg lf-shadow-lg"
+    <Form
       onSubmit={async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -91,7 +90,7 @@ function App() {
     >
       <fieldset>
         <label htmlFor="gh_token">Github token</label>
-        <div className="!lf-flex lf-gap-3">
+        <div className="gh-token-input-field">
           <input
             defaultValue={formValues.gh_token}
             type={seePassword ? "text" : "password"}
@@ -127,9 +126,9 @@ function App() {
         />
       </fieldset>
       <fieldset>
-        <legend>Activate or deactivate extension:</legend>
+        <label>Activate or deactivate extension:</label>
 
-        <div>
+        <div className="radio-group-horizontal">
           <input
             type="radio"
             id="true"
@@ -140,7 +139,7 @@ function App() {
           <label htmlFor="true">Activate</label>
         </div>
 
-        <div>
+        <div className="radio-group-horizontal">
           <input
             type="radio"
             id="false"
@@ -158,7 +157,7 @@ function App() {
       >
         Save
       </button>
-    </form>
+    </Form>
   );
 }
 

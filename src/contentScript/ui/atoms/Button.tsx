@@ -12,7 +12,6 @@ export const Button = styled<
     }
   >
 >(motion.button)`
-  border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.2) !important;
   flex-shrink: 0;
   display: flex;
@@ -21,13 +20,13 @@ export const Button = styled<
   border-radius: 9999px;
   gap: 12px;
   padding: 8px;
-  height: ${({ height }) => height || "32px"};
-  width: ${({ width }) => width || "32px"};
   overflow: hidden;
   object-fit: cover;
   border: none;
   white-space: nowrap;
   cursor: pointer;
+  height: ${({ height }) => height || "32px"};
+  width: ${({ width }) => width || "32px"};
   ${({ variant }) =>
     variant === "flat" ? "" : CSS_FRAGMENTS["button-styles"]};
 `;
