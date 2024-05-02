@@ -15,7 +15,7 @@ export type ThreadsStore = {
   setThreads: (threads: Thread[]) => void;
   populateThreads: () => void;
   populateThreadComments: (thread: Thread) => void;
-  createThread: (comment: string) => Promise<void>;
+  createThread: (comment: string, bindedPullRequestId: number) => Promise<void>;
   checkThreadsVisibility: () => void;
   createThreadComment: (thread: Thread, comment: string) => Promise<void>;
   updateThreadCoords: () => Thread[];
@@ -68,7 +68,7 @@ const useThreadsStore = create<ThreadsStore>((set, get) => ({
     );
     set({ threads: updatedThreads });
   },
-  createThread: async (comment) => {
+  createThread: async (comment, bindedPullRequestId) => {
     if (!get().tempThreadCreationIntent) return;
     log("Creating new thread", comment);
     const tempThreadBubble = get().tempThreadCreationIntent!;
@@ -76,7 +76,8 @@ const useThreadsStore = create<ThreadsStore>((set, get) => ({
       comment,
       tempThreadBubble?.target,
       tempThreadBubble?.x,
-      tempThreadBubble?.y
+      tempThreadBubble?.y,
+      bindedPullRequestId
     )
       .then((createdThread) => {
         if (createdThread) {

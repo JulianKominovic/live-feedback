@@ -41,13 +41,17 @@ const TemporalThreadBubble = () => {
         >
           <Content
             data-live-feedback
+            height="auto"
             style={{
-              height: "auto",
               paddingBlockStart: "12px",
             }}
             side="bottom"
           >
-            <CommentForm action={(comment) => createThread(comment)} />
+            <CommentForm
+              action={(comment, bindedPullRequestId: number) =>
+                createThread(comment, bindedPullRequestId)
+              }
+            />
             <Popover.Arrow className="!lf-fill-white" />
           </Content>
         </Popover.Portal>
