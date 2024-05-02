@@ -1,0 +1,51 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+.lf-box-styles {
+  background: rgba(0, 0, 0, 0.5) !important;
+  box-shadow:
+    rgba(0, 0, 0, 0.5) 0px 0px 1px 1px,
+    rgba(0, 0, 0, 0.25) 0px 4px 4px,
+    rgba(255, 255, 255, 0.5) 0px 0px 1px 1px inset !important;
+  backdrop-filter: blur(16px) !important;
+  /* Note: backdrop-filter has minimal browser support */
+  /* border-radius: 16px !important; */
+}
+
+.lf-button-styles {
+  box-shadow:
+    rgba(0, 0, 0, 0.5) 0px 0px 1px 1px,
+    rgba(0, 0, 0, 0.25) 0px 4px 4px,
+    rgba(255, 255, 255, 0.5) 0px 0px 2px 0px inset !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+.spinner_V8m1 {
+  transform-origin: center;
+  animation: spinner_zKoa 2s linear infinite;
+}
+.spinner_V8m1 circle {
+  stroke-linecap: round;
+  animation: spinner_YpZS 1.5s ease-in-out infinite;
+}
+@keyframes spinner_zKoa {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinner_YpZS {
+  0% {
+    stroke-dasharray: 0 150;
+    stroke-dashoffset: 0;
+  }
+  47.5% {
+    stroke-dasharray: 42 150;
+    stroke-dashoffset: -16;
+  }
+  95%,
+  100% {
+    stroke-dasharray: 42 150;
+    stroke-dashoffset: -59;
+  }
+}

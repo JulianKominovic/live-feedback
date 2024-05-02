@@ -1,0 +1,43 @@
+export type ThreadInternalProps = {
+  selector: string;
+  textContentHash: string;
+  outerHTMLHash: string;
+  // To identify if element is visible or not
+  attributes: {
+    display: string;
+    visibility: string;
+    opacity: string;
+    hidden: string | null;
+    "aria-hidden": string | null;
+    "aria-expanded": string | null;
+  };
+  show?: boolean;
+  xPercentageFromSelectedElement: string;
+  yPercentageFromSelectedElement: string;
+  liveCoords?: {
+    x: number;
+    y: number;
+  };
+  url: string;
+};
+export type ThreadComment = {
+  body?: string;
+  user?: {
+    avatar?: string | null;
+    name?: string | null;
+  };
+  date?: string;
+};
+export type Thread = {
+  GHissueId?: string;
+  creator?: {
+    name?: string;
+    avatar?: string;
+  };
+  status: "OPEN" | "CLOSED";
+  title: string;
+  // ISO date
+  date: string;
+  comments?: (ThreadComment | undefined)[];
+  tracking: ThreadInternalProps;
+};
