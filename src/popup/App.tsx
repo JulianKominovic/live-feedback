@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { ACTIVATED, GH_OWNER, GH_REPO, GH_TOKEN } from "../contentScript/const";
+import {
+  ACTIVATED,
+  GH_OWNER,
+  GH_REPO,
+  GH_TOKEN,
+  LOCKED_OWNER,
+  LOCKED_REPO,
+} from "../contentScript/const";
 import { log } from "../contentScript/utils";
 
 function App() {
@@ -9,6 +16,8 @@ function App() {
     repo: GH_REPO(),
     owner: GH_OWNER(),
     activated: ACTIVATED() ? "true" : "false",
+    disableRepo: LOCKED_REPO(),
+    disableOwner: LOCKED_OWNER(),
   }));
   function handleChanges(
     changes: { [key: string]: chrome.storage.StorageChange },
@@ -30,6 +39,18 @@ function App() {
         ...prev,
         activated: changes.activated.newValue ? "true" : "false",
       }));
+    if (changes.locked_repo) {
+      setFormValues((prev) => ({
+        ...prev,
+        disableRepo: changes.locked_repo.newValue,
+      }));
+    }
+    if (changes.locked_owner) {
+      setFormValues((prev) => ({
+        ...prev,
+        disableOwner: changes.locked_owner.newValue,
+      }));
+    }
   }
   useEffect(() => {
     log("Mounted!");
@@ -38,6 +59,7 @@ function App() {
       chrome.storage.onChanged.removeListener(handleChanges);
     };
   }, []);
+  console.log(formValues);
   return (
     <form
       style={{}}
@@ -85,6 +107,7 @@ function App() {
       <fieldset>
         <label htmlFor="repo">Github Repository</label>
         <input
+          disabled={formValues.disableRepo}
           defaultValue={formValues.repo}
           type="text"
           placeholder="live-feedback"
@@ -96,6 +119,7 @@ function App() {
         <label htmlFor="owner">Github Repository Owner</label>
         <input
           defaultValue={formValues.owner}
+          disabled={formValues.disableOwner}
           type="text"
           placeholder="JulianKominovic"
           name="owner"

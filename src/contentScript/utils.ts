@@ -82,3 +82,16 @@ export function cancelScrolling() {
 export function log(...args: any[]) {
   console.debug("[LIVE FEEDBACK]", new Date(), ...args);
 }
+
+export function getHTMLSettingsTagProperties() {
+  const settingsTag = document.querySelector(
+    'meta[name="live-feedback-settings"]'
+  );
+  if (!settingsTag) return {};
+  const ghRepo = settingsTag.getAttribute("gh-repo");
+  const ghOwner = settingsTag.getAttribute("gh-owner");
+  return {
+    ghRepo,
+    ghOwner,
+  };
+}
