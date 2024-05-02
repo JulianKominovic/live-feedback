@@ -11,6 +11,7 @@ import { Content } from "./bubbles/Content";
 import { CloseButton } from "./bubbles/CloseButton";
 import { CommentForm } from "./bubbles/CommentForm";
 import { Trigger } from "./bubbles/Trigger";
+import { ConversationalCommentForm } from "./bubbles/ConversationalCommentForm";
 
 const ThreadBubble = ({ thread }: { thread: Thread }) => {
   const [open, setOpen] = useState(false);
@@ -249,7 +250,9 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
                 </li>
               ))}
             </ul>
-            <CommentForm action={(comment) => addComment(thread, comment)} />
+            <ConversationalCommentForm
+              action={(comment) => addComment(thread, comment)}
+            />
 
             <CloseButton aria-label="Close">
               <Cross2Icon />

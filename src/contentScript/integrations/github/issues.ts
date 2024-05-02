@@ -46,6 +46,7 @@ export async function createIssue({
         repo: GH_REPO(),
         title,
         body,
+
         headers: {
           "X-GitHub-Api-Version": "2022-11-28",
         },

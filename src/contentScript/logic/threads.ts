@@ -16,7 +16,8 @@ export async function createThread(
   title: string,
   element: HTMLElement,
   clickXCoord: number,
-  clickYCoord: number
+  clickYCoord: number,
+  bindedPullRequestId: number
 ) {
   const elementPhoto = (await takeElementScreenshot(element))?.replace(
     "data:image/png;base64,",
@@ -94,6 +95,7 @@ export async function createThread(
   - **OS**: ${navigator.platform}
   - **Browser**: ${navigator.appVersion}
   - **Resolution**: ${window.screen.width}w x${window.screen.height}h
+  ${bindedPullRequestId !== 0 ? `- **Pull Request**: #${bindedPullRequestId}` : ""}
 
   ## Images
   ### DOM Photo

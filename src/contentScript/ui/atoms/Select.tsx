@@ -7,13 +7,12 @@ export const Select = styled.select<
     width?: string;
   }
 >`
-  border-radius: 50%;
+  border-radius: 6px;
   background-color: rgba(0, 0, 0, 0.2) !important;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 9999px;
   gap: 12px;
   padding: 8px;
   height: ${({ height }) => height || "32px"};
