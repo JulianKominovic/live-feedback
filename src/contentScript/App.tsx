@@ -49,6 +49,7 @@ function RegisterEvents() {
       return setIsPicking(!isPicking);
     }
     if (isPicking) {
+      target.style.pointerEvents = "none";
       setIsPicking(false);
 
       let targetIsInsideLiveFeedbackWrapper = false;
@@ -68,6 +69,7 @@ function RegisterEvents() {
         x: e.pageX,
         y: e.pageY,
       });
+      target.style.pointerEvents = "all";
     }
   }
 
@@ -101,7 +103,6 @@ function RegisterEvents() {
     window.addEventListener("mouseover", handleMouseOver);
     window.addEventListener("mouseout", handleMouseOut);
     window.addEventListener("mousedown", handleMouseClick);
-    // window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => {
       window.removeEventListener("mouseover", handleMouseOver);
       window.removeEventListener("mouseout", handleMouseOut);
