@@ -21,7 +21,7 @@ export const CSS_FRAGMENTS = {
     rgba(0, 0, 0, 0.5) 0px 0px 1px 1px,
     rgba(0, 0, 0, 0.25) 0px 4px 4px,
     rgba(255, 255, 255, 0.2) 0px 0px 1px 1px inset;
-  backdrop-filter: blur(50px);`,
+  backdrop-filter: blur(22px);`,
   "button-styles": `box-shadow:
     rgba(0, 0, 0, 0.5) 0px 0px 1px 1px,
     rgba(0, 0, 0, 0.25) 0px 4px 4px,
