@@ -1,6 +1,6 @@
 import * as TooltipRadix from "@radix-ui/react-tooltip";
 
-export default function Tooltip({ children }) {
+export default function Tooltip({ children }: any) {
   return (
     <TooltipRadix.Provider>
       <TooltipRadix.Root>{children}</TooltipRadix.Root>
@@ -8,11 +8,11 @@ export default function Tooltip({ children }) {
   );
 }
 
-function Trigger({ children }) {
+function Trigger({ children }: any) {
   return <TooltipRadix.Trigger asChild>{children}</TooltipRadix.Trigger>;
 }
 
-function Content({ children }) {
+function Content({ children }: any) {
   return (
     <TooltipRadix.Portal>
       <TooltipRadix.Content className="TooltipContent" sideOffset={5}>
