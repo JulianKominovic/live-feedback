@@ -49,14 +49,14 @@ function Navbar() {
     threads: state.threads,
   }));
   const asyncOperationStatus = useSystemStore(
-    (state) => state.asyncOperationsStatus,
+    (state) => state.asyncOperationsStatus
   );
   const [showMentions, setShowMentions] = useState(false);
   const showBigPanel = showMentions;
   const participants = new Set(
     threads
       .filter((thread) => thread.tracking.show)
-      .map((thread) => thread.creator),
+      .map((thread) => ({ ...thread.creator, GHissueId: thread.GHissueId }))
   );
   return (
     <Nav
@@ -167,6 +167,19 @@ function Navbar() {
               .map((participant, i, array) => (
                 <>
                   <Button
+                    onClick={() => {
+                      const bubbleElement: HTMLButtonElement | null =
+                        document.querySelector(
+                          "#live-feedback-bubble-" + participant.GHissueId
+                        );
+
+                      bubbleElement?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                        inline: "center",
+                      });
+                      bubbleElement?.click();
+                    }}
                     variant="flat"
                     layout
                     key={"participant" + i + participant}
@@ -219,7 +232,14 @@ function Navbar() {
           </>
         ) : null}
 
-        <Button variant="flat" layout key="config">
+        <Button
+          variant="flat"
+          layout
+          key="config"
+          style={{
+            opacity: 0.2,
+          }}
+        >
           <GearIcon />
         </Button>
         <motion.div

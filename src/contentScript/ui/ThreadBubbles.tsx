@@ -32,6 +32,7 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
         }}
       >
         <Trigger
+          id={"live-feedback-bubble-" + thread.GHissueId}
           data-live-feedback
           style={{
             top: coords.y,
@@ -234,7 +235,7 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
                         >
                           {getRelativeTimeString(
                             new Date(comment.date),
-                            "narrow",
+                            "narrow"
                           )}
                         </span>
                       )}
