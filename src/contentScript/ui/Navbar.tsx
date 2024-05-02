@@ -62,7 +62,9 @@ function Navbar() {
     <Nav
       style={{
         borderRadius: "24px",
+        cursor: "grab",
       }}
+      drag
       layout
     >
       <AnimatePresence mode="popLayout" presenceAffectsLayout>
