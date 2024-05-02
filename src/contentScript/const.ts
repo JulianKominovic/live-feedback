@@ -1,14 +1,15 @@
 import { log } from "./utils";
 
-const { repo, owner, gh_token } = await chrome.storage.local.get([
-  "repo",
-  "owner",
-  "gh_token",
-]);
+const {
+  repo,
+  owner,
+  gh_token,
+  activated: activatedFlag,
+} = await chrome.storage.local.get(["repo", "owner", "gh_token", "activated"]);
 let ghToken = gh_token;
 let ghRepo = repo;
 let ghOwner = owner;
-let activated = false;
+let activated = activatedFlag;
 export const GH_TOKEN = () => ghToken;
 export const GH_REPO = () => ghRepo;
 export const GH_OWNER = () => ghOwner;
