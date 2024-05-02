@@ -87,11 +87,15 @@ export function getHTMLSettingsTagProperties() {
   const settingsTag = document.querySelector(
     'meta[name="live-feedback-settings"]'
   );
-  if (!settingsTag) return {};
+  if (!settingsTag) return null;
   const ghRepo = settingsTag.getAttribute("gh-repo");
   const ghOwner = settingsTag.getAttribute("gh-owner");
   return {
     ghRepo,
     ghOwner,
   };
+}
+
+export function platformIsPopup() {
+  return location.href.includes("/popup.html");
 }

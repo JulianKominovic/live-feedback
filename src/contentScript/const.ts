@@ -1,5 +1,5 @@
 import { GLOBAL_CONST_VARIABLES } from "./types/const";
-import { getHTMLSettingsTagProperties, log } from "./utils";
+import { getHTMLSettingsTagProperties, log, platformIsPopup } from "./utils";
 
 const {
   repo,
@@ -20,9 +20,9 @@ let ghToken = gh_token;
 let ghRepo = window.LIVE_FEEDBACK?.repo || repo;
 let ghOwner = window.LIVE_FEEDBACK?.owner || owner;
 let activated = activatedFlag;
-let lockedRepo = Boolean(getHTMLSettingsTagProperties().ghRepo || locked_repo);
+let lockedRepo = Boolean(getHTMLSettingsTagProperties()?.ghRepo || locked_repo);
 let lockedOwner = Boolean(
-  getHTMLSettingsTagProperties().ghOwner || locked_owner
+  getHTMLSettingsTagProperties()?.ghOwner || locked_owner
 );
 export const GH_TOKEN = () => ghToken;
 export const GH_REPO = () => ghRepo;
@@ -43,19 +43,22 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
   if (changes.locked_owner) lockedOwner = changes.locked_owner.newValue;
 });
 
-const intervalId = setInterval(() => {
-  if (getHTMLSettingsTagProperties().ghRepo) {
-    ghRepo = getHTMLSettingsTagProperties().ghRepo;
-    chrome.storage.local.set({ repo: ghRepo, locked_repo: true });
+async function applyWebsiteImperativeSettings() {
+  if (platformIsPopup()) return;
+  const settings = getHTMLSettingsTagProperties();
+  if (settings) {
+    if (settings.ghRepo) {
+      ghRepo = settings.ghRepo;
+      await chrome.storage.local.set({ repo: ghRepo, locked_repo: true });
+    }
+    if (settings.ghOwner) {
+      ghOwner = settings.ghOwner;
+      await chrome.storage.local.set({ owner: ghOwner, locked_owner: true });
+    }
+  } else {
+    await chrome.storage.local.set({ locked_repo: false, locked_owner: false });
   }
-  if (getHTMLSettingsTagProperties().ghOwner) {
-    ghOwner = getHTMLSettingsTagProperties().ghOwner;
-    chrome.storage.local.set({ owner: ghOwner, locked_owner: true });
-  }
-  if (
-    getHTMLSettingsTagProperties().ghRepo === ghRepo &&
-    getHTMLSettingsTagProperties().ghOwner === ghOwner
-  ) {
-    clearInterval(intervalId);
-  }
-}, 200);
+}
+
+window.addEventListener("focus", applyWebsiteImperativeSettings);
+window.addEventListener("blur", applyWebsiteImperativeSettings);
