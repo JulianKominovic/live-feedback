@@ -62,9 +62,10 @@ const useThreadsStore = create<ThreadsStore>((set, get) => ({
     return updatedThreads;
   },
   checkThreadsVisibility: () => {
-    set({
-      threads: checkThreadsBubbles(get().threads),
-    });
+    const updatedThreads = checkThreadsBubbles(get().threads).map(
+      calculateBubblePosition
+    );
+    set({ threads: updatedThreads });
   },
   createThread: async (comment) => {
     if (!get().tempThreadCreationIntent) return;

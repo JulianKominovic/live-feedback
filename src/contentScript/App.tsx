@@ -32,7 +32,6 @@ function RegisterEvents() {
       }
       currTarget = currTarget.parentElement;
     }
-    console.log(currTarget, targetIsInsideLiveFeedbackWrapper);
     if (targetIsInsideLiveFeedbackWrapper) return;
     target.style.outline = "2px solid red";
   }
@@ -60,7 +59,6 @@ function RegisterEvents() {
         }
         currTarget = currTarget.parentElement;
       }
-      console.log(currTarget, targetIsInsideLiveFeedbackWrapper);
       if (targetIsInsideLiveFeedbackWrapper) return;
       e.preventDefault();
       e.stopPropagation();

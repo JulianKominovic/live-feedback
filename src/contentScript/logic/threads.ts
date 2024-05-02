@@ -155,7 +155,6 @@ export async function getThreads() {
 
 export function checkThreadsBubbles(threads: Thread[]) {
   return threads.map((thread) => {
-    // console.log("Checking thread ", thread.GHissueId);
     const element = document.querySelector(
       thread.tracking.selector
     ) as HTMLElement;
