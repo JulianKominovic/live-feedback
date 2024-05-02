@@ -3,7 +3,7 @@
   "displayName": "Live feedback tool",
   "version": "0.0.2",
   "author": "Julian Kominovic",
-  "description": "Leave feedback on any website and share it with your team 🚀",
+  "description": "Leave feedback on any website and share it with your team 🚀.",
   "type": "module",
   "license": "MIT",
   "keywords": [
