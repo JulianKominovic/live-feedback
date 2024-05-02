@@ -1,9 +1,12 @@
 import { GH_OWNER, GH_REPO } from "../../const";
+import useSystemStore from "../../store/system";
 import octokit from "./client";
 
-export function getIssue({ issue_number }: { issue_number: number }) {
+export async function getIssue({ issue_number }: { issue_number: number }) {
+  useSystemStore.getState().setAsyncOperationsStatus("pending");
+
   try {
-    return octokit().request(
+    const response = await octokit().request(
       "GET /repos/{owner}/{repo}/issues/{issue_number}",
       {
         owner: GH_OWNER(),
@@ -14,30 +17,51 @@ export function getIssue({ issue_number }: { issue_number: number }) {
         },
       }
     );
+    useSystemStore.getState().setAsyncOperationsStatus("success");
+
+    return response;
   } catch (err) {
     console.log(err);
+    useSystemStore.getState().setAsyncOperationsStatus("error");
+
     return null;
   }
 }
 
-export function createIssue({ body, title }: { body: string; title: string }) {
+export async function createIssue({
+  body,
+  title,
+}: {
+  body: string;
+  title: string;
+}) {
+  useSystemStore.getState().setAsyncOperationsStatus("pending");
+
   try {
-    return octokit().request("POST /repos/{owner}/{repo}/issues", {
-      owner: GH_OWNER(),
-      repo: GH_REPO(),
-      title,
-      body,
-      headers: {
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-    });
+    const response = await octokit().request(
+      "POST /repos/{owner}/{repo}/issues",
+      {
+        owner: GH_OWNER(),
+        repo: GH_REPO(),
+        title,
+        body,
+        headers: {
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      }
+    );
+    useSystemStore.getState().setAsyncOperationsStatus("success");
+
+    return response;
   } catch (err) {
     console.log(err);
+    useSystemStore.getState().setAsyncOperationsStatus("error");
+
     return null;
   }
 }
 
-export function updateIssue({
+export async function updateIssue({
   body,
   issue_number,
   title,
@@ -46,8 +70,10 @@ export function updateIssue({
   issue_number: number;
   title: string;
 }) {
+  useSystemStore.getState().setAsyncOperationsStatus("pending");
+
   try {
-    return octokit().request(
+    const response = await octokit().request(
       "PATCH /repos/{owner}/{repo}/issues/{issue_number}",
       {
         owner: GH_OWNER(),
@@ -60,30 +86,51 @@ export function updateIssue({
         },
       }
     );
+    useSystemStore.getState().setAsyncOperationsStatus("success");
+
+    return response;
   } catch (err) {
     console.log(err);
+    useSystemStore.getState().setAsyncOperationsStatus("error");
+
     return null;
   }
 }
 
-export function getIssues() {
+export async function getIssues() {
+  useSystemStore.getState().setAsyncOperationsStatus("pending");
+
   try {
-    return octokit().request("GET /repos/{owner}/{repo}/issues", {
-      owner: GH_OWNER(),
-      repo: GH_REPO(),
-      headers: {
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-    });
+    const response = await octokit().request(
+      "GET /repos/{owner}/{repo}/issues",
+      {
+        owner: GH_OWNER(),
+        repo: GH_REPO(),
+        headers: {
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      }
+    );
+    useSystemStore.getState().setAsyncOperationsStatus("success");
+
+    return response;
   } catch (err) {
     console.log(err);
+    useSystemStore.getState().setAsyncOperationsStatus("error");
+
     return null;
   }
 }
 
-export function getIssueComments({ issue_number }: { issue_number: number }) {
+export async function getIssueComments({
+  issue_number,
+}: {
+  issue_number: number;
+}) {
+  useSystemStore.getState().setAsyncOperationsStatus("pending");
+
   try {
-    return octokit().request(
+    const response = await octokit().request(
       "GET /repos/{owner}/{repo}/issues/{issue_number}/comments",
       {
         owner: GH_OWNER(),
@@ -97,21 +144,28 @@ export function getIssueComments({ issue_number }: { issue_number: number }) {
         },
       }
     );
+    useSystemStore.getState().setAsyncOperationsStatus("success");
+
+    return response;
   } catch (err) {
     console.log(err);
+    useSystemStore.getState().setAsyncOperationsStatus("error");
+
     return null;
   }
 }
 
-export function createIssueComment({
+export async function createIssueComment({
   body,
   issue_number,
 }: {
   body: string;
   issue_number: number;
 }) {
+  useSystemStore.getState().setAsyncOperationsStatus("pending");
+
   try {
-    return octokit().request(
+    const response = await octokit().request(
       "POST /repos/{owner}/{repo}/issues/{issue_number}/comments",
       {
         owner: GH_OWNER(),
@@ -123,8 +177,13 @@ export function createIssueComment({
         },
       }
     );
+    useSystemStore.getState().setAsyncOperationsStatus("success");
+
+    return response;
   } catch (err) {
     console.log(err);
+    useSystemStore.getState().setAsyncOperationsStatus("error");
+
     return null;
   }
 }

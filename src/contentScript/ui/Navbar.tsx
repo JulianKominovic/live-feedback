@@ -12,6 +12,7 @@ import { COLORS, CSS_FRAGMENTS, Z_INDEXES } from "../styles/tokens";
 import { useState } from "react";
 import { VerticalDivider } from "./atoms/VerticalDivider";
 import { Button } from "./atoms/Button";
+import useSystemStore from "../store/system";
 
 function MentionsBigPanel() {
   return <>hi!</>;
@@ -49,11 +50,13 @@ const BigPanel = styled(motion.main)`
 `;
 
 function Navbar() {
-  const { isPicking, setIsPicking, threads } = useThreadsStore((state) => ({
+  const { isPicking, threads } = useThreadsStore((state) => ({
     isPicking: state.isPicking,
-    setIsPicking: state.setIsPicking,
     threads: state.threads,
   }));
+  const asyncOperationStatus = useSystemStore(
+    (state) => state.asyncOperationsStatus
+  );
   const [showMentions, setShowMentions] = useState(false);
   const showBigPanel = showMentions;
   const participants = new Set(
@@ -100,6 +103,7 @@ function Navbar() {
               flexShrink: 0,
               width: "15px",
               height: "15px",
+              display: "flex",
             }}
           >
             <PlusIcon
@@ -112,7 +116,13 @@ function Navbar() {
           </motion.div>
           <AnimatePresence initial={false}>
             {isPicking && (
-              <motion.span data-live-feedback-thread-creation layout>
+              <motion.span
+                style={{
+                  fontSize: "12px",
+                }}
+                data-live-feedback-thread-creation
+                layout
+              >
                 Stop Picking
               </motion.span>
             )}
@@ -202,6 +212,7 @@ function Navbar() {
                   padding: 2,
                   marginInlineStart: "-12px",
                   gap: 0,
+                  fontSize: "12px",
                   background: "rgba(0,0,0,.7)",
                   backdropFilter: "blur(4px)",
                 }}
@@ -218,9 +229,16 @@ function Navbar() {
           <GearIcon />
         </Button>
         <motion.div
-          layout
+          layout="position"
           style={{
-            background: "rgb(255 178 16)",
+            background:
+              asyncOperationStatus === "idle"
+                ? COLORS["grey-700"]
+                : asyncOperationStatus === "pending"
+                  ? COLORS["yellow-500"]
+                  : asyncOperationStatus === "success"
+                    ? COLORS["green-500"]
+                    : COLORS["red-500"],
             borderRadius: "50%",
             width: "8px",
             height: "8px",
@@ -233,9 +251,15 @@ function Navbar() {
             fontSize: "12px",
             paddingInlineEnd: "8px",
           }}
-          layout
+          layout="position"
         >
-          Busy
+          {asyncOperationStatus === "idle"
+            ? "Idle"
+            : asyncOperationStatus === "pending"
+              ? "Busy"
+              : asyncOperationStatus === "success"
+                ? "Success"
+                : "Error"}
         </motion.span>
       </Toolbar>
     </Nav>

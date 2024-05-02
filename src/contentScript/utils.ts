@@ -1,3 +1,5 @@
+import useSystemStore from "./store/system";
+
 export async function sha256(str: string) {
   const buf = await crypto.subtle.digest(
     "SHA-256",
@@ -71,7 +73,10 @@ export function cancelScrolling() {
     e.stopImmediatePropagation();
   }
   window.addEventListener("scroll", handleScrollCancel, { capture: true });
+  window.addEventListener("wheel", handleScrollCancel, { capture: true });
 
-  return () =>
+  return () => {
     window.removeEventListener("scroll", handleScrollCancel, { capture: true });
+    window.removeEventListener("wheel", handleScrollCancel, { capture: true });
+  };
 }
