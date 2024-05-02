@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import { log } from "./utils";
+import { ACTIVATED } from "./const";
 
 function initApp() {
   document.getElementById("live-feedback")?.remove();
@@ -30,4 +31,8 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
   }
 });
 
-initApp();
+if (ACTIVATED()) initApp();
+
+window.addEventListener("focus", () => {
+  if (!ACTIVATED()) return destroyApp();
+});
