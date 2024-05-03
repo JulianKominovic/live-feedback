@@ -6,7 +6,8 @@ In 3 simple steps you can get feedback on your website:
 
 - Install the extension
 - Create a Github Token
--
+- Configure the extension
+- Start giving feedback
 
 ## Demo
 
