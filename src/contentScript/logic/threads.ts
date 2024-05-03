@@ -11,6 +11,8 @@ import {
   takeElementScreenshot,
   takeTabScreenshot,
 } from "../integrations/background/tabs";
+import { GH_OWNER, GH_REPO } from "../const";
+import { getRepository } from "../integrations/github/repositories";
 
 export async function createThread(
   title: string,
@@ -66,6 +68,9 @@ export async function createThread(
   };
   log("Thread created", thread);
   try {
+    log("Gettings repo info");
+    const repoInfo = await getRepository();
+    const isPrivateRepo = repoInfo?.data.private;
     log("Creating issue");
     const issueResponse = await createIssue({
       body: "",
@@ -99,10 +104,11 @@ export async function createThread(
 
   ## Images
   ### DOM Photo
-  ![Dom Photo](${domPhotoUpload.data.content?.download_url})
+  ${isPrivateRepo ? `https://github.com/${GH_OWNER()}/${GH_REPO()}/blob/master/.github/live-feedback/${domPhotoUpload.data.content?.name}` : `![Dom Photo](${domPhotoUpload.data.content?.download_url})`}
+  
 
   ### Element Photo
-  ![Element Photo](${elementPhotoUpload.data.content?.download_url})
+  ${isPrivateRepo ? `https://github.com/${GH_OWNER()}/${GH_REPO()}/blob/master/.github/live-feedback/${elementPhotoUpload.data.content?.name}` : `![Element Photo](${elementPhotoUpload.data.content?.download_url})`}
 
   ## Tracking (internal use)
   \`\`\`json
