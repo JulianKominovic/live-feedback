@@ -1,12 +1,18 @@
 import useThreadsStore from "../store/threads";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArchiveIcon, GearIcon, PlusIcon } from "@radix-ui/react-icons";
+import {
+  ArchiveIcon,
+  GearIcon,
+  PlusIcon,
+  UpdateIcon,
+} from "@radix-ui/react-icons";
 import styled from "@emotion/styled";
 import { COLORS, CSS_FRAGMENTS, Z_INDEXES } from "../styles/tokens";
 import { useState } from "react";
 import { VerticalDivider } from "./atoms/VerticalDivider";
 import { Button } from "./atoms/Button";
 import useSystemStore from "../store/system";
+import { clearGithubCache } from "../integrations/github/client";
 
 function MentionsBigPanel() {
   return <>hi!</>;
@@ -81,6 +87,7 @@ function Navbar() {
       </AnimatePresence>
       <Toolbar layout>
         <Button
+          title="Add Comment"
           variant="flat"
           key="add-comment"
           data-live-feedback-thread-creation
@@ -125,6 +132,16 @@ function Navbar() {
           </AnimatePresence>
         </Button>
         <Button
+          variant="flat"
+          layout
+          key="clear-github-cache"
+          onClick={clearGithubCache}
+          title="Clear GitHub cache"
+        >
+          <UpdateIcon />
+        </Button>
+        <Button
+          title="Mentions"
           variant="flat"
           disabled
           style={{

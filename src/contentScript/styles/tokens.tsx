@@ -632,10 +632,14 @@ export const ResetCSS = styled.div`
     outline-offset: 0px !important;
     transition: outline-offset 0.15s ease-in-out;
   }
+  *:hover {
+    border: none !important;
+  }
   *:focus {
     transition: outline-offset 0.15s ease-in-out 0s;
     outline: rgb(90, 90, 90) solid 1px !important;
     outline-offset: 3px !important;
+    border: none !important;
   }
   button {
     cursor: pointer;

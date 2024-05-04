@@ -1,7 +1,7 @@
 import { GH_OWNER, GH_REPO } from "../../const";
 import useSystemStore from "../../store/system";
 import { log } from "../../utils";
-import octokit from "./client";
+import octokit, { fetchCache } from "./client";
 
 export async function getIssue({ issue_number }: { issue_number: number }) {
   useSystemStore.getState().setAsyncOperationsStatus("pending");
@@ -15,6 +15,9 @@ export async function getIssue({ issue_number }: { issue_number: number }) {
         issue_number,
         headers: {
           "X-GitHub-Api-Version": "2022-11-28",
+        },
+        request: {
+          fetch: fetchCache,
         },
       }
     );
@@ -111,6 +114,10 @@ export async function getIssues() {
         headers: {
           "X-GitHub-Api-Version": "2022-11-28",
         },
+        state: "open",
+        request: {
+          fetch: fetchCache,
+        },
       }
     );
     useSystemStore.getState().setAsyncOperationsStatus("success");
@@ -143,6 +150,9 @@ export async function getIssueComments({
         },
         headers: {
           "X-GitHub-Api-Version": "2022-11-28",
+        },
+        request: {
+          fetch: fetchCache,
         },
       }
     );
