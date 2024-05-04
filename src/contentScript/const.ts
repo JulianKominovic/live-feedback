@@ -1,4 +1,5 @@
 import { GLOBAL_CONST_VARIABLES } from "./types/const";
+import { INTERCOM_EVENTS } from "./types/events";
 import { getHTMLSettingsTagProperties, log, platformIsPopup } from "./utils";
 
 const {
@@ -60,5 +61,15 @@ async function applyWebsiteImperativeSettings() {
   }
 }
 
-window.addEventListener("focus", applyWebsiteImperativeSettings);
-window.addEventListener("blur", applyWebsiteImperativeSettings);
+chrome.runtime.onMessage.addListener((message, sender, senderResponse) => {
+  if (
+    message.type === INTERCOM_EVENTS.ACTIVE_TAB_CHANGED ||
+    message.type === INTERCOM_EVENTS.TAB_UPATED
+  ) {
+    applyWebsiteImperativeSettings();
+  }
+
+  senderResponse({});
+
+  return true;
+});

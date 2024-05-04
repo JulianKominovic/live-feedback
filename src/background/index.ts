@@ -13,3 +13,16 @@ chrome.runtime.onMessage.addListener((message, sender, senderResponse) => {
 
   return true;
 });
+chrome.tabs.onActivated.addListener((activeInfo) => {
+  log("Active tab changed: ", activeInfo);
+  chrome.tabs.sendMessage(activeInfo.tabId, {
+    type: INTERCOM_EVENTS.ACTIVE_TAB_CHANGED,
+  });
+});
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  log("Tab updated: ", tabId, changeInfo, tab);
+  chrome.tabs.sendMessage(tabId, {
+    type: INTERCOM_EVENTS.TAB_UPATED,
+  });
+});
