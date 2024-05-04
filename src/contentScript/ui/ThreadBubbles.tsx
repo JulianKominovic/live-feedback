@@ -55,7 +55,8 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
         </Trigger>
         <Popover.Portal
           container={
-            document.querySelector("#live-feedback") || (document.body as any)
+            document.querySelector("#live-feedback-styles-wrapper") ||
+            (document.body as any)
           }
         >
           <Content data-live-feedback side="bottom">

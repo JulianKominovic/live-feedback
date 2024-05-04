@@ -6,13 +6,14 @@ export const Button = styled<
     HTMLButtonElement,
     HTMLMotionProps<"button"> & {
       variant?: "flat";
-
       height?: string;
       width?: string;
+      Width?: string;
+      Height?: string;
     }
   >
 >(motion.button)`
-  background-color: rgba(0, 0, 0, 0.2) !important;
+  background-color: rgba(0, 0, 0, 0.2);
   flex-shrink: 0;
   display: flex;
   justify-content: center;
@@ -25,8 +26,8 @@ export const Button = styled<
   border: none;
   white-space: nowrap;
   cursor: pointer;
-  height: ${({ height }) => height || "32px"};
-  width: ${({ width }) => width || "32px"};
+  height: ${({ height, Height }) => height || Height || "32px"};
+  width: ${({ width, Width }) => width || Width || "32px"};
   ${({ variant }) =>
     variant === "flat" ? "" : CSS_FRAGMENTS["button-styles"]};
 `;
