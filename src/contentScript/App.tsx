@@ -1,10 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Navbar from "./ui/Navbar";
 import useGithubStore from "./store/threads";
 import ThreadBubbles from "./ui/ThreadBubbles";
 import TemporalThreadBubble from "./ui/TemporalThreadBubble";
 import { GlobalStyles, ResetCSS } from "./styles/tokens";
-
+import {
+  removeAnchorHrefFromAncestors,
+  restoreAnchorHrefFromAncestors,
+} from "./logic/dom";
+import createCache from "@emotion/cache";
+// @ts-expect-error - StylisPluginExtraScope is not typed
+import extraScopePlugin from "stylis-plugin-extra-scope";
+import { CacheProvider } from "@emotion/react";
 function RegisterEvents() {
   const {
     isPicking,
@@ -21,6 +28,7 @@ function RegisterEvents() {
     checkThreadsVisibility: state.checkThreadsVisibility,
     updateThreadCoords: state.updateThreadCoords,
   }));
+  const anchorsWithReplacedHrefs = useRef<HTMLAnchorElement[]>([]);
   function handleMouseOver(e: MouseEvent) {
     if (!isPicking) return;
     const target = e.target as HTMLElement;
@@ -33,12 +41,14 @@ function RegisterEvents() {
       currTarget = currTarget.parentElement;
     }
     if (targetIsInsideLiveFeedbackWrapper) return;
+    removeAnchorHrefFromAncestors(target, anchorsWithReplacedHrefs);
     target.style.outline = "2px solid red";
   }
 
   function handleMouseOut(e: MouseEvent) {
     if (!isPicking) return;
     const target = e.target as HTMLElement;
+    restoreAnchorHrefFromAncestors(anchorsWithReplacedHrefs);
     target.style.outline = "none";
   }
 
@@ -69,13 +79,15 @@ function RegisterEvents() {
         x: e.pageX,
         y: e.pageY,
       });
+      restoreAnchorHrefFromAncestors(anchorsWithReplacedHrefs);
+
       target.style.pointerEvents = "all";
     }
   }
 
   function handleStorageChange(
     changes: { [key: string]: chrome.storage.StorageChange },
-    areaName: "local" | "sync" | "managed" | "session",
+    areaName: "local" | "sync" | "managed" | "session"
   ) {
     if (areaName !== "local") return;
     if (
@@ -102,11 +114,11 @@ function RegisterEvents() {
     const interval = setInterval(checkThreadsVisibility, 1000);
     window.addEventListener("mouseover", handleMouseOver);
     window.addEventListener("mouseout", handleMouseOut);
-    window.addEventListener("mousedown", handleMouseClick);
+    window.addEventListener("click", handleMouseClick);
     return () => {
       window.removeEventListener("mouseover", handleMouseOver);
       window.removeEventListener("mouseout", handleMouseOut);
-      window.removeEventListener("mousedown", handleMouseClick);
+      window.removeEventListener("click", handleMouseClick);
       clearInterval(interval);
     };
   }, [isPicking]);
@@ -114,15 +126,24 @@ function RegisterEvents() {
   return null;
 }
 
+const cache = createCache({
+  key: "livfeeb", // Work
+  stylisPlugins: [
+    extraScopePlugin("#live-feedback"), // Working !
+  ],
+});
+
 function App() {
   return (
-    <ResetCSS>
-      <GlobalStyles />
-      <RegisterEvents />
-      <Navbar />
-      <TemporalThreadBubble />
-      <ThreadBubbles />
-    </ResetCSS>
+    <CacheProvider value={cache}>
+      <ResetCSS id="live-feedback-styles-wrapper">
+        <GlobalStyles />
+        <RegisterEvents />
+        <Navbar />
+        <TemporalThreadBubble />
+        <ThreadBubbles />
+      </ResetCSS>
+    </CacheProvider>
   );
 }
 

@@ -86,7 +86,7 @@ function Navbar() {
           data-live-feedback-thread-creation
           style={{
             justifyContent: "flex-start",
-            width: isPicking ? "fit-content" : "2rem",
+            width: isPicking ? "fit-content" : "32px",
             aspectRatio: isPicking ? "unset" : "1/1",
             borderRadius: "9999px",
           }}

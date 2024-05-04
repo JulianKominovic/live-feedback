@@ -54,7 +54,7 @@ export const Form = styled.form`
     ${CSS_FRAGMENTS["button-styles"]};
   }
   input[type="radio"] {
-    box-shadow: none;
+    box-shadow: none !important;
   }
   fieldset:has(input[disabled]) {
     opacity: 0.3;

@@ -20,12 +20,12 @@ export const CSS_FRAGMENTS = {
   box-shadow:
     rgba(0, 0, 0, 0.5) 0px 0px 1px 1px,
     rgba(0, 0, 0, 0.25) 0px 4px 4px,
-    rgba(255, 255, 255, 0.2) 0px 0px 1px 1px inset;
-  backdrop-filter: blur(22px);`,
+    rgba(255, 255, 255, 0.2) 0px 0px 1px 1px inset !important;
+  backdrop-filter: blur(26px) !important;`,
   "button-styles": `box-shadow:
     rgba(0, 0, 0, 0.5) 0px 0px 1px 1px,
     rgba(0, 0, 0, 0.25) 0px 4px 4px,
-    rgba(255, 255, 255, 0.2) 0px 0px 2px 0px inset;`,
+    rgba(255, 255, 255, 0.2) 0px 0px 2px 0px inset !important; `,
 };
 export const COLORS = {
   transparent: "transparent",
@@ -626,7 +626,16 @@ export const ResetCSS = styled.div`
       "Open Sans",
       "Helvetica Neue",
       sans-serif !important;
-    font-size: 16px;
+    font-size: 14px;
+    line-height: 16px;
+    outline: 2px solid transparent !important;
+    outline-offset: 0px !important;
+    transition: outline-offset 0.15s ease-in-out;
+  }
+  *:focus {
+    transition: outline-offset 0.15s ease-in-out 0s;
+    outline: rgb(90, 90, 90) solid 1px !important;
+    outline-offset: 3px !important;
   }
   button {
     cursor: pointer;
