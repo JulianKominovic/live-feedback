@@ -1,7 +1,7 @@
 import { GH_OWNER, GH_REPO } from "../../const";
 import useSystemStore from "../../store/system";
 import { log } from "../../utils";
-import octokit from "./client";
+import octokit, { fetchCache } from "./client";
 
 export async function getRepository() {
   useSystemStore.getState().setAsyncOperationsStatus("pending");
@@ -12,6 +12,9 @@ export async function getRepository() {
       repo: GH_REPO(),
       headers: {
         "X-GitHub-Api-Version": "2022-11-28",
+      },
+      request: {
+        fetch: fetchCache,
       },
     });
 
