@@ -4,19 +4,21 @@ import App from "./App";
 import "./index.css";
 import { log } from "./utils";
 import { ACTIVATED } from "./const";
-
+let root: ReactDOM.Root | null = null;
 function initApp() {
   document.getElementById("live-feedback")?.remove();
   const div = document.createElement("div");
   div.id = "live-feedback";
   document.body.appendChild(div);
-  ReactDOM.createRoot(div).render(
+  root = ReactDOM.createRoot(div);
+  root.render(
     <React.StrictMode>
       <App />
     </React.StrictMode>
   );
 }
 function destroyApp() {
+  root?.unmount();
   document.getElementById("live-feedback")?.remove();
 }
 chrome.storage.onChanged.addListener((changes, areaName) => {
@@ -32,7 +34,3 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 });
 
 if (ACTIVATED()) initApp();
-
-window.addEventListener("focus", () => {
-  if (!ACTIVATED()) return destroyApp();
-});
