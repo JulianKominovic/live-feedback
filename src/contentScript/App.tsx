@@ -41,17 +41,6 @@ function RegisterEvents() {
     };
   }, []);
 
-  // useEffect(() => {
-  //   window.addEventListener("mouseover", handleMouseOver);
-  //   window.addEventListener("mouseout", handleMouseOut);
-  //   window.addEventListener("click", handleMouseClick);
-  //   return () => {
-  //     window.removeEventListener("mouseover", handleMouseOver);
-  //     window.removeEventListener("mouseout", handleMouseOut);
-  //     window.removeEventListener("click", handleMouseClick);
-  //   };
-  // }, [isPicking]);
-
   return null;
 }
 

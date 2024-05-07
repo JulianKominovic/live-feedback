@@ -63,6 +63,13 @@ const useThreadsStore = create<ThreadsStore>((set, get) => ({
     return updatedThreads;
   },
   checkThreadsVisibility: () => {
+    if (get().isPicking)
+      return set({
+        threads: get().threads.map((thread) => {
+          thread.tracking.show = false;
+          return thread;
+        }),
+      });
     const updatedThreads = checkThreadsBubbles(get().threads).map(
       calculateBubblePosition
     );
