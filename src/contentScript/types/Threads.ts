@@ -1,5 +1,5 @@
 export type ThreadInternalProps = {
-  selector: string;
+  selectors: string[];
   textContentHash: string;
   outerHTMLHash: string;
   // To identify if element is visible or not
