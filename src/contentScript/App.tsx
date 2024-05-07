@@ -13,63 +13,7 @@ function RegisterEvents() {
       checkThreadsVisibility: state.checkThreadsVisibility,
       updateThreadCoords: state.updateThreadCoords,
     }));
-  /*
-  function handleMouseOver(e: MouseEvent) {
-    if (!isPicking) return;
-    const target = e.target as HTMLElement;
-    let targetIsInsideLiveFeedbackWrapper = false;
-    let currTarget: HTMLElement | null = target;
-    while (currTarget) {
-      if (currTarget.id === "live-feedback") {
-        targetIsInsideLiveFeedbackWrapper = true;
-      }
-      currTarget = currTarget.parentElement;
-    }
-    if (targetIsInsideLiveFeedbackWrapper) return;
-    removeAnchorHrefFromAncestors(target, anchorsWithReplacedHrefs);
-    target.style.outline = "2px solid red";
-  }
 
-  function handleMouseOut(e: MouseEvent) {
-    if (!isPicking) return;
-    const target = e.target as HTMLElement;
-    restoreAnchorHrefFromAncestors(anchorsWithReplacedHrefs);
-    target.style.outline = "none";
-  }
-
-  async function handleMouseClick(e: MouseEvent) {
-    const target = e.target as HTMLElement;
-    target.style.outline = "none";
-    if (target.hasAttribute("data-live-feedback-thread-creation")) {
-      return setIsPicking(!isPicking);
-    }
-    if (isPicking) {
-      target.style.pointerEvents = "none";
-      setIsPicking(false);
-
-      let targetIsInsideLiveFeedbackWrapper = false;
-      let currTarget: HTMLElement | null = target;
-      while (currTarget) {
-        if (currTarget.id === "live-feedback") {
-          targetIsInsideLiveFeedbackWrapper = true;
-        }
-        currTarget = currTarget.parentElement;
-      }
-      if (targetIsInsideLiveFeedbackWrapper) return;
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      setTempThreadCreationIntent({
-        target,
-        x: e.pageX,
-        y: e.pageY,
-      });
-      restoreAnchorHrefFromAncestors(anchorsWithReplacedHrefs);
-
-      target.style.pointerEvents = "all";
-    }
-  }
-*/
   function handleStorageChange(
     changes: { [key: string]: chrome.storage.StorageChange },
     areaName: "local" | "sync" | "managed" | "session"
