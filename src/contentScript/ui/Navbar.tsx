@@ -50,9 +50,10 @@ const BigPanel = styled(motion.main)`
 `;
 
 function Navbar() {
-  const { isPicking, threads } = useThreadsStore((state) => ({
+  const { isPicking, threads, setIsPicking } = useThreadsStore((state) => ({
     isPicking: state.isPicking,
     threads: state.threads,
+    setIsPicking: state.setIsPicking,
   }));
   const asyncOperationStatus = useSystemStore(
     (state) => state.asyncOperationsStatus
@@ -97,6 +98,7 @@ function Navbar() {
             aspectRatio: isPicking ? "unset" : "1/1",
             borderRadius: "9999px",
           }}
+          onClick={() => setIsPicking(!isPicking)}
           layout
         >
           <motion.div

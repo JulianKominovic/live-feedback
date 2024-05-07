@@ -42,7 +42,6 @@ export async function createThread(
     ((clickYCoord - (elementRect.top + window.scrollY)) / elementRect.height) *
     100;
 
-  console.log(JSON.stringify(buildSelectors(element)));
   const thread: Thread = {
     title: "[LIVE FEEDBACK] - " + title,
     status: "OPEN",

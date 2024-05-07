@@ -1,34 +1,19 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import Navbar from "./ui/Navbar";
 import useGithubStore from "./store/threads";
 import ThreadBubbles from "./ui/ThreadBubbles";
 import TemporalThreadBubble from "./ui/TemporalThreadBubble";
 import { GlobalStyles, ResetCSS } from "./styles/tokens";
-import {
-  removeAnchorHrefFromAncestors,
-  restoreAnchorHrefFromAncestors,
-} from "./logic/dom";
 import createCache from "@emotion/cache";
-// @ts-expect-error - StylisPluginExtraScope is not typed
-import extraScopePlugin from "stylis-plugin-extra-scope";
 import { CacheProvider } from "@emotion/react";
 function RegisterEvents() {
-  const {
-    isPicking,
-    setIsPicking,
-    setTempThreadCreationIntent,
-    populateThreads,
-    checkThreadsVisibility,
-    updateThreadCoords,
-  } = useGithubStore((state) => ({
-    isPicking: state.isPicking,
-    setIsPicking: state.setIsPicking,
-    setTempThreadCreationIntent: state.setTempThreadCreationIntent,
-    populateThreads: state.populateThreads,
-    checkThreadsVisibility: state.checkThreadsVisibility,
-    updateThreadCoords: state.updateThreadCoords,
-  }));
-  const anchorsWithReplacedHrefs = useRef<HTMLAnchorElement[]>([]);
+  const { populateThreads, checkThreadsVisibility, updateThreadCoords } =
+    useGithubStore((state) => ({
+      populateThreads: state.populateThreads,
+      checkThreadsVisibility: state.checkThreadsVisibility,
+      updateThreadCoords: state.updateThreadCoords,
+    }));
+  /*
   function handleMouseOver(e: MouseEvent) {
     if (!isPicking) return;
     const target = e.target as HTMLElement;
@@ -84,7 +69,7 @@ function RegisterEvents() {
       target.style.pointerEvents = "all";
     }
   }
-
+*/
   function handleStorageChange(
     changes: { [key: string]: chrome.storage.StorageChange },
     areaName: "local" | "sync" | "managed" | "session"
@@ -104,39 +89,65 @@ function RegisterEvents() {
     chrome.storage.onChanged.addListener(handleStorageChange);
     window.addEventListener("resize", updateThreadCoords);
     updateThreadCoords();
+    const interval = setInterval(checkThreadsVisibility, 1000);
     return () => {
       chrome.storage.onChanged.removeListener(handleStorageChange);
       window.removeEventListener("resize", updateThreadCoords);
+      clearInterval(interval);
     };
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(checkThreadsVisibility, 1000);
-    window.addEventListener("mouseover", handleMouseOver);
-    window.addEventListener("mouseout", handleMouseOut);
-    window.addEventListener("click", handleMouseClick);
-    return () => {
-      window.removeEventListener("mouseover", handleMouseOver);
-      window.removeEventListener("mouseout", handleMouseOut);
-      window.removeEventListener("click", handleMouseClick);
-      clearInterval(interval);
-    };
-  }, [isPicking]);
+  // useEffect(() => {
+  //   window.addEventListener("mouseover", handleMouseOver);
+  //   window.addEventListener("mouseout", handleMouseOut);
+  //   window.addEventListener("click", handleMouseClick);
+  //   return () => {
+  //     window.removeEventListener("mouseover", handleMouseOver);
+  //     window.removeEventListener("mouseout", handleMouseOut);
+  //     window.removeEventListener("click", handleMouseClick);
+  //   };
+  // }, [isPicking]);
 
   return null;
 }
 
-const cache = createCache({
-  key: "livfeeb", // Work
-  stylisPlugins: [
-    extraScopePlugin("#live-feedback"), // Working !
-  ],
-});
-
-function App() {
+function App({ shadowRoot }: { shadowRoot: ShadowRoot }) {
+  const { isPicking, setTempThreadCreationIntent, setIsPicking } =
+    useGithubStore((state) => ({
+      isPicking: state.isPicking,
+      setTempThreadCreationIntent: state.setTempThreadCreationIntent,
+      setIsPicking: state.setIsPicking,
+    }));
+  const cache = useMemo(
+    () =>
+      createCache({
+        key: "livfeeb", // Work
+        container: shadowRoot || document.head,
+        prepend: true,
+      }),
+    []
+  );
   return (
     <CacheProvider value={cache}>
-      <ResetCSS id="live-feedback-styles-wrapper">
+      <ResetCSS
+        id="live-feedback-styles-wrapper"
+        data-is-picking={isPicking}
+        onClick={(e) => {
+          if (!isPicking) return;
+          setIsPicking(false);
+          const target = document
+            .elementsFromPoint(e.clientX, e.clientY)
+            .filter((el) => el.id !== "live-feedback")[0];
+          console.log("click", target);
+          if (target) {
+            setTempThreadCreationIntent({
+              target: target as HTMLElement,
+              x: e.pageX,
+              y: e.pageY,
+            });
+          }
+        }}
+      >
         <GlobalStyles />
         <RegisterEvents />
         <Navbar />
