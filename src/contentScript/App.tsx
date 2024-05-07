@@ -68,9 +68,14 @@ function App({ shadowRoot }: { shadowRoot: ShadowRoot }) {
         onClick={(e) => {
           if (!isPicking) return;
           setIsPicking(false);
-          const target = document
-            .elementsFromPoint(e.clientX, e.clientY)
-            .filter((el) => el.id !== "live-feedback")[0];
+          const elementsFromPoint = document.elementsFromPoint(
+            e.clientX,
+            e.clientY
+          );
+          if (elementsFromPoint.some((el) => el.id === "live-feedback")) return;
+          const target = elementsFromPoint.filter(
+            (el) => el.id !== "live-feedback"
+          )[0];
           console.log("click", target);
           if (target) {
             setTempThreadCreationIntent({
