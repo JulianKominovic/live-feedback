@@ -72,11 +72,9 @@ function App({ shadowRoot }: { shadowRoot: ShadowRoot }) {
             e.clientX,
             e.clientY
           );
-          if (elementsFromPoint.some((el) => el.id === "live-feedback")) return;
           const target = elementsFromPoint.filter(
             (el) => el.id !== "live-feedback"
           )[0];
-          console.log("click", target);
           if (target) {
             setTempThreadCreationIntent({
               target: target as HTMLElement,

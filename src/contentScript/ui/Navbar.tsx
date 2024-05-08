@@ -67,6 +67,7 @@ function Navbar() {
   );
   return (
     <Nav
+      data-live-feedback-navbar
       style={{
         borderRadius: "24px",
         cursor: "grab",
@@ -98,7 +99,11 @@ function Navbar() {
             aspectRatio: isPicking ? "unset" : "1/1",
             borderRadius: "9999px",
           }}
-          onClick={() => setIsPicking(!isPicking)}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setIsPicking(!isPicking);
+          }}
           layout
         >
           <motion.div
