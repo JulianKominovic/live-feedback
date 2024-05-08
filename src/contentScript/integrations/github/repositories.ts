@@ -4,7 +4,10 @@ import { log } from "../../utils";
 import octokit, { fetchCache } from "./client";
 
 export async function getRepository() {
-  useSystemStore.getState().setAsyncOperationsStatus("pending");
+  useSystemStore.getState().addTask({
+    id: "get-repository",
+    title: "Fetching repository",
+  });
 
   try {
     const response = await octokit().request("GET /repos/{owner}/{repo}", {
@@ -18,12 +21,20 @@ export async function getRepository() {
       },
     });
 
-    useSystemStore.getState().setAsyncOperationsStatus("success");
+    useSystemStore.getState().updateTaskStatus({
+      id: "get-repository",
+      title: "Fetched repository",
+      status: "success",
+    });
 
     return response;
   } catch (err) {
     log(err);
-    useSystemStore.getState().setAsyncOperationsStatus("error");
+    useSystemStore.getState().updateTaskStatus({
+      id: "get-repository",
+      title: "Error fetching repository",
+      status: "error",
+    });
 
     return null;
   }
