@@ -1,31 +1,23 @@
-// https://davidpiesse.github.io/tailwind-md-colours/
-//
-//Notes
-//
-//All colours are generated from Material Design Docs
-//Colours have a base, a set of shades (50-900) accent colours
-//In addition a companion set of contrast colours are included for colouring text / icons
-// Example usage
-
 import { Global, css } from "@emotion/react";
 import styled from "@emotion/styled";
-// class="w-full bg-red-600 text-red-600-constrast"
+const MAX_Z_INDEX_POSSIBLE = 2147483647;
 export const Z_INDEXES = {
-  TOOLBAR: 999_999_999,
-  HOVERED_BUBBLE: 999_999_998,
-  BUBBLE: 999_999_997,
+  BUBBLE_CREATION_OVERLAY: MAX_Z_INDEX_POSSIBLE,
+  TOOLBAR: MAX_Z_INDEX_POSSIBLE - 1,
+  HOVERED_BUBBLE: MAX_Z_INDEX_POSSIBLE - 2,
+  BUBBLE: MAX_Z_INDEX_POSSIBLE - 3,
 };
 export const CSS_FRAGMENTS = {
-  "box-styles": `background: rgba(0, 0, 0, 0.4);
+  "box-styles": `background: rgba(0, 0, 0, 0.6);
   box-shadow:
     rgba(0, 0, 0, 0.5) 0px 0px 1px 1px,
     rgba(0, 0, 0, 0.25) 0px 4px 4px,
-    rgba(255, 255, 255, 0.2) 0px 0px 1px 1px inset !important;
-  backdrop-filter: blur(26px) !important;`,
+    rgba(255, 255, 255, 0.2) 0px 0px 1px 1px inset;
+  backdrop-filter: blur(32px);`,
   "button-styles": `box-shadow:
     rgba(0, 0, 0, 0.5) 0px 0px 1px 1px,
     rgba(0, 0, 0, 0.25) 0px 4px 4px,
-    rgba(255, 255, 255, 0.2) 0px 0px 2px 0px inset !important; `,
+    rgba(255, 255, 255, 0.2) 0px 0px 2px 0px inset; `,
 };
 export const COLORS = {
   transparent: "transparent",
@@ -601,7 +593,7 @@ export const GlobalStyles = () => (
           Cantarell,
           "Open Sans",
           "Helvetica Neue",
-          sans-serif !important;
+          sans-serif;
       }
     `}
   />
@@ -625,21 +617,59 @@ export const ResetCSS = styled.div`
       Cantarell,
       "Open Sans",
       "Helvetica Neue",
-      sans-serif !important;
+      sans-serif;
     font-size: 14px;
     line-height: 16px;
-    outline: 2px solid transparent !important;
-    outline-offset: 0px !important;
+    outline: 2px solid transparent;
+    outline-offset: 0px;
     transition: outline-offset 0.15s ease-in-out;
   }
-  *:hover {
-    border: none !important;
+
+  .spinner_V8m1 {
+    transform-origin: center;
+    animation: spinner_zKoa 2s linear infinite;
   }
+  .spinner_V8m1 circle {
+    stroke-linecap: round;
+    animation: spinner_YpZS 1.5s ease-in-out infinite;
+  }
+  @keyframes spinner_zKoa {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes spinner_YpZS {
+    0% {
+      stroke-dasharray: 0 150;
+      stroke-dashoffset: 0;
+    }
+    47.5% {
+      stroke-dasharray: 42 150;
+      stroke-dashoffset: -16;
+    }
+    95%,
+    100% {
+      stroke-dasharray: 42 150;
+      stroke-dashoffset: -59;
+    }
+  }
+
+  &[data-is-picking="true"] {
+    top: 0;
+    left: 0;
+    z-index: ${Z_INDEXES.BUBBLE_CREATION_OVERLAY};
+    position: fixed;
+    width: 100vw;
+    height: 100dvh;
+    cursor: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzE0N18yKSI+CjxwYXRoIGQ9Ik0tNC45MzA2MWUtMDcgMy41QzAuMDYxMjg2NSAyLjU2MDcyIDAuMzQ4OTAyIDEuMzU3MTQgMS4wNTU1NSAwLjczNTM0N0MxLjc2MjIgMC4xMTM1NTQgMi44MzAyMiAwLjEyNDI5NiAzLjc2OTY0IDAuMTgzMDM0QzQuMTI2MjggMC4yMTI4OSA0LjQ3NzM1IDAuMjkwMTAzIDQuODEzNiAwLjQxMjYzOEwxNC44MDgyIDQuNzc5M0MxNS4xNDE2IDQuOTA2MjUgMTUuNDkxNCA0LjgwNjgxIDE1Ljc3MTcgNC42NjcxMUwxNS44Mjg4IDQuNjQwMDZDMTUuODQ3NCA0LjYzMDEgMTUuOTIzOCA0LjU4MjA0IDE1Ljk3OTkgNC41NDhDMTYuMDM2IDQuNTEzOTcgMTYuMDk2NiA0LjQ3NDY2IDE2LjE1NTYgNC40Mzk0MUwxNi4xOTQ1IDQuNDE1NDJDMjEuMjU4OCAxLjQ5NzM1IDI3LjA2ODMgMC4xMzA0OTEgMzIuOTAyNCAwLjQ4NDQzQzQwLjg1OTQgMC45NDEzNTkgNDguMTg3MSA0LjUwODkgNTMuNTQ1NSAxMC41MzMzQzU5LjA3NzIgMTYuNzY2NCA2MS44NDMzIDI0LjgyMzEgNjEuMzMzNiAzMy4yMzg3QzYwLjkwNDggNDAuMzc4MSA1OC4wNTY5IDQ3LjE1ODUgNTMuMjU5MiA1Mi40NjI5QzQ4LjU0MzIgNTcuNjQ3IDQyLjIwMTIgNjEuMDY0NiAzNS4zOSA2Mi4wODU4QzMzLjMyMDUgNjIuNDAxOCAzMS4yMjMzIDYyLjQ5NjkgMjkuMTMzNyA2Mi4zNjk2QzIwLjk5MzIgNjEuODc2NiAxMy41MzY1IDU4LjI4NiA4LjEzNTMxIDUyLjI1NzdDMi42ODA0NyA0Ni4xNzYyIC0wLjAzOTAzOTYgMzguMjg4NyAwLjQ1OTk5OSAzMC4wNDg1QzAuNjM1Njg3IDI3LjE0NzUgMS42MDA5MiAyMy40ODA1IDIuMjExNjcgMjEuNzI4OUMyLjk0MTA0IDE5LjYyMTIgMy44NDU5NyAxNy42MzY1IDMuOTQyNDEgMTcuNDE3N0M0LjA0NzQ1IDE3LjE4NjQgNC4xMDk0OSAxNi45Mzc4IDQuMTI1NDggMTYuNjg0MkM0LjE0MzggMTYuNDA5MyA0LjEwNjI3IDE2LjEzMzUgNC4wMTUxNCAxNS44NzM0TDMuOTc2NjcgMTUuNzUzMkwwLjIyODkxNSA0Ljk2Mjc1QzAuMDYzOTE5OCA0LjQ5MzI0IC0wLjAxMzY2NzIgMy45OTc0NyAtNC45MzA2MWUtMDcgMy41WiIgZmlsbD0iYmxhY2siLz4KPHBhdGggZD0iTTIuODg3MiA2LjA4NTkyQzIuOTQyOCA1LjIzMzU4IDMuMjAyOTcgNC4xNDEzNiAzLjg0MTY0IDMuNTc2OTZDNC40ODAzMSAzLjAxMjU3IDUuNDQ1MzUgMy4wMjIwNyA2LjI5NDE5IDMuMDc1MTVDNi42MTY0NCAzLjEwMjE2IDYuOTMzNjUgMy4xNzIxNCA3LjIzNzQ2IDMuMjgzMjVMMTYuMjY3NSA3LjI0MzM0QzE2LjU2ODcgNy4zNTg0NiAxNi44ODQ4IDcuMjY4MTUgMTcuMTM4MSA3LjE0MTMxTDE3LjE4OTcgNy4xMTY3NkMxNy4yMDY1IDcuMTA3NzEgMTcuMjc1NSA3LjA2NDA4IDE3LjMyNjMgNy4wMzMxOEMxNy4zNzcgNy4wMDIyOSAxNy40MzE4IDYuOTY2NiAxNy40ODUxIDYuOTM0NkwxNy41MjAyIDYuOTEyODJDMjIuMDk2OSA0LjI2MzcyIDI3LjM0NjcgMy4wMjIwNCAzMi42MTgyIDMuMzQxODVDMzkuODA4IDMuNzU0NjMgNDYuNDI4NCA2Ljk5MDIgNTEuMjY4OSAxMi40NTU2QzU2LjI2NTcgMTguMTEwNCA1OC43NjMzIDI1LjQyMDYgNTguMzAwOCAzMy4wNTczQzU3LjkxMTcgMzkuNTM1OSA1NS4zMzY4IDQ1LjY4OTIgNTEuMDAwNCA1MC41MDM2QzQ2LjczNzkgNTUuMjA4OSA0MS4wMDY0IDU4LjMxMTcgMzQuODUxNyA1OS4yMzk5QzMyLjk4MTYgNTkuNTI3MSAzMS4wODY2IDU5LjYxMzkgMjkuMTk4NSA1OS40OTg5QzIxLjg0MjggNTkuMDUzNCAxNS4xMDU5IDU1Ljc5NyAxMC4yMjY4IDUwLjMyNzlDNS4yOTkzMSA0NC44MTA3IDIuODQzODIgMzcuNjU0IDMuMjk2NjcgMzAuMTc2NkMzLjQ1NjEgMjcuNTQ0MSA0LjMyOTEyIDI0LjIxNjMgNC44ODE0IDIyLjYyNjdDNS41NDA5NCAyMC43MTQgNi4zNTkxIDE4LjkxMjggNi40NDYyOSAxOC43MTQzQzYuNTQxMjYgMTguNTA0MyA2LjU5NzM3IDE4LjI3ODggNi42MTE4OCAxOC4wNDg3QzYuNjI4NSAxNy43OTkyIDYuNTk0NjUgMTcuNTQ4OSA2LjUxMjM3IDE3LjMxMjlMNi40Nzc2MyAxNy4yMDM5TDMuMDkzNzEgNy40MTMyQzIuOTQ0NzMgNi45ODcyIDIuODc0NzQgNi41MzczNCAyLjg4NzIgNi4wODU5MloiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik01LjQ5MTQyIDguNjE5ODRDNS41NDE0NSA3Ljg1MzE4IDUuNzc2MiA2Ljg3MDggNi4zNTI5OCA2LjM2MzI4QzYuOTI5NzYgNS44NTU3NiA3LjgwMTUgNS44NjQ1MyA4LjU2ODI3IDUuOTEyNDdDOC44NTkzNiA1LjkzNjg0IDkuMTQ1OTEgNS45OTk4NyA5LjQyMDM3IDYuMDk5ODhMMTcuNTc4MSA5LjY2NDAzQzE3Ljg1MDIgOS43Njc2NSAxOC4xMzU4IDkuNjg2NDggMTguMzY0NSA5LjU3MjQ1TDE4LjQxMTEgOS41NTAzOEMxOC40MjYzIDkuNTQyMjUgMTguNDg4NyA5LjUwMzAyIDE4LjUzNDUgOS40NzUyNEMxOC41ODAzIDkuNDQ3NDYgMTguNjI5OCA5LjQxNTM3IDE4LjY3NzkgOS4zODY2TDE4LjcwOTcgOS4zNjcwMkMyMi44NDMyIDYuOTg1MjUgMjcuNTg1MSA1Ljg2OTU5IDMyLjM0NjkgNi4xNTg0OEMzOC44NDE1IDYuNTMxNDMgNDQuODIyNSA5LjQ0MzMyIDQ5LjE5NjIgMTQuMzYwNUM1My43MTEyIDE5LjQ0ODEgNTUuOTY5IDI2LjAyNDEgNTUuNTUzIDMyLjg5MzFDNTUuMjAzIDM4LjcyMDQgNTIuODc4NSA0NC4yNTQ3IDQ4Ljk2MjUgNDguNTg0MkM0NS4xMTMzIDUyLjgxNTUgMzkuOTM2NyA1NS42MDUxIDM0LjM3NzQgNTYuNDM4NkMzMi42ODgyIDU2LjY5NjUgMzAuOTc2NCA1Ni43NzQyIDI5LjI3MDkgNTYuNjcwM0MyMi42MjY0IDU2LjI2NzkgMTYuNTQwMiA1My4zMzcyIDEyLjEzMTYgNDguNDE2N0M3LjY3OTI3IDQzLjQ1MjkgNS40NTk1NiAzNy4wMTUgNS44NjY4OCAzMC4yODkyQzYuMDEwMjggMjcuOTIxMyA2Ljc5ODEyIDI0LjkyODIgNy4yOTY2MiAyMy40OTg2QzcuODkxOTUgMjEuNzc4MiA4LjYzMDU3IDIwLjE1ODMgOC43MDkyOSAxOS45Nzk3QzguNzk1MDIgMTkuNzkwOSA4Ljg0NTY2IDE5LjU4OCA4Ljg1ODcxIDE5LjM4MTFDOC44NzM2NyAxOS4xNTY2IDguODQzMDMgMTguOTMxNSA4Ljc2ODY1IDE4LjcxOTJMOC43MzcyNSAxOC42MjExTDUuNjc4MjcgOS44MTM3NkM1LjU0MzYgOS40MzA1NCA1LjQ4MDI3IDkuMDI1ODggNS40OTE0MiA4LjYxOTg0WiIgZmlsbD0iYmxhY2siLz4KPC9nPgo8ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwMF8xNDdfMiI+CjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgZmlsbD0id2hpdGUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDY0IDYuMTAzNTJlLTA1KSByb3RhdGUoOTApIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg=="),
+      crosshair;
+  }
+
   *:focus {
     transition: outline-offset 0.15s ease-in-out 0s;
-    outline: rgb(90, 90, 90) solid 1px !important;
-    outline-offset: 3px !important;
-    border: none !important;
+    outline: rgb(90, 90, 90) solid 1px;
+    outline-offset: 3px;
+    border: none;
   }
   button {
     cursor: pointer;

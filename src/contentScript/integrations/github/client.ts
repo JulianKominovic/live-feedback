@@ -32,12 +32,7 @@ const setGithubCache = async (url: string, data: any) => {
 
 export const fetchCache = async (url: string, requestInit: RequestInit) => {
   const { data, validUntil } = await getGithubCacheByUrl(url);
-  console.log({
-    data,
-    validUntil,
-    now: Date.now(),
-    diff: validUntil - Date.now(),
-  });
+
   if (validUntil && validUntil > Date.now()) {
     const mockedResponse = new Response(
       new Blob([JSON.stringify(data)], { type: "application/json" }),

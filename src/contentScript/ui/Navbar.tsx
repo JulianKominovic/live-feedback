@@ -50,9 +50,10 @@ const BigPanel = styled(motion.main)`
 `;
 
 function Navbar() {
-  const { isPicking, threads } = useThreadsStore((state) => ({
+  const { isPicking, threads, setIsPicking } = useThreadsStore((state) => ({
     isPicking: state.isPicking,
     threads: state.threads,
+    setIsPicking: state.setIsPicking,
   }));
   const asyncOperationStatus = useSystemStore(
     (state) => state.asyncOperationsStatus
@@ -66,6 +67,7 @@ function Navbar() {
   );
   return (
     <Nav
+      data-live-feedback-navbar
       style={{
         borderRadius: "24px",
         cursor: "grab",
@@ -96,6 +98,11 @@ function Navbar() {
             width: isPicking ? "fit-content" : "32px",
             aspectRatio: isPicking ? "unset" : "1/1",
             borderRadius: "9999px",
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setIsPicking(!isPicking);
           }}
           layout
         >

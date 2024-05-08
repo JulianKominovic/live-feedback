@@ -10,10 +10,11 @@ function initApp() {
   const div = document.createElement("div");
   div.id = "live-feedback";
   document.body.appendChild(div);
-  root = ReactDOM.createRoot(div);
+  const shadowRoot = div.attachShadow({ mode: "open" });
+  root = ReactDOM.createRoot(shadowRoot);
   root.render(
     <React.StrictMode>
-      <App />
+      <App shadowRoot={shadowRoot} />
     </React.StrictMode>
   );
 }

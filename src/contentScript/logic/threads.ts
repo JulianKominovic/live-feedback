@@ -5,7 +5,6 @@ import {
 } from "../integrations/github/issues";
 import { Thread } from "../types/Threads";
 import { uploadDomPhoto, uploadElementPhoto } from "./github";
-import { getCssSelector } from "css-selector-generator";
 import { log, sha256 } from "../utils";
 import {
   takeElementScreenshot,
@@ -13,7 +12,6 @@ import {
 } from "../integrations/background/tabs";
 import { GH_OWNER, GH_REPO } from "../const";
 import { getRepository } from "../integrations/github/repositories";
-import { finder } from "@medv/finder";
 import { buildSelectors, tryToGetElementFromSelectors } from "./dom";
 
 export async function createThread(
@@ -42,7 +40,6 @@ export async function createThread(
     ((clickYCoord - (elementRect.top + window.scrollY)) / elementRect.height) *
     100;
 
-  console.log(JSON.stringify(buildSelectors(element)));
   const thread: Thread = {
     title: "[LIVE FEEDBACK] - " + title,
     status: "OPEN",
@@ -66,70 +63,69 @@ export async function createThread(
     },
   };
   log("Thread created", thread);
-  return thread;
-  // try {
-  //   log("Gettings repo info");
-  //   const repoInfo = await getRepository();
-  //   const isPrivateRepo = repoInfo?.data.private;
-  //   log("Creating issue");
-  //   const issueResponse = await createIssue({
-  //     body: "",
-  //     title: thread.title,
-  //   });
-  //   if (!issueResponse) return null;
-  //   const GHissueId = issueResponse.data.number;
-  //   const GHIssueCreatorName =
-  //     issueResponse.data.user?.name || issueResponse.data.user?.login;
-  //   const GHIssueCreatorAvatar = issueResponse.data.user?.avatar_url;
-  //   log("Uploading dom & element photos");
-  //   const domPhotoUpload = await uploadDomPhoto(GHissueId.toString(), domPhoto);
-  //   if (!domPhotoUpload) return null;
-  //   const elementPhotoUpload = await uploadElementPhoto(
-  //     GHissueId.toString(),
-  //     elementPhoto
-  //   );
-  //   if (!elementPhotoUpload) return null;
+  try {
+    log("Gettings repo info");
+    const repoInfo = await getRepository();
+    const isPrivateRepo = repoInfo?.data.private;
+    log("Creating issue");
+    const issueResponse = await createIssue({
+      body: "",
+      title: thread.title,
+    });
+    if (!issueResponse) return null;
+    const GHissueId = issueResponse.data.number;
+    const GHIssueCreatorName =
+      issueResponse.data.user?.name || issueResponse.data.user?.login;
+    const GHIssueCreatorAvatar = issueResponse.data.user?.avatar_url;
+    log("Uploading dom & element photos");
+    const domPhotoUpload = await uploadDomPhoto(GHissueId.toString(), domPhoto);
+    if (!domPhotoUpload) return null;
+    const elementPhotoUpload = await uploadElementPhoto(
+      GHissueId.toString(),
+      elementPhoto
+    );
+    if (!elementPhotoUpload) return null;
 
-  //   const issueBody = `
-  // # ${thread.title}
+    const issueBody = `
+  # ${thread.title}
 
-  // ## Info
-  // - **Date**: ${new Date(thread.date).toLocaleString()}
-  // - **User Agent**: ${navigator.userAgent}
-  // - **URL**: ${window.location.href}
-  // - **OS**: ${navigator.platform}
-  // - **Browser**: ${navigator.appVersion}
-  // - **Resolution**: ${window.screen.width}w x${window.screen.height}h
-  // ${bindedPullRequestId !== 0 ? `- **Pull Request**: #${bindedPullRequestId}` : ""}
+  ## Info
+  - **Date**: ${new Date(thread.date).toLocaleString()}
+  - **User Agent**: ${navigator.userAgent}
+  - **URL**: ${window.location.href}
+  - **OS**: ${navigator.platform}
+  - **Browser**: ${navigator.appVersion}
+  - **Resolution**: ${window.screen.width}w x${window.screen.height}h
+  ${bindedPullRequestId !== 0 ? `- **Pull Request**: #${bindedPullRequestId}` : ""}
 
-  // ## Images
-  // ### DOM Photo
-  // ${isPrivateRepo ? `https://github.com/${GH_OWNER()}/${GH_REPO()}/blob/master/.github/live-feedback/${domPhotoUpload.data.content?.name}` : `![Dom Photo](${domPhotoUpload.data.content?.download_url})`}
+  ## Images
+  ### DOM Photo
+  ${isPrivateRepo ? `https://github.com/${GH_OWNER()}/${GH_REPO()}/blob/master/.github/live-feedback/${domPhotoUpload.data.content?.name}` : `![Dom Photo](${domPhotoUpload.data.content?.download_url})`}
 
-  // ### Element Photo
-  // ${isPrivateRepo ? `https://github.com/${GH_OWNER()}/${GH_REPO()}/blob/master/.github/live-feedback/${elementPhotoUpload.data.content?.name}` : `![Element Photo](${elementPhotoUpload.data.content?.download_url})`}
+  ### Element Photo
+  ${isPrivateRepo ? `https://github.com/${GH_OWNER()}/${GH_REPO()}/blob/master/.github/live-feedback/${elementPhotoUpload.data.content?.name}` : `![Element Photo](${elementPhotoUpload.data.content?.download_url})`}
 
-  // ## Tracking (internal use)
-  // \`\`\`json
-  // ${JSON.stringify(thread.tracking)}
-  // \`\`\`
-  //             `;
-  //   log("Updating issue");
-  //   await updateIssue({
-  //     body: issueBody,
-  //     title: thread.title,
-  //     issue_number: GHissueId,
-  //   });
-  //   thread.GHissueId = GHissueId + "";
-  //   thread.creator = {
-  //     name: GHIssueCreatorName,
-  //     avatar: GHIssueCreatorAvatar,
-  //   };
-  //   return thread;
-  // } catch (err) {
-  //   log(err);
-  //   return null;
-  // }
+  ## Tracking (internal use)
+  \`\`\`json
+  ${JSON.stringify(thread.tracking)}
+  \`\`\`
+              `;
+    log("Updating issue");
+    await updateIssue({
+      body: issueBody,
+      title: thread.title,
+      issue_number: GHissueId,
+    });
+    thread.GHissueId = GHissueId + "";
+    thread.creator = {
+      name: GHIssueCreatorName,
+      avatar: GHIssueCreatorAvatar,
+    };
+    return thread;
+  } catch (err) {
+    log(err);
+    return null;
+  }
 }
 
 export async function getThreads() {
@@ -162,7 +158,11 @@ export async function getThreads() {
 
 export function checkThreadsBubbles(threads: Thread[]) {
   return threads.map((thread) => {
-    const element = tryToGetElementFromSelectors(thread.tracking.selectors);
+    const element = (
+      Array.isArray(thread.tracking.selectors)
+        ? tryToGetElementFromSelectors(thread.tracking.selectors)
+        : document.querySelector(thread.tracking.selectors)
+    ) as HTMLElement | null;
     // log("Element found?", element);
     if (!element) {
       thread.tracking.show = false;
@@ -234,7 +234,9 @@ export function checkThreadsBubbles(threads: Thread[]) {
 }
 
 export function calculateBubblePosition(thread: Thread) {
-  const element = tryToGetElementFromSelectors(thread.tracking.selectors);
+  const element = Array.isArray(thread.tracking.selectors)
+    ? tryToGetElementFromSelectors(thread.tracking.selectors)
+    : document.querySelector(thread.tracking.selectors);
   if (!element) return thread;
   const rect = element.getBoundingClientRect();
 
