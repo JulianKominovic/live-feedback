@@ -33,16 +33,9 @@ function AsyncOperationsStatus() {
       <SemaphoreIndicator color={COLORS["red-600"]}>
         {asyncOperations.error}
       </SemaphoreIndicator>
-      <SemaphoreIndicator
-        color={COLORS["orange-600"]}
-        style={{
-          maxWidth: "14ch",
-        }}
-      >
-        {asyncOperations.pending > 1
-          ? asyncOperations.pending
-          : queue.find((task) => task.status === "pending")?.title ||
-            asyncOperations.pending}
+      <SemaphoreIndicator color={COLORS["orange-600"]}>
+        {queue.find((task) => task.status === "pending")?.title ||
+          asyncOperations.pending}
       </SemaphoreIndicator>
     </>
   );
@@ -51,14 +44,13 @@ function AsyncOperationsStatus() {
 const Nav = styled(motion.nav)`
   position: fixed;
   z-index: ${Z_INDEXES.TOOLBAR};
-  left: calc(50% - 384px / 2);
+  left: 16px;
   bottom: 16px;
   padding-inline-start: 8px;
   padding-inline-end: 12px;
   font-size: 14px;
   color: ${COLORS["grey-900-contrast"]};
   background-color: ${COLORS["grey-900"]};
-  max-width: 384px;
   width: fit-content;
   overflow-x: hidden;
   padding-block: 4px;
