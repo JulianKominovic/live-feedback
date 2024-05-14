@@ -60,16 +60,18 @@ async function applyWebsiteImperativeSettings() {
     await chrome.storage.local.set({ locked_repo: false, locked_owner: false });
   }
 }
+chrome.runtime.onMessage.addListener(
+  async (message, sender, senderResponse) => {
+    console.log("Message received in content script: ", message);
+    if (
+      message.type === INTERCOM_EVENTS.ACTIVE_TAB_CHANGED ||
+      message.type === INTERCOM_EVENTS.TAB_UPATED
+    ) {
+      applyWebsiteImperativeSettings();
+    }
 
-chrome.runtime.onMessage.addListener((message, sender, senderResponse) => {
-  if (
-    message.type === INTERCOM_EVENTS.ACTIVE_TAB_CHANGED ||
-    message.type === INTERCOM_EVENTS.TAB_UPATED
-  ) {
-    applyWebsiteImperativeSettings();
+    senderResponse({});
+
+    return true;
   }
-
-  senderResponse({});
-
-  return true;
-});
+);
