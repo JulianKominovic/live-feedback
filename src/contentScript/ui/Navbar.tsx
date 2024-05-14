@@ -13,21 +13,44 @@ import { VerticalDivider } from "./atoms/VerticalDivider";
 import { Button } from "./atoms/Button";
 import useSystemStore from "../store/system";
 import { clearGithubCache } from "../integrations/github/client";
+import SemaphoreIndicator from "./atoms/SemaphoreIndicator";
 
 function MentionsBigPanel() {
   return <>hi!</>;
 }
 
+function AsyncOperationsStatus() {
+  const { asyncOperations, queue } = useSystemStore((state) => ({
+    asyncOperations: state.asyncOperations,
+    queue: state.queue,
+  }));
+
+  return (
+    <>
+      <SemaphoreIndicator color={COLORS["green-600"]}>
+        {asyncOperations.success}
+      </SemaphoreIndicator>
+      <SemaphoreIndicator color={COLORS["red-600"]}>
+        {asyncOperations.error}
+      </SemaphoreIndicator>
+      <SemaphoreIndicator color={COLORS["orange-600"]}>
+        {queue.find((task) => task.status === "pending")?.title ||
+          asyncOperations.pending}
+      </SemaphoreIndicator>
+    </>
+  );
+}
+
 const Nav = styled(motion.nav)`
   position: fixed;
   z-index: ${Z_INDEXES.TOOLBAR};
-  left: calc(50% - 384px / 2);
+  left: 16px;
   bottom: 16px;
-  padding-inline: 8px;
+  padding-inline-start: 8px;
+  padding-inline-end: 12px;
   font-size: 14px;
   color: ${COLORS["grey-900-contrast"]};
   background-color: ${COLORS["grey-900"]};
-  max-width: 384px;
   width: fit-content;
   overflow-x: hidden;
   padding-block: 4px;
@@ -55,9 +78,6 @@ function Navbar() {
     threads: state.threads,
     setIsPicking: state.setIsPicking,
   }));
-  const asyncOperationStatus = useSystemStore(
-    (state) => state.asyncOperationsStatus
-  );
   const [showMentions, setShowMentions] = useState(false);
   const showBigPanel = showMentions;
   const participants = new Set(
@@ -73,7 +93,8 @@ function Navbar() {
         cursor: "grab",
       }}
       drag
-      layout
+      layout="size"
+      layoutRoot
     >
       <AnimatePresence mode="popLayout" presenceAffectsLayout>
         {showBigPanel ? (
@@ -268,39 +289,7 @@ function Navbar() {
         >
           <GearIcon />
         </Button>
-        <motion.div
-          layout="position"
-          style={{
-            background:
-              asyncOperationStatus === "idle"
-                ? COLORS["grey-700"]
-                : asyncOperationStatus === "pending"
-                  ? COLORS["yellow-500"]
-                  : asyncOperationStatus === "success"
-                    ? COLORS["green-500"]
-                    : COLORS["red-500"],
-            borderRadius: "50%",
-            width: "8px",
-            height: "8px",
-            aspectRatio: "1/1",
-            marginInlineStart: "8px",
-          }}
-        />
-        <motion.span
-          style={{
-            fontSize: "12px",
-            paddingInlineEnd: "8px",
-          }}
-          layout="position"
-        >
-          {asyncOperationStatus === "idle"
-            ? "Idle"
-            : asyncOperationStatus === "pending"
-              ? "Busy"
-              : asyncOperationStatus === "success"
-                ? "Success"
-                : "Error"}
-        </motion.span>
+        <AsyncOperationsStatus />
       </Toolbar>
     </Nav>
   );

@@ -17,8 +17,8 @@ export const getGithubCacheByUrl = async (url: string) => {
   return localData[url] || {};
 };
 
-export const clearGithubCache = async () => {
-  chrome.storage.local.remove(GITHUB_CACHE_CHROME_STORAGE_KEY);
+export const clearGithubCache = () => {
+  return chrome.storage.local.remove(GITHUB_CACHE_CHROME_STORAGE_KEY);
 };
 
 const setGithubCache = async (url: string, data: any) => {

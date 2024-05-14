@@ -4,7 +4,10 @@ import { log } from "../../utils";
 import octokit, { fetchCache } from "./client";
 
 export async function getIssue({ issue_number }: { issue_number: number }) {
-  useSystemStore.getState().setAsyncOperationsStatus("pending");
+  useSystemStore.getState().addTask({
+    id: `issue-${issue_number}`,
+    title: `Fetching issue #${issue_number}`,
+  });
 
   try {
     const response = await octokit().request(
@@ -21,12 +24,20 @@ export async function getIssue({ issue_number }: { issue_number: number }) {
         },
       }
     );
-    useSystemStore.getState().setAsyncOperationsStatus("success");
+    useSystemStore.getState().updateTaskStatus({
+      id: `issue-${issue_number}`,
+      title: `Fetched issue #${issue_number}`,
+      status: "success",
+    });
 
     return response;
   } catch (err) {
     log(err);
-    useSystemStore.getState().setAsyncOperationsStatus("error");
+    useSystemStore.getState().updateTaskStatus({
+      id: `issue-${issue_number}`,
+      title: `Error fetching issue #${issue_number}`,
+      status: "error",
+    });
 
     return null;
   }
@@ -39,7 +50,10 @@ export async function createIssue({
   body: string;
   title: string;
 }) {
-  useSystemStore.getState().setAsyncOperationsStatus("pending");
+  useSystemStore.getState().addTask({
+    id: "create-issue-" + title,
+    title: `Creating issue ${title}`,
+  });
 
   try {
     const response = await octokit().request(
@@ -55,12 +69,20 @@ export async function createIssue({
         },
       }
     );
-    useSystemStore.getState().setAsyncOperationsStatus("success");
+    useSystemStore.getState().updateTaskStatus({
+      id: "create-issue-" + title,
+      title: `Issue created ${title}`,
+      status: "success",
+    });
 
     return response;
   } catch (err) {
     log(err);
-    useSystemStore.getState().setAsyncOperationsStatus("error");
+    useSystemStore.getState().updateTaskStatus({
+      id: "create-issue-" + title,
+      title: `Error creating issue ${title}`,
+      status: "error",
+    });
 
     return null;
   }
@@ -75,7 +97,10 @@ export async function updateIssue({
   issue_number: number;
   title: string;
 }) {
-  useSystemStore.getState().setAsyncOperationsStatus("pending");
+  useSystemStore.getState().addTask({
+    id: `update-issue-${issue_number}`,
+    title: `Updating issue #${issue_number}`,
+  });
 
   try {
     const response = await octokit().request(
@@ -91,19 +116,30 @@ export async function updateIssue({
         },
       }
     );
-    useSystemStore.getState().setAsyncOperationsStatus("success");
+    useSystemStore.getState().updateTaskStatus({
+      id: `update-issue-${issue_number}`,
+      title: `Updated issue #${issue_number}`,
+      status: "success",
+    });
 
     return response;
   } catch (err) {
     log(err);
-    useSystemStore.getState().setAsyncOperationsStatus("error");
+    useSystemStore.getState().updateTaskStatus({
+      id: `update-issue-${issue_number}`,
+      title: `Error updating issue #${issue_number}`,
+      status: "error",
+    });
 
     return null;
   }
 }
 
 export async function getIssues() {
-  useSystemStore.getState().setAsyncOperationsStatus("pending");
+  useSystemStore.getState().addTask({
+    id: "get-issues",
+    title: `Fetching issues`,
+  });
 
   try {
     const response = await octokit().request(
@@ -120,12 +156,20 @@ export async function getIssues() {
         },
       }
     );
-    useSystemStore.getState().setAsyncOperationsStatus("success");
+    useSystemStore.getState().updateTaskStatus({
+      id: "get-issues",
+      title: `Fetched issues`,
+      status: "success",
+    });
 
     return response;
   } catch (err) {
     log(err);
-    useSystemStore.getState().setAsyncOperationsStatus("error");
+    useSystemStore.getState().updateTaskStatus({
+      id: "get-issues",
+      title: `Error fetching issues`,
+      status: "error",
+    });
 
     return null;
   }
@@ -136,7 +180,10 @@ export async function getIssueComments({
 }: {
   issue_number: number;
 }) {
-  useSystemStore.getState().setAsyncOperationsStatus("pending");
+  useSystemStore.getState().addTask({
+    id: `issue-comments-${issue_number}`,
+    title: `Fetching comments for issue #${issue_number}`,
+  });
 
   try {
     const response = await octokit().request(
@@ -156,12 +203,22 @@ export async function getIssueComments({
         },
       }
     );
-    useSystemStore.getState().setAsyncOperationsStatus("success");
+
+    useSystemStore.getState().updateTaskStatus({
+      id: `issue-comments-${issue_number}`,
+      title: `Fetched comments for issue #${issue_number}`,
+      status: "success",
+    });
 
     return response;
   } catch (err) {
     log(err);
-    useSystemStore.getState().setAsyncOperationsStatus("error");
+
+    useSystemStore.getState().updateTaskStatus({
+      id: `issue-comments-${issue_number}`,
+      title: `Error fetching comments for issue #${issue_number}`,
+      status: "error",
+    });
 
     return null;
   }
@@ -174,7 +231,10 @@ export async function createIssueComment({
   body: string;
   issue_number: number;
 }) {
-  useSystemStore.getState().setAsyncOperationsStatus("pending");
+  useSystemStore.getState().addTask({
+    id: `create-issue-comment-${issue_number}`,
+    title: `Creating comment for issue #${issue_number}`,
+  });
 
   try {
     const response = await octokit().request(
@@ -189,12 +249,22 @@ export async function createIssueComment({
         },
       }
     );
-    useSystemStore.getState().setAsyncOperationsStatus("success");
+
+    useSystemStore.getState().updateTaskStatus({
+      id: `create-issue-comment-${issue_number}`,
+      title: `Comment created for issue #${issue_number}`,
+      status: "success",
+    });
 
     return response;
   } catch (err) {
     log(err);
-    useSystemStore.getState().setAsyncOperationsStatus("error");
+
+    useSystemStore.getState().updateTaskStatus({
+      id: `create-issue-comment-${issue_number}`,
+      title: `Error creating comment for issue #${issue_number}`,
+      status: "error",
+    });
 
     return null;
   }

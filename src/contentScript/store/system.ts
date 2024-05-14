@@ -1,21 +1,83 @@
 import { create } from "zustand";
-
-export type SystemType = {
-  asyncOperationsStatus: "idle" | "pending" | "success" | "error";
-  setAsyncOperationsStatus: (
-    status: SystemType["asyncOperationsStatus"],
-  ) => void;
+type Task = {
+  id: string;
+  title: string;
+  status: "pending" | "success" | "error";
 };
-
-const useSystemStore = create<SystemType>((set, get) => ({
-  asyncOperationsStatus: "idle",
-  setAsyncOperationsStatus: (status) => {
-    if (status === "error" || status === "success") {
-      setTimeout(() => {
-        set({ asyncOperationsStatus: "idle" });
-      }, 3000);
+export type SystemType = {
+  queue: Task[];
+  asyncOperations: {
+    pending: number;
+    success: number;
+    error: number;
+  };
+  addTask: (task: Pick<Task, "id" | "title">) => void;
+  removeTask: (id: string) => void;
+  updateTaskStatus: (task: Partial<Task> & { id: Task["id"] }) => void;
+};
+function recalculateAsyncOperations(queue: Task[]) {
+  return queue.reduce(
+    (acc, task) => {
+      return {
+        ...acc,
+        [task.status]: acc[task.status] + 1,
+      };
+    },
+    {
+      pending: 0,
+      success: 0,
+      error: 0,
     }
-    set({ asyncOperationsStatus: status });
+  );
+}
+const useSystemStore = create<SystemType>((set) => ({
+  queue: [],
+  asyncOperations: {
+    pending: 0,
+    success: 0,
+    error: 0,
+  },
+  addTask: (task) => {
+    set((state) => {
+      const updatedQueue: Task[] = [
+        ...state.queue,
+        { ...task, status: "pending" },
+      ];
+      return {
+        ...state,
+        asyncOperations: recalculateAsyncOperations(updatedQueue),
+        queue: updatedQueue,
+      };
+    });
+  },
+  removeTask: (id) => {
+    set((state) => {
+      const updatedQueue = state.queue.filter((task) => task.id !== id);
+      return {
+        ...state,
+        asyncOperations: recalculateAsyncOperations(updatedQueue),
+        queue: updatedQueue,
+      };
+    });
+  },
+  updateTaskStatus: ({ id, status, title }) => {
+    set((state) => {
+      const updatedQueue = state.queue.map((task) =>
+        task.id === id
+          ? {
+              ...task,
+              status: status || task.status,
+              title: title || task.title,
+            }
+          : task
+      );
+
+      return {
+        ...state,
+        asyncOperations: recalculateAsyncOperations(updatedQueue),
+        queue: updatedQueue,
+      };
+    });
   },
 }));
 

@@ -10,7 +10,10 @@ export async function uploadFile({
   fileContent: string;
   path: string;
 }) {
-  useSystemStore.getState().setAsyncOperationsStatus("pending");
+  useSystemStore.getState().addTask({
+    id: path,
+    title: `Creating file ${path}`,
+  });
   try {
     const response = octokit().request(
       "PUT /repos/{owner}/{repo}/contents/{path}",
@@ -25,10 +28,18 @@ export async function uploadFile({
         },
       }
     );
-    useSystemStore.getState().setAsyncOperationsStatus("success");
+    useSystemStore.getState().updateTaskStatus({
+      id: path,
+      title: `File created ${path}`,
+      status: "success",
+    });
     return response;
   } catch (e) {
-    useSystemStore.getState().setAsyncOperationsStatus("error");
+    useSystemStore.getState().updateTaskStatus({
+      id: path,
+      title: `Error creating file ${path}`,
+      status: "error",
+    });
     log(e);
     return null;
   }

@@ -4,7 +4,10 @@ import { log } from "../../utils";
 import octokit, { fetchCache } from "./client";
 
 export async function getOpenPullRequests() {
-  useSystemStore.getState().setAsyncOperationsStatus("pending");
+  useSystemStore.getState().addTask({
+    id: "get-open-pull-requests",
+    title: "Fetching open pull requests",
+  });
 
   try {
     const response = await octokit().request(
@@ -22,12 +25,20 @@ export async function getOpenPullRequests() {
       }
     );
 
-    useSystemStore.getState().setAsyncOperationsStatus("success");
+    useSystemStore.getState().updateTaskStatus({
+      id: "get-open-pull-requests",
+      title: "Fetched open pull requests",
+      status: "success",
+    });
 
     return response;
   } catch (err) {
     log(err);
-    useSystemStore.getState().setAsyncOperationsStatus("error");
+    useSystemStore.getState().updateTaskStatus({
+      id: "get-open-pull-requests",
+      title: "Error fetching open pull requests",
+      status: "error",
+    });
 
     return null;
   }
