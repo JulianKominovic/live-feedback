@@ -29,6 +29,7 @@ const ThreadSelectionRange = () => {
       return [...(thread.tracking.liveCoords as any).clientRects].map(
         (rect, index) => (
           <SelectionRangeOverlay
+            key={thread.GHissueId + "rect" + index}
             data-live-feedback-text-selection={thread.GHissueId || ""}
             data-live-feedback-text-selection-rect={index + ""}
             rect={rect}

@@ -15,7 +15,6 @@ import { Button } from "./atoms/Button";
 import useSystemStore from "../store/system";
 import { clearGithubCache } from "../integrations/github/client";
 import SemaphoreIndicator from "./atoms/SemaphoreIndicator";
-import { randomBetween } from "../utils";
 import { recursiveGetParentUntilItIsAnHTMLElement } from "../logic/dom";
 
 function MentionsBigPanel() {
@@ -231,7 +230,7 @@ function Navbar() {
           <motion.svg
             stroke="currentColor"
             fill="currentColor"
-            stroke-width="0"
+            strokeWidth="0"
             viewBox="0 0 16 16"
             height="1em"
             width="1em"
@@ -260,49 +259,55 @@ function Navbar() {
           <>
             {Array.from(participants)
               .slice(0, 4)
-              .map((participant, i, array) => (
-                <>
-                  <Button
-                    onClick={() => {
-                      const bubbleElement: HTMLButtonElement | null =
-                        document.querySelector(
+              .map((participant, i, array) => {
+                return (
+                  <>
+                    <Button
+                      onClick={() => {
+                        const shadowRoot =
+                          document.querySelector("#live-feedback")?.shadowRoot;
+                        const bubbleElement:
+                          | HTMLButtonElement
+                          | null
+                          | undefined = shadowRoot?.querySelector(
                           "#live-feedback-bubble-" + participant.GHissueId
                         );
 
-                      bubbleElement?.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center",
-                        inline: "center",
-                      });
-                      bubbleElement?.click();
-                    }}
-                    variant="flat"
-                    layout
-                    key={"participant" + i + participant}
-                    style={{
-                      width: "2rem",
-                      aspectRatio: "1/1",
-                      borderRadius: "50%",
-                      padding: 2,
-                      marginInlineStart: i > 0 ? "-12px" : "0px",
-                      marginInlineEnd:
-                        i < 4 && i < array.length - 1 ? "-12px" : "0px",
-                    }}
-                  >
-                    <img
-                      src={participant?.avatar}
-                      alt={participant?.name}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        borderRadius: "50%",
-                        padding: 0,
+                        bubbleElement?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "center",
+                          inline: "center",
+                        });
+                        bubbleElement?.click();
                       }}
-                    />
-                  </Button>
-                </>
-              ))}
+                      variant="flat"
+                      layout
+                      key={"participant" + i + participant.GHissueId}
+                      style={{
+                        width: "2rem",
+                        aspectRatio: "1/1",
+                        borderRadius: "50%",
+                        padding: 2,
+                        marginInlineStart: i > 0 ? "-12px" : "0px",
+                        marginInlineEnd:
+                          i < 4 && i < array.length - 1 ? "-12px" : "0px",
+                      }}
+                    >
+                      <img
+                        src={participant?.avatar}
+                        alt={participant?.name}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          borderRadius: "50%",
+                          padding: 0,
+                        }}
+                      />
+                    </Button>
+                  </>
+                );
+              })}
             {participants.size > 4 && (
               <Button
                 variant="flat"
