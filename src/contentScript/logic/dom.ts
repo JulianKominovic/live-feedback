@@ -1,5 +1,6 @@
 import { getCssSelector } from "css-selector-generator";
 import { finder } from "@medv/finder";
+import { MINIMUM_CSS_SELECTORS_FOR_ELEMENT_TO_SHOW_BUBBLE } from "../const";
 
 export const buildSelectors = (target: HTMLElement) => {
   const selectors = new Set<string>();
@@ -88,7 +89,10 @@ export function tryToGetElementFromSelectors(
     return document.querySelector(match);
   });
   const elementsWithoutFalsies = elementsFound.filter((element) => element);
-  if (elementsWithoutFalsies.length <= selectors.length / 2) {
+  if (
+    elementsWithoutFalsies.length <
+    MINIMUM_CSS_SELECTORS_FOR_ELEMENT_TO_SHOW_BUBBLE
+  ) {
     return null;
   }
   const frecuentElements = new Map<HTMLElement, number>();
@@ -110,8 +114,42 @@ export function tryToGetElementFromSelectors(
   );
   const mostCommonElement = sortedElements[0];
   const [HTMLElement, frecuency] = mostCommonElement;
-  if (frecuency >= selectors.length / 2) {
+  if (frecuency >= MINIMUM_CSS_SELECTORS_FOR_ELEMENT_TO_SHOW_BUBBLE) {
     return HTMLElement;
   }
   return null;
+}
+
+export function recursiveGetParentUntilItIsAnHTMLElement(
+  element: Node | null
+): HTMLElement | null {
+  if (!element) return null;
+  if (element instanceof HTMLElement) return element;
+  return recursiveGetParentUntilItIsAnHTMLElement(element.parentElement);
+}
+
+export function getCssSelectorForTextNode(textNode: Node) {
+  const parentElement = textNode.parentElement;
+
+  return {
+    cssSelectors: buildSelectors(parentElement as HTMLElement),
+    childrenIndex:
+      textNode.nodeName === "#text" && parentElement
+        ? Array.from(parentElement.childNodes).findIndex((el) =>
+            el.isSameNode(textNode)
+          )
+        : -1,
+  };
+}
+
+export function getElementFromCssSelectorAndChildrenIndex(
+  rawCssSelectors?: string[],
+  rawChildrenIndex?: number
+) {
+  const childrenIndex = rawChildrenIndex === undefined ? -1 : rawChildrenIndex;
+  const cssSelectors = rawCssSelectors || [];
+  const element = tryToGetElementFromSelectors(cssSelectors);
+  if (!element) return null;
+  if (childrenIndex === -1) return element;
+  return element.childNodes[childrenIndex] as HTMLElement;
 }

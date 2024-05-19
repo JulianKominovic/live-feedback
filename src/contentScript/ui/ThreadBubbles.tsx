@@ -9,7 +9,6 @@ import { VerticalDivider } from "./atoms/VerticalDivider";
 import { getRelativeTimeString } from "../utils";
 import { Content } from "./bubbles/Content";
 import { CloseButton } from "./bubbles/CloseButton";
-import { CommentForm } from "./bubbles/CommentForm";
 import { Trigger } from "./bubbles/Trigger";
 import { ConversationalCommentForm } from "./bubbles/ConversationalCommentForm";
 
@@ -61,7 +60,18 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
             (document.body as any)
           }
         >
-          <Content data-live-feedback side="bottom">
+          <Content
+            data-live-feedback
+            side="right"
+            align="center"
+            collisionPadding={{
+              top: 8,
+              right: 8,
+              bottom: 72,
+              left: 8,
+            }}
+            sideOffset={8}
+          >
             <header
               style={{
                 display: "flex",
@@ -260,7 +270,6 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
             <CloseButton aria-label="Close">
               <Cross2Icon />
             </CloseButton>
-            <Popover.Arrow className="!lf-fill-white" />
           </Content>
         </Popover.Portal>
       </Popover.Root>
@@ -271,7 +280,7 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
 function ThreadBubbles() {
   const threads = useThreadsStore((state) => state.threads);
   return threads.map((thread) => (
-    <ThreadBubble key={thread.GHissueId} thread={thread} />
+    <ThreadBubble key={thread.GHissueId ?? ""} thread={thread} />
   ));
 }
 

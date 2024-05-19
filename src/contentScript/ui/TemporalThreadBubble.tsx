@@ -3,6 +3,7 @@ import useThreadsStore from "../store/threads";
 import { Content } from "./bubbles/Content";
 import { CommentForm } from "./bubbles/CommentForm";
 import { Trigger } from "./bubbles/Trigger";
+import { useMemo } from "react";
 
 const TemporalThreadBubble = () => {
   const {
@@ -15,7 +16,35 @@ const TemporalThreadBubble = () => {
     createThread: state.createThread,
   }));
   const isCreatingThreadPromptOpen = tempThreadCreationIntent !== null;
+  const y = useMemo(() => {
+    if (!tempThreadCreationIntent) return null;
+    const clientRect = window
+      .getSelection()
+      ?.getRangeAt(0)
+      .getClientRects()
+      .item(0);
+    if (tempThreadCreationIntent.type === "TEXT_RANGE") {
+      if (!clientRect) return null;
+      return clientRect.top + window.scrollY;
+    }
+    return tempThreadCreationIntent.y;
+  }, [tempThreadCreationIntent]);
+  const x = useMemo(() => {
+    if (!tempThreadCreationIntent) return null;
+    const clientRect = window
+      .getSelection()
+      ?.getRangeAt(0)
+      .getClientRects()
+      .item(0);
+
+    if (tempThreadCreationIntent.type === "TEXT_RANGE") {
+      if (!clientRect) return null;
+      return clientRect.left + window.scrollX;
+    }
+    return tempThreadCreationIntent.x;
+  }, [tempThreadCreationIntent]);
   if (!isCreatingThreadPromptOpen) return null;
+  if (!x || !y) return null;
   return (
     <>
       <Popover.Root
@@ -28,8 +57,8 @@ const TemporalThreadBubble = () => {
       >
         <Trigger
           style={{
-            top: tempThreadCreationIntent?.y,
-            left: tempThreadCreationIntent?.x,
+            top: y,
+            left: x,
             position: "absolute",
             zIndex: 999999,
           }}

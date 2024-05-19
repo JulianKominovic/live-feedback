@@ -9,7 +9,7 @@ export function takeTabScreenshot(): Promise<string> {
       (response) => {
         restoreScrollBehavior();
         resolve(response);
-      },
+      }
     );
   });
 }
@@ -46,14 +46,14 @@ export function takeElementScreenshot(element: HTMLElement): Promise<string> {
             0,
             0,
             dimensions.width,
-            dimensions.height,
+            dimensions.height
           );
           const croppedDataUrl = canvas.toDataURL("image/png");
           resolve(croppedDataUrl);
           restoreScrollBehavior();
         };
         image.src = dataUrl;
-      },
+      }
     );
   });
 }
