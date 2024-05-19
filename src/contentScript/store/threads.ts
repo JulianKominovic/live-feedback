@@ -96,7 +96,6 @@ const useThreadsStore = create<ThreadsStore>((set, get) => ({
   },
   createThread: async (comment, bindedPullRequestId) => {
     if (!get().tempThreadCreationIntent) return;
-    set({ isPicking: true });
     log("Creating new thread", comment);
     const tempThreadBubble = get().tempThreadCreationIntent!;
     const creationJob =

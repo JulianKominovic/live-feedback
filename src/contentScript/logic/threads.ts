@@ -36,20 +36,14 @@ export async function createThreadOnTextRange({
   endNode: Node;
   bindedPullRequestId: number;
 }) {
-  // const elementPhoto = (await takeElementScreenshot(element))?.replace(
-  //   "data:image/png;base64,",
-  //   ""
-  // );
-  // const domPhoto = (await takeTabScreenshot())?.replace(
-  //   "data:image/png;base64,",
-  //   ""
-  // );
-  // const elementRect = element.getBoundingClientRect();
-  // const xPercentageFromSelectedElement =
-  //   ((clickXCoord - elementRect.left) / elementRect.width) * 100;
-  // const yPercentageFromSelectedElement =
-  //   ((clickYCoord - (elementRect.top + window.scrollY)) / elementRect.height) *
-  //   100;
+  const elementPhoto = (await takeElementScreenshot(commonAncestor))?.replace(
+    "data:image/png;base64,",
+    ""
+  );
+  const domPhoto = (await takeTabScreenshot())?.replace(
+    "data:image/png;base64,",
+    ""
+  );
 
   const startNodeSelector = getCssSelectorForTextNode(startNode);
   const endNodeSelector = getCssSelectorForTextNode(endNode);
@@ -79,67 +73,70 @@ export async function createThreadOnTextRange({
       url: window.location.href,
     },
   };
-  console.log("Thread created", thread);
-  return thread;
-  // log("Thread created", thread);
-  // try {
-  //   log("Gettings repo info");
-  //   // const repoInfo = await getRepository();
-  //   // const isPrivateRepo = repoInfo?.data.private;
-  //   log("Creating issue");
-  //   const issueResponse = await createIssue({
-  //     body: "",
-  //     title: thread.title,
-  //   });
-  //   if (!issueResponse) return null;
-  //   const GHissueId = issueResponse.data.number;
-  //   const GHIssueCreatorName =
-  //     issueResponse.data.user?.name || issueResponse.data.user?.login;
-  //   const GHIssueCreatorAvatar = issueResponse.data.user?.avatar_url;
-  //   // log("Uploading dom & element photos");
-  //   // const domPhotoUpload = await uploadDomPhoto(GHissueId.toString(), domPhoto);
-  //   // if (!domPhotoUpload) return null;
-  //   // const elementPhotoUpload = await uploadElementPhoto(
-  //   //   GHissueId.toString(),
-  //   //   elementPhoto
-  //   // );
-  //   // if (!elementPhotoUpload) return null;
+  log("Thread created", thread);
+  try {
+    log("Gettings repo info");
+    const repoInfo = await getRepository();
+    const isPrivateRepo = repoInfo?.data.private;
+    log("Creating issue");
+    const issueResponse = await createIssue({
+      body: "",
+      title: thread.title,
+    });
+    if (!issueResponse) return null;
+    const GHissueId = issueResponse.data.number;
+    const GHIssueCreatorName =
+      issueResponse.data.user?.name || issueResponse.data.user?.login;
+    const GHIssueCreatorAvatar = issueResponse.data.user?.avatar_url;
+    log("Uploading dom & element photos");
+    const domPhotoUpload = await uploadDomPhoto(GHissueId.toString(), domPhoto);
+    if (!domPhotoUpload) return null;
+    const elementPhotoUpload = await uploadElementPhoto(
+      GHissueId.toString(),
+      elementPhoto
+    );
+    if (!elementPhotoUpload) return null;
 
-  //   const issueBody = `
-  // # ${thread.title}
+    const issueBody = `
+  # ${thread.title}
 
-  // ## Info
-  // - **Date**: ${new Date(thread.date).toLocaleString()}
-  // - **User Agent**: ${navigator.userAgent}
-  // - **URL**: ${window.location.href}
-  // - **OS**: ${navigator.platform}
-  // - **Browser**: ${navigator.appVersion}
-  // - **Resolution**: ${window.screen.width}w x${window.screen.height}h
-  // ${bindedPullRequestId !== 0 ? `- **Pull Request**: #${bindedPullRequestId}` : ""}
+  ## Info
+  - **Date**: ${new Date(thread.date).toLocaleString()}
+  - **User Agent**: ${navigator.userAgent}
+  - **URL**: ${window.location.href}
+  - **OS**: ${navigator.platform}
+  - **Browser**: ${navigator.appVersion}
+  - **Resolution**: ${window.screen.width}w x${window.screen.height}h
+  ${bindedPullRequestId !== 0 ? `- **Pull Request**: #${bindedPullRequestId}` : ""}
 
-  // ## Images
+  ## Images
+  ### DOM Photo
+  ${isPrivateRepo ? `https://github.com/${GH_OWNER()}/${GH_REPO()}/blob/master/.github/live-feedback/${domPhotoUpload.data.content?.name}` : `![Dom Photo](${domPhotoUpload.data.content?.download_url})`}
 
-  // ## Tracking (internal use)
-  // \`\`\`json
-  // ${JSON.stringify(thread.tracking)}
-  // \`\`\`
-  //             `;
-  //   log("Updating issue");
-  //   await updateIssue({
-  //     body: issueBody,
-  //     title: thread.title,
-  //     issue_number: GHissueId,
-  //   });
-  //   thread.GHissueId = GHissueId + "";
-  //   thread.creator = {
-  //     name: GHIssueCreatorName,
-  //     avatar: GHIssueCreatorAvatar,
-  //   };
-  //   return thread;
-  // } catch (err) {
-  //   log(err);
-  //   return null;
-  // }
+  ### Element Photo
+  ${isPrivateRepo ? `https://github.com/${GH_OWNER()}/${GH_REPO()}/blob/master/.github/live-feedback/${elementPhotoUpload.data.content?.name}` : `![Element Photo](${elementPhotoUpload.data.content?.download_url})`}
+
+  ## Tracking (internal use)
+  \`\`\`json
+  ${JSON.stringify(thread.tracking)}
+  \`\`\`
+              `;
+    log("Updating issue");
+    await updateIssue({
+      body: issueBody,
+      title: thread.title,
+      issue_number: GHissueId,
+    });
+    thread.GHissueId = GHissueId + "";
+    thread.creator = {
+      name: GHIssueCreatorName,
+      avatar: GHIssueCreatorAvatar,
+    };
+    return thread;
+  } catch (err) {
+    log(err);
+    return null;
+  }
 }
 
 export async function createThreadOnElement({
