@@ -1,3 +1,5 @@
+
+![Github frame](https://github.com/JulianKominovic/live-feedback/assets/70329467/2875d98c-6930-48f7-b047-77756411a38e)
 # Live feedback
 
 Live feedback is an extension made for Google Chrome browser that allows you to get feedback on your website in real time from your developers, designers, and clients. It is a simple and easy-to-use tool that helps you to improve your website by getting feedback from your team.
