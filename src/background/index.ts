@@ -28,20 +28,3 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     type: INTERCOM_EVENTS.TAB_UPATED,
   });
 });
-// chrome.contextMenus.onClicked.addListener(function (info) {
-//   log("Context menu clicked: ", info);
-//   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-//     chrome.tabs.sendMessage(tabs[0].id!, {
-//       type: INTERCOM_EVENTS.CREATE_THREAD_BUBBLE,
-//       event: info,
-//     });
-//   });
-// });
-// chrome.runtime.onInstalled.addListener(() => {
-//   log("Extension installed");
-//   chrome.contextMenus.create({
-//     id: "add-thread-bubble",
-//     title: "Create feedback note",
-//     contexts: ["all"],
-//   });
-// });
