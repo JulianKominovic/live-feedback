@@ -12,6 +12,7 @@ const SelectionRangeOverlay = styled.div<{ thread: Thread; rect: DOMRect }>`
   background-color: rgba(102, 51, 153, 0.3);
   border: 1px solid rgba(143, 51, 153, 0.6);
   z-index: 999999;
+  transform: translate3d(0, 0, 0);
   pointer-events: none;
 `;
 
