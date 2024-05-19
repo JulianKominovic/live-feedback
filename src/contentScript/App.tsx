@@ -6,6 +6,7 @@ import TemporalThreadBubble from "./ui/TemporalThreadBubble";
 import { GlobalStyles, ResetCSS } from "./styles/tokens";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
+import ThreadSelectionRange from "./ui/ThreadSelectionRange";
 function RegisterEvents() {
   const { populateThreads, checkThreadsVisibility, updateThreadCoords } =
     useGithubStore((state) => ({
@@ -78,6 +79,7 @@ function App({ shadowRoot }: { shadowRoot: ShadowRoot }) {
           if (target) {
             setTempThreadCreationIntent({
               target: target as HTMLElement,
+              type: "ELEMENT",
               x: e.pageX,
               y: e.pageY,
             });
@@ -89,6 +91,7 @@ function App({ shadowRoot }: { shadowRoot: ShadowRoot }) {
         <Navbar />
         <TemporalThreadBubble />
         <ThreadBubbles />
+        <ThreadSelectionRange />
       </ResetCSS>
     </CacheProvider>
   );

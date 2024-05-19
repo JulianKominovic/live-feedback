@@ -115,3 +115,37 @@ export function tryToGetElementFromSelectors(
   }
   return null;
 }
+
+export function recursiveGetParentUntilItIsAnHTMLElement(
+  element: Node | null
+): HTMLElement | null {
+  if (!element) return null;
+  if (element instanceof HTMLElement) return element;
+  return recursiveGetParentUntilItIsAnHTMLElement(element.parentElement);
+}
+
+export function getCssSelectorForTextNode(textNode: Node) {
+  const parentElement = textNode.parentElement;
+
+  return {
+    cssSelectors: buildSelectors(parentElement as HTMLElement),
+    childrenIndex:
+      textNode.nodeName === "#text" && parentElement
+        ? Array.from(parentElement.childNodes).findIndex((el) =>
+            el.isSameNode(textNode)
+          )
+        : -1,
+  };
+}
+
+export function getElementFromCssSelectorAndChildrenIndex(
+  rawCssSelectors?: string[],
+  rawChildrenIndex?: number
+) {
+  const childrenIndex = rawChildrenIndex === undefined ? -1 : rawChildrenIndex;
+  const cssSelectors = rawCssSelectors || [];
+  const element = tryToGetElementFromSelectors(cssSelectors);
+  if (!element) return null;
+  if (childrenIndex === -1) return element;
+  return element.childNodes[childrenIndex] as HTMLElement;
+}

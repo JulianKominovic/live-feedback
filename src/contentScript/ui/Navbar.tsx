@@ -2,18 +2,21 @@ import useThreadsStore from "../store/threads";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArchiveIcon,
+  CursorTextIcon,
   GearIcon,
   PlusIcon,
   UpdateIcon,
 } from "@radix-ui/react-icons";
 import styled from "@emotion/styled";
 import { COLORS, CSS_FRAGMENTS, Z_INDEXES } from "../styles/tokens";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VerticalDivider } from "./atoms/VerticalDivider";
 import { Button } from "./atoms/Button";
 import useSystemStore from "../store/system";
 import { clearGithubCache } from "../integrations/github/client";
 import SemaphoreIndicator from "./atoms/SemaphoreIndicator";
+import { randomBetween } from "../utils";
+import { recursiveGetParentUntilItIsAnHTMLElement } from "../logic/dom";
 
 function MentionsBigPanel() {
   return <>hi!</>;
@@ -73,11 +76,15 @@ const BigPanel = styled(motion.main)`
 `;
 
 function Navbar() {
-  const { isPicking, threads, setIsPicking } = useThreadsStore((state) => ({
-    isPicking: state.isPicking,
-    threads: state.threads,
-    setIsPicking: state.setIsPicking,
-  }));
+  const { isPicking, threads, setIsPicking, setTempThreadCreationIntent } =
+    useThreadsStore((state) => ({
+      isPicking: state.isPicking,
+      threads: state.threads,
+      setIsPicking: state.setIsPicking,
+      setTempThreadCreationIntent: state.setTempThreadCreationIntent,
+    }));
+  const [textSelectionExists, setTextSelectionExists] = useState(false);
+  const { pending } = useSystemStore((state) => state.asyncOperations);
   const [showMentions, setShowMentions] = useState(false);
   const showBigPanel = showMentions;
   const participants = new Set(
@@ -85,6 +92,17 @@ function Navbar() {
       .filter((thread) => thread.tracking.show)
       .map((thread) => ({ ...thread.creator, GHissueId: thread.GHissueId }))
   );
+  useEffect(() => {
+    function handle(e: any) {
+      const selection = window.getSelection();
+      if (!selection) return;
+      setTextSelectionExists(!!selection.toString());
+    }
+    document.addEventListener("selectionchange", handle);
+    return () => {
+      document.removeEventListener("selectionchange", handle);
+    };
+  }, []);
   return (
     <Nav
       data-live-feedback-navbar
@@ -110,6 +128,7 @@ function Navbar() {
       </AnimatePresence>
       <Toolbar layout>
         <Button
+          disabled={pending > 0}
           title="Add Comment"
           variant="flat"
           key="add-comment"
@@ -158,6 +177,36 @@ function Navbar() {
               </motion.span>
             )}
           </AnimatePresence>
+        </Button>
+        <Button
+          disabled={pending > 0 || !textSelectionExists}
+          variant="flat"
+          layout
+          key="thread-bubble-on-selection"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const selection = window.getSelection();
+            const range = selection?.getRangeAt(0);
+            if (!range) return;
+            const clientRect = range.getClientRects()?.[0];
+            if (!clientRect) return;
+            const target = recursiveGetParentUntilItIsAnHTMLElement(
+              range.commonAncestorContainer
+            );
+            if (!target) return;
+            setTempThreadCreationIntent({
+              type: "TEXT_RANGE",
+              commonAncestor: target,
+              start: range.startOffset,
+              end: range.endOffset,
+              startNode: range.startContainer,
+              endNode: range.endContainer,
+            });
+          }}
+          title="Create thread bubble on text selected"
+        >
+          <CursorTextIcon />
         </Button>
         <Button
           variant="flat"

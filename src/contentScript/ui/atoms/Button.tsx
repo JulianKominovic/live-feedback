@@ -30,4 +30,8 @@ export const Button = styled<
   width: ${({ width, Width }) => width || Width || "32px"};
   ${({ variant }) =>
     variant === "flat" ? "" : CSS_FRAGMENTS["button-styles"]};
+  :disabled {
+    opacity: 0.2;
+    cursor: not-allowed;
+  }
 `;

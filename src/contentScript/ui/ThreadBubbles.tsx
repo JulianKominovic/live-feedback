@@ -9,7 +9,6 @@ import { VerticalDivider } from "./atoms/VerticalDivider";
 import { getRelativeTimeString } from "../utils";
 import { Content } from "./bubbles/Content";
 import { CloseButton } from "./bubbles/CloseButton";
-import { CommentForm } from "./bubbles/CommentForm";
 import { Trigger } from "./bubbles/Trigger";
 import { ConversationalCommentForm } from "./bubbles/ConversationalCommentForm";
 
