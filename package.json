@@ -1,7 +1,7 @@
 {
   "name": "live-feedback",
   "displayName": "Live feedback tool",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Julian Kominovic",
   "description": "Leave feedback on any website and share it with your team 🚀.",
   "type": "module",
