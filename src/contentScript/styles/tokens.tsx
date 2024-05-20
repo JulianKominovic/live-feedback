@@ -8,7 +8,7 @@ export const Z_INDEXES = {
   BUBBLE: MAX_Z_INDEX_POSSIBLE - 3,
 };
 export const CSS_FRAGMENTS = {
-  "box-styles": `background: rgba(0, 0, 0, 0.6);
+  "box-styles": `background: rgba(0, 0, 0, 0.4);
   box-shadow:
     rgba(0, 0, 0, 0.5) 0px 0px 1px 1px,
     rgba(0, 0, 0, 0.25) 0px 4px 4px,
@@ -594,6 +594,7 @@ export const GlobalStyles = () => (
           "Open Sans",
           "Helvetica Neue",
           sans-serif;
+        text-shadow: 0 0 0 black;
       }
     `}
   />
