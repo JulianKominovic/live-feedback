@@ -67,7 +67,7 @@ chrome.runtime.onMessage.addListener(
       message.type === INTERCOM_EVENTS.ACTIVE_TAB_CHANGED ||
       message.type === INTERCOM_EVENTS.TAB_UPATED
     ) {
-      applyWebsiteImperativeSettings();
+      if (sender.tab?.active) applyWebsiteImperativeSettings();
     }
 
     senderResponse({});
