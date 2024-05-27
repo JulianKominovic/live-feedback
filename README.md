@@ -14,7 +14,10 @@ In 3 simple steps you can get feedback on your website:
 ## Demo
 
 
-https://github.com/JulianKominovic/live-feedback/assets/70329467/f10718b1-272d-42d3-8556-ac4043e2ce89
+
+https://github.com/JulianKominovic/live-feedback/assets/70329467/b6847ac8-128a-4bd9-8fe4-46280fa1533e
+
+
 
 
 
