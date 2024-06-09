@@ -7,6 +7,7 @@ import { GlobalStyles, ResetCSS } from "./styles/tokens";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import ThreadSelectionRange from "./ui/ThreadSelectionRange";
+import { TRACKING_INTERVAL } from "./const";
 function RegisterEvents() {
   const { populateThreads, checkThreadsVisibility, updateThreadCoords } =
     useGithubStore((state) => ({
@@ -19,7 +20,7 @@ function RegisterEvents() {
     populateThreads();
     window.addEventListener("resize", updateThreadCoords);
     updateThreadCoords();
-    const interval = setInterval(checkThreadsVisibility, 1000);
+    const interval = setInterval(checkThreadsVisibility, TRACKING_INTERVAL);
     return () => {
       window.removeEventListener("resize", updateThreadCoords);
       clearInterval(interval);

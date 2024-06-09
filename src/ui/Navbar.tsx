@@ -70,7 +70,7 @@ function AuthenticatedNavbar() {
       setIsPicking: state.setIsPicking,
       setTempThreadCreationIntent: state.setTempThreadCreationIntent,
     }));
-  const [textSelectionExists, setTextSelectionExists] = useState(false);
+  const [textRangeExists, setTextRangeExists] = useState(false);
   const { pending } = useSystemStore((state) => state.asyncOperations);
 
   const participants = new Set(
@@ -78,17 +78,54 @@ function AuthenticatedNavbar() {
       .filter((thread) => thread.tracking.show)
       .map((thread) => ({ ...thread.creator, GHissueId: thread.GHissueId }))
   );
+
+  function createThreadCreationBubbleOnTextSelection() {
+    if (isPicking || !textRangeExists) return;
+
+    const selection = window.getSelection();
+    const range = selection?.getRangeAt(0);
+    if (!range) return;
+    const clientRect = range.getClientRects()?.[0];
+    if (!clientRect) return;
+    const target = recursiveGetParentUntilItIsAnHTMLElement(
+      range.commonAncestorContainer
+    );
+    if (!target) return;
+    setTempThreadCreationIntent({
+      type: "TEXT_RANGE",
+      commonAncestor: target,
+      start: range.startOffset,
+      end: range.endOffset,
+      startNode: range.startContainer,
+      endNode: range.endContainer,
+    });
+  }
+
   useEffect(() => {
-    function handle(e: any) {
+    function handleSelectionChange(e: any) {
+      if (isPicking) return;
       const selection = window.getSelection();
-      if (!selection) return;
-      setTextSelectionExists(!!selection.toString());
+      setTextRangeExists(
+        Boolean(
+          selection &&
+            selection.toString().length > 0 &&
+            selection.rangeCount > 0
+        )
+      );
     }
-    document.addEventListener("selectionchange", handle);
+    function handlePointerUp(e: any) {
+      if (isPicking) return;
+      if (textRangeExists) {
+        createThreadCreationBubbleOnTextSelection();
+      }
+    }
+    document.addEventListener("pointerup", handlePointerUp);
+    document.addEventListener("selectionchange", handleSelectionChange);
     return () => {
-      document.removeEventListener("selectionchange", handle);
+      document.removeEventListener("selectionchange", handleSelectionChange);
+      document.removeEventListener("pointerup", handlePointerUp);
     };
-  }, []);
+  }, [textRangeExists, isPicking]);
   return (
     <>
       <Button
@@ -141,36 +178,6 @@ function AuthenticatedNavbar() {
             </motion.span>
           )}
         </AnimatePresence>
-      </Button>
-      <Button
-        disabled={pending > 0 || !textSelectionExists}
-        variant="flat"
-        layout
-        key="thread-bubble-on-selection"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const selection = window.getSelection();
-          const range = selection?.getRangeAt(0);
-          if (!range) return;
-          const clientRect = range.getClientRects()?.[0];
-          if (!clientRect) return;
-          const target = recursiveGetParentUntilItIsAnHTMLElement(
-            range.commonAncestorContainer
-          );
-          if (!target) return;
-          setTempThreadCreationIntent({
-            type: "TEXT_RANGE",
-            commonAncestor: target,
-            start: range.startOffset,
-            end: range.endOffset,
-            startNode: range.startContainer,
-            endNode: range.endContainer,
-          });
-        }}
-        title="Create thread bubble on text selected"
-      >
-        <CursorTextIcon />
       </Button>
       <Button
         title="Mentions"

@@ -4,8 +4,10 @@ const MAX_Z_INDEX_POSSIBLE = 2147483647;
 export const Z_INDEXES = {
   BUBBLE_CREATION_OVERLAY: MAX_Z_INDEX_POSSIBLE,
   TOOLBAR: MAX_Z_INDEX_POSSIBLE - 1,
-  HOVERED_BUBBLE: MAX_Z_INDEX_POSSIBLE - 2,
-  BUBBLE: MAX_Z_INDEX_POSSIBLE - 3,
+  TOOLTIP: MAX_Z_INDEX_POSSIBLE - 2,
+  HOVERED_BUBBLE: MAX_Z_INDEX_POSSIBLE - 3,
+  BUBBLE: MAX_Z_INDEX_POSSIBLE - 4,
+  SELECTED_TEXT: MAX_Z_INDEX_POSSIBLE - 5,
 };
 export const CSS_FRAGMENTS = {
   "box-styles": `background: rgba(0, 0, 0, 0.4);
@@ -574,6 +576,9 @@ export const COLORS = {
 export const GlobalStyles = () => (
   <Global
     styles={css`
+      *:not(input, textarea) {
+        user-select: none;
+      }
       [data-live-feedback="true"] *::before,
       [data-live-feedback="true"] *::after,
       [data-live-feedback="true"] * {

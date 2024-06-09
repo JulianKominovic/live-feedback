@@ -25,7 +25,7 @@ const TemporalThreadBubble = () => {
       .item(0);
     if (tempThreadCreationIntent.type === "TEXT_RANGE") {
       if (!clientRect) return null;
-      return clientRect.top + window.scrollY;
+      return clientRect.bottom + window.scrollY;
     }
     return tempThreadCreationIntent.y;
   }, [tempThreadCreationIntent]);
@@ -39,7 +39,7 @@ const TemporalThreadBubble = () => {
 
     if (tempThreadCreationIntent.type === "TEXT_RANGE") {
       if (!clientRect) return null;
-      return clientRect.left + window.scrollX;
+      return clientRect.right + window.scrollX;
     }
     return tempThreadCreationIntent.x;
   }, [tempThreadCreationIntent]);
@@ -72,6 +72,7 @@ const TemporalThreadBubble = () => {
           }
         >
           <Content
+            onOpenAutoFocus={(e) => e.preventDefault()}
             data-live-feedback
             height="auto"
             style={{

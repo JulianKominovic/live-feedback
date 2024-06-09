@@ -20,7 +20,6 @@ type ThreadTrackingForElement = {
     x: number;
     y: number;
   };
-  url: string;
 };
 type ThreadTrackingForTextRange = {
   // Common ancestor element css selectors
@@ -63,11 +62,28 @@ type ThreadTrackingForTextRange = {
     y: number;
     clientRects: DOMRectList;
   };
-  url: string;
 };
-export type ThreadInternalProps =
-  | ThreadTrackingForElement
-  | ThreadTrackingForTextRange;
+type ThreadTrackingCommonProps = {
+  url: string;
+  device: {
+    screen: {
+      width: number;
+      height: number;
+    };
+    type: UAParser.IDevice;
+    os: UAParser.IOS;
+    browser: UAParser.IBrowser;
+    cpu: UAParser.ICPU;
+    tz: `GMT-${number}` | `GMT+${number}`;
+    language: string;
+    // Optional. Navigator.connection is not available in all browsers.
+    network?: {
+      effectiveType?: "slow-2g" | "2g" | "3g" | "4g";
+    };
+  };
+};
+export type ThreadInternalProps = ThreadTrackingCommonProps &
+  (ThreadTrackingForElement | ThreadTrackingForTextRange);
 export type ThreadComment = {
   body?: string;
   user?: {
