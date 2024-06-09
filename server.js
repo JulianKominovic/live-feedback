@@ -17,6 +17,7 @@ const middleware = createNodeMiddleware(app, {
 // Users can initiate the OAuth web flow by opening /api/oauth/login
 createServer((req, res) => {
   middleware(req, res).then((success) => {
+    if (req.url === "/") return;
     if (success) {
       console.log(`${req.url} OK`);
     } else {
