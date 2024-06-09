@@ -2,6 +2,11 @@ import { createServer } from "node:http";
 import { OAuthApp, createNodeMiddleware } from "@octokit/oauth-app";
 
 const port = process.env.PORT || 4000;
+const isDev = process.env.NODE_ENV === "development";
+const authServerBaseUrl = isDev
+  ? "http://localhost:" + port
+  : "https://live-feedback.onrender.com";
+
 const app = new OAuthApp({
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
@@ -50,7 +55,7 @@ createServer(async (req, res) => {
     const { url } = app.getWebFlowAuthorizationUrl({
       state,
       allowSignup: true,
-      redirectUrl: "http://localhost:4000/api/github/oauth/callback",
+      redirectUrl: authServerBaseUrl + "/api/github/oauth/callback",
     });
     res.writeHead(302, { Location: url });
     res.end();

@@ -17,6 +17,7 @@
   "scripts": {
     "build": "tsc --noEmit && node ./esbuild.dev.js",
     "start-server": "node ./server.js",
+    "start-dev-server": "NODE_ENV=development node ./server.js",
     "fmt": "prettier --write '**/*.{tsx,ts,json,css,scss,md}'"
   },
   "dependencies": {
