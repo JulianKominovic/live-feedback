@@ -20,6 +20,7 @@
     "build": "tsc && vite build",
     "debug": "vite --debug",
     "preview": "vite preview",
+    "start-server": "node ./server.js",
     "fmt": "prettier --write '**/*.{tsx,ts,json,css,scss,md}'",
     "zip": "npm run build && node src/zip.js"
   },
