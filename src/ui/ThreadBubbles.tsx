@@ -1,6 +1,7 @@
 import * as Popover from "@radix-ui/react-popover";
 import {
   ChatBubbleIcon,
+  CheckCircledIcon,
   Cross2Icon,
   InfoCircledIcon,
 } from "@radix-ui/react-icons";
@@ -19,10 +20,13 @@ import Tooltip from "./atoms/Tooltip";
 
 const ThreadBubble = ({ thread }: { thread: Thread }) => {
   const [open, setOpen] = useState(false);
-  const { addComment, loadComments } = useThreadsStore((state) => ({
-    loadComments: state.populateThreadComments,
-    addComment: state.createThreadComment,
-  }));
+  const { addComment, loadComments, closeThread } = useThreadsStore(
+    (state) => ({
+      loadComments: state.populateThreadComments,
+      addComment: state.createThreadComment,
+      closeThread: state.closeThread,
+    })
+  );
   const coords = thread.tracking.liveCoords;
   return (
     thread.tracking.show &&
@@ -192,6 +196,24 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
                       {thread.tracking.device.network.effectiveType}
                     </div>
                   ) : null}
+                </Tooltip.Content>
+              </Tooltip>
+              <VerticalDivider
+                style={{
+                  height: "50%",
+                }}
+              />
+              <Tooltip>
+                <Tooltip.Trigger asChild onClick={() => closeThread(thread)}>
+                  <CheckCircledIcon />
+                </Tooltip.Trigger>
+                <Tooltip.Content
+                  style={{
+                    padding: "8px 16px",
+                  }}
+                  sideOffset={5}
+                >
+                  Close thread
                 </Tooltip.Content>
               </Tooltip>
               <VerticalDivider
