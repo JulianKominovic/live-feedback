@@ -1,4 +1,4 @@
-export const IS_DEV = true;
+export const IS_DEV = false;
 export const GH_APP_CLIENT_ID = "Iv23liew39xOtD118vnM";
 export const GH_TOKEN_COOKIE_KEY = "GH-LIVE-FEEDBACK-TOKEN";
 export const GH_AUTH_SERVER_BASE_URL = IS_DEV

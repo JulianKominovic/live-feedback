@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { GH_TOKEN_COOKIE_KEY } from "../const";
+import { GH_AUTH_SERVER_BASE_URL, GH_TOKEN_COOKIE_KEY } from "../const";
 import Cookies from "js-cookie";
 import { getUserInstallations } from "../integrations/github/get-installed-apps";
 
@@ -21,7 +21,7 @@ const useAuthStore = create<AuthStore>((set, get) => ({
     return new Promise((resolve) => {
       const state = Math.random().toString(36);
       const createdWindow = window.open(
-        "http://localhost:4000/get-token?state=" + state,
+        `${GH_AUTH_SERVER_BASE_URL}/get-token?state=` + state,
         "_blank",
         "width=800,height=600"
       );
