@@ -1,7 +1,7 @@
 {
   "name": "live-feedback",
   "displayName": "Live feedback tool",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "author": "Julian Kominovic",
   "description": "Leave feedback on any website and share it with your team 🚀.",
   "type": "module",
@@ -15,7 +15,8 @@
     "node": ">=18.12.0"
   },
   "scripts": {
-    "build": "tsc --noEmit && node ./esbuild.dev.js",
+    "dev": "tsc --noEmit && NODE_ENV=development node ./esbuild.js",
+    "prod": "tsc --noEmit && NODE_ENV=production node ./esbuild.js",
     "start-server": "node ./server.js",
     "start-dev-server": "NODE_ENV=development node ./server.js",
     "fmt": "prettier --write '**/*.{tsx,ts,json,css,scss,md}'"
