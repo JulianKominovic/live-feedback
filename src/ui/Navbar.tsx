@@ -16,7 +16,6 @@ import useSystemStore from "../store/system";
 import SemaphoreIndicator from "./atoms/SemaphoreIndicator";
 import { recursiveGetParentUntilItIsAnHTMLElement } from "../logic/dom";
 import useAuthStore from "../store/auth";
-import { getUserInstallations } from "../integrations/github/get-installed-apps";
 
 function AsyncOperationsStatus() {
   const { asyncOperations, queue } = useSystemStore((state) => ({
@@ -268,7 +267,6 @@ function AuthenticatedNavbar() {
             <Button
               variant="flat"
               layout
-              key={"participant+plus"}
               style={{
                 width: "2rem",
                 aspectRatio: "1/1",
@@ -305,9 +303,9 @@ function AuthenticatedNavbar() {
 }
 
 function Navbar() {
-  const { setToken, token } = useAuthStore((state) => ({
-    setToken: state.setToken,
-    token: state.token,
+  const { isAuthed, createToken } = useAuthStore((state) => ({
+    isAuthed: state.isAuthed,
+    createToken: state.createToken,
   }));
 
   return (
@@ -322,40 +320,11 @@ function Navbar() {
       layoutRoot
     >
       <Toolbar layout>
-        {token ? (
+        {isAuthed ? (
           <AuthenticatedNavbar />
         ) : (
           <>
-            <Button
-              width="fit-content"
-              onClick={() => {
-                const state = Math.random().toString(36);
-                const createdWindow = window.open(
-                  "http://localhost:4000/get-token?state=" + state,
-                  "_blank",
-                  "width=800,height=600"
-                );
-                const handleAuthComplete = async (e: MessageEvent) => {
-                  if (e.data.type === `LIVE_FEEDBACK_AUTH_COMPLETE_${state}`) {
-                    setToken(e.data.token);
-                    createdWindow?.close();
-                    const userInstallations = await getUserInstallations();
-                    if (userInstallations) {
-                      const { data } = userInstallations;
-                      if (data.total_count === 0) {
-                        window.open(
-                          "https://github.com/apps/live-feedback/installations/new",
-                          "_blank",
-                          "width=800,height=600"
-                        );
-                      }
-                    }
-                    window.removeEventListener("message", handleAuthComplete);
-                  }
-                };
-                window.addEventListener("message", handleAuthComplete);
-              }}
-            >
+            <Button width="fit-content" onClick={createToken}>
               <GitHubLogoIcon /> Login with GitHub
             </Button>
           </>

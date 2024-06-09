@@ -10,7 +10,8 @@ export async function getIssue({ issue_number }: { issue_number: number }) {
   });
 
   try {
-    const response = await octokit().request(
+    const client = await octokit();
+    const response = await client.request(
       "GET /repos/{owner}/{repo}/issues/{issue_number}",
       {
         owner: GH_OWNER,
@@ -53,19 +54,17 @@ export async function createIssue({
   });
 
   try {
-    const response = await octokit().request(
-      "POST /repos/{owner}/{repo}/issues",
-      {
-        owner: GH_OWNER,
-        repo: GH_REPO,
-        title,
-        body,
+    const client = await octokit();
+    const response = await client.request("POST /repos/{owner}/{repo}/issues", {
+      owner: GH_OWNER,
+      repo: GH_REPO,
+      title,
+      body,
 
-        headers: {
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      }
-    );
+      headers: {
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    });
     useSystemStore.getState().updateTaskStatus({
       id: "create-issue-" + title,
       title: `Issue created ${title}`,
@@ -100,7 +99,8 @@ export async function updateIssue({
   });
 
   try {
-    const response = await octokit().request(
+    const client = await octokit();
+    const response = await client.request(
       "PATCH /repos/{owner}/{repo}/issues/{issue_number}",
       {
         owner: GH_OWNER,
@@ -139,17 +139,15 @@ export async function getIssues() {
   });
 
   try {
-    const response = await octokit().request(
-      "GET /repos/{owner}/{repo}/issues",
-      {
-        owner: GH_OWNER,
-        repo: GH_REPO,
-        headers: {
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-        state: "open",
-      }
-    );
+    const client = await octokit();
+    const response = await client.request("GET /repos/{owner}/{repo}/issues", {
+      owner: GH_OWNER,
+      repo: GH_REPO,
+      headers: {
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+      state: "open",
+    });
     useSystemStore.getState().updateTaskStatus({
       id: "get-issues",
       title: `Fetched issues`,
@@ -180,7 +178,8 @@ export async function getIssueComments({
   });
 
   try {
-    const response = await octokit().request(
+    const client = await octokit();
+    const response = await client.request(
       "GET /repos/{owner}/{repo}/issues/{issue_number}/comments",
       {
         owner: GH_OWNER,
@@ -228,7 +227,8 @@ export async function createIssueComment({
   });
 
   try {
-    const response = await octokit().request(
+    const client = await octokit();
+    const response = await client.request(
       "POST /repos/{owner}/{repo}/issues/{issue_number}/comments",
       {
         owner: GH_OWNER,

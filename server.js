@@ -27,6 +27,7 @@ createServer(async (req, res) => {
       type: `LIVE_FEEDBACK_AUTH_COMPLETE_${state}`,
       app: "LIVE_FEEDBACK",
       token: authentication.token,
+      tokenExpiresAt: authentication.expiresAt,
     });
     res.write(`
       <html>

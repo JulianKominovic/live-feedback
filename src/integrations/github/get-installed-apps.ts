@@ -9,7 +9,8 @@ export async function getUserInstallations() {
   });
 
   try {
-    const response = await octokit().request("GET /user/installations");
+    const client = await octokit();
+    const response = client.request("GET /user/installations");
 
     useSystemStore.getState().updateTaskStatus({
       id: "get-user-installations",
