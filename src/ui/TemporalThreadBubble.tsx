@@ -18,12 +18,12 @@ const TemporalThreadBubble = () => {
   const isCreatingThreadPromptOpen = tempThreadCreationIntent !== null;
   const y = useMemo(() => {
     if (!tempThreadCreationIntent) return null;
-    const clientRect = window
-      .getSelection()
-      ?.getRangeAt(0)
-      .getClientRects()
-      .item(0);
     if (tempThreadCreationIntent.type === "TEXT_RANGE") {
+      const clientRect = window
+        .getSelection()
+        ?.getRangeAt(0)
+        .getClientRects()
+        .item(0);
       if (!clientRect) return null;
       return clientRect.bottom + window.scrollY;
     }
@@ -31,13 +31,13 @@ const TemporalThreadBubble = () => {
   }, [tempThreadCreationIntent]);
   const x = useMemo(() => {
     if (!tempThreadCreationIntent) return null;
-    const clientRect = window
-      .getSelection()
-      ?.getRangeAt(0)
-      .getClientRects()
-      .item(0);
 
     if (tempThreadCreationIntent.type === "TEXT_RANGE") {
+      const clientRect = window
+        .getSelection()
+        ?.getRangeAt(0)
+        .getClientRects()
+        .item(0);
       if (!clientRect) return null;
       return clientRect.right + window.scrollX;
     }
