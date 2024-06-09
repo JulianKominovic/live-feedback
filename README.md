@@ -1,5 +1,6 @@
 
-![Github frame](https://github.com/JulianKominovic/live-feedback/assets/70329467/2875d98c-6930-48f7-b047-77756411a38e)
+![Github frame (2)](https://github.com/JulianKominovic/live-feedback/assets/70329467/074b2b42-61a6-452e-8dbe-5b359cae46ec)
+
 # Live feedback
 
 Live feedback is a script you can inject on your site that allows you to get feedback on your website in real time from your developers, designers, and clients. 
