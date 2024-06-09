@@ -3,6 +3,8 @@ import { Thread } from "../types/Threads";
 import { log, pipe } from "../utils";
 import {
   buildSelectors,
+  checkVisibility,
+  checkVisibilityInCoords,
   getCssSelectorForTextNode,
   getElementFromCssSelectorAndChildrenIndex,
   tryToGetElementFromSelectors,
@@ -244,7 +246,7 @@ export function checkThreadsBubbles(threads: Thread[]) {
       return thread;
     }
 
-    thread.tracking.show = true;
+    thread.tracking.show = checkVisibility(element);
     return thread;
   });
 }
@@ -254,6 +256,7 @@ export function calculateBubblePosition(thread: Thread) {
     ? tryToGetElementFromSelectors(thread.tracking.selectors)
     : document.querySelector(thread.tracking.selectors);
   if (!element) return thread;
+  if (!thread.tracking.show) return thread;
   if (thread.tracking.type === "TEXT_RANGE") {
     const { start, end } = thread.tracking.selectedTextRange;
     const startNodeFound = pipe(
@@ -276,28 +279,42 @@ export function calculateBubblePosition(thread: Thread) {
       return thread;
     }
 
-    const x =
-      (range.getClientRects().item(0) || range.getBoundingClientRect()).right +
-      window.scrollX;
-    const y =
-      (range.getClientRects().item(0) || range.getBoundingClientRect()).bottom +
-      window.scrollY;
-
+    const xWithoutScroll = (
+      clientRects.item(0) || range.getBoundingClientRect()
+    ).right;
+    const yWithoutScroll = (
+      clientRects.item(0) || range.getBoundingClientRect()
+    ).bottom;
+    const x = xWithoutScroll + window.scrollX;
+    const y = yWithoutScroll + window.scrollY;
+    thread.tracking.show = checkVisibilityInCoords(
+      startNodeFound,
+      xWithoutScroll,
+      yWithoutScroll,
+      "TEXT_RANGE"
+    );
     thread.tracking.liveCoords = { x, y, clientRects: range.getClientRects() };
     return thread;
   }
   const rect = element.getBoundingClientRect();
 
-  const x =
+  const xWithoutScroll =
     rect.width *
       (parseFloat(thread.tracking.xPercentageFromSelectedElement) / 100) +
-    rect.left +
-    window.scrollX;
-  const y =
+    rect.left;
+  const yWithoutScroll =
     rect.height *
       (parseFloat(thread.tracking.yPercentageFromSelectedElement) / 100) +
-    rect.top +
-    window.scrollY;
+    rect.top;
+
+  const x = xWithoutScroll + window.scrollX;
+  const y = yWithoutScroll + window.scrollY;
+  thread.tracking.show = checkVisibilityInCoords(
+    element,
+    xWithoutScroll,
+    yWithoutScroll,
+    "ELEMENT"
+  );
   thread.tracking.liveCoords = { x, y };
   return thread;
 }

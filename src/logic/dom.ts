@@ -153,3 +153,32 @@ export function getElementFromCssSelectorAndChildrenIndex(
   if (childrenIndex === -1) return element;
   return element.childNodes[childrenIndex] as HTMLElement;
 }
+
+export function checkVisibilityInCoords(
+  element: HTMLElement | Element | null,
+  x: number,
+  y: number,
+  typeOfElement: "ELEMENT" | "TEXT_RANGE" = "ELEMENT"
+) {
+  const elementFromPoint = document.elementFromPoint(x, y);
+  if (!elementFromPoint) return false;
+  if (typeOfElement === "ELEMENT") {
+    return elementFromPoint.isSameNode(element);
+  }
+  if (typeOfElement === "TEXT_RANGE") {
+    // In this case elementFromPoint could be the parent of the text range
+    const allChildrenOfElementFromPoint =
+      elementFromPoint.querySelectorAll("*");
+
+    return [...allChildrenOfElementFromPoint, elementFromPoint]
+      .flatMap((el) => [...el.childNodes, el])
+      .some((child) => child.isSameNode(element));
+  }
+  return false;
+}
+export function checkVisibility(element: HTMLElement) {
+  return element.checkVisibility({
+    checkOpacity: true,
+    checkVisibilityCSS: true,
+  });
+}
