@@ -2,14 +2,18 @@
 ![Github frame](https://github.com/JulianKominovic/live-feedback/assets/70329467/2875d98c-6930-48f7-b047-77756411a38e)
 # Live feedback
 
-Live feedback is an extension made for Google Chrome browser that allows you to get feedback on your website in real time from your developers, designers, and clients. It is a simple and easy-to-use tool that helps you to improve your website by getting feedback from your team.
+Live feedback is a script you can inject on your site that allows you to get feedback on your website in real time from your developers, designers, and clients. 
+It is a simple and easy-to-use tool that helps you to improve your website by getting feedback from your team.
+Integration is really simple.
 
-In 3 simple steps you can get feedback on your website:
+In a few steps you can get feedback on your website:
 
-- Install the extension
-- Create a Github Token
-- Configure the extension
-- Start giving feedback
+- Add Live Feedback script in your website
+- Pass some mandatory properties to the script such as `repo` and `owner`
+- Live Feedback is now enable on your website.
+- You will see the `Login` button, click it.
+- After giving Live Feedback access to your repositories you can start giving feedback.
+
 
 ## Demo
 
@@ -24,7 +28,27 @@ https://github.com/JulianKominovic/live-feedback/assets/70329467/b6847ac8-128a-4
 
 ## Instructions
 ### Add script tag
-:)
+Add this script at the end of `<body>` tag.
+```html
+ <script
+  repo="{your repo}"
+  owner="{repo owner}"
+  async
+  src="https://cdn.jsdelivr.net/gh/JulianKominovic/live-feedback@latest/build/bundle.js"
+/>
+```
+
+i.e:
+```html
+ <script
+  repo="live-feedback"
+  owner="JulianKominovic"
+  async
+  src="https://cdn.jsdelivr.net/gh/JulianKominovic/live-feedback@latest/build/bundle.js"
+/>
+```
+
+
 ### We are ready!
 ![image](https://github.com/JulianKominovic/live-feedback/assets/70329467/64d1d32c-e1e8-4544-8a05-edfb1980b04a)
 
