@@ -18,28 +18,28 @@ const TemporalThreadBubble = () => {
   const isCreatingThreadPromptOpen = tempThreadCreationIntent !== null;
   const y = useMemo(() => {
     if (!tempThreadCreationIntent) return null;
-    const clientRect = window
-      .getSelection()
-      ?.getRangeAt(0)
-      .getClientRects()
-      .item(0);
     if (tempThreadCreationIntent.type === "TEXT_RANGE") {
+      const clientRect = window
+        .getSelection()
+        ?.getRangeAt(0)
+        .getClientRects()
+        .item(0);
       if (!clientRect) return null;
-      return clientRect.top + window.scrollY;
+      return clientRect.bottom + window.scrollY;
     }
     return tempThreadCreationIntent.y;
   }, [tempThreadCreationIntent]);
   const x = useMemo(() => {
     if (!tempThreadCreationIntent) return null;
-    const clientRect = window
-      .getSelection()
-      ?.getRangeAt(0)
-      .getClientRects()
-      .item(0);
 
     if (tempThreadCreationIntent.type === "TEXT_RANGE") {
+      const clientRect = window
+        .getSelection()
+        ?.getRangeAt(0)
+        .getClientRects()
+        .item(0);
       if (!clientRect) return null;
-      return clientRect.left + window.scrollX;
+      return clientRect.right + window.scrollX;
     }
     return tempThreadCreationIntent.x;
   }, [tempThreadCreationIntent]);
@@ -72,6 +72,7 @@ const TemporalThreadBubble = () => {
           }
         >
           <Content
+            onOpenAutoFocus={(e) => e.preventDefault()}
             data-live-feedback
             height="auto"
             style={{

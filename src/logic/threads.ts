@@ -9,6 +9,32 @@ import {
   getElementFromCssSelectorAndChildrenIndex,
   tryToGetElementFromSelectors,
 } from "./dom";
+import { UAParser } from "ua-parser-js";
+
+function buildDeviceInformation(): Thread["tracking"]["device"] {
+  const timezoneOffset = new Date().getTimezoneOffset() / 60;
+  const uaParser = new UAParser();
+  uaParser.setUA(navigator.userAgent);
+  const { browser, cpu, device, os } = uaParser.getResult();
+
+  return {
+    screen: {
+      width: window.screen.width,
+      height: window.screen.height,
+    },
+    browser,
+    cpu,
+    type: device,
+    os,
+    tz: timezoneOffset > 0 ? `GMT+${timezoneOffset}` : `GMT-${timezoneOffset}`,
+    language: navigator.language,
+    network: (navigator as any).connection
+      ? {
+          effectiveType: ((navigator as any).connection as any).effectiveType,
+        }
+      : undefined,
+  };
+}
 
 export async function createThreadOnTextRange({
   title,
@@ -36,6 +62,7 @@ export async function createThreadOnTextRange({
     date: new Date().toISOString(),
     comments: [],
     tracking: {
+      device: buildDeviceInformation(),
       type: "TEXT_RANGE",
       selectors: buildSelectors(commonAncestor),
       attributes: {
@@ -124,6 +151,7 @@ export async function createThreadOnElement({
     date: new Date().toISOString(),
     comments: [],
     tracking: {
+      device: buildDeviceInformation(),
       type: "ELEMENT",
       selectors: buildSelectors(element),
       attributes: {
@@ -212,6 +240,17 @@ export async function getThreads() {
 
 export function checkThreadsBubbles(threads: Thread[]) {
   return threads.map((thread) => {
+    const trackingUrl = new URL(thread.tracking.url);
+    const windowUrl = new URL(window.location.href);
+    windowUrl.hash = "";
+    trackingUrl.hash = "";
+    windowUrl.search = "";
+    trackingUrl.search = "";
+    if (windowUrl.toString() !== trackingUrl.toString()) {
+      thread.tracking.show = false;
+      return thread;
+    }
+
     const element = (
       Array.isArray(thread.tracking.selectors)
         ? tryToGetElementFromSelectors(thread.tracking.selectors)
@@ -237,11 +276,6 @@ export function checkThreadsBubbles(threads: Thread[]) {
       elementAriaHidden !== thread.tracking.attributes["aria-hidden"] ||
       elementAriaExpanded !== thread.tracking.attributes["aria-expanded"]
     ) {
-      thread.tracking.show = false;
-      return thread;
-    }
-
-    if (window.location.href !== thread.tracking.url) {
       thread.tracking.show = false;
       return thread;
     }
@@ -293,7 +327,7 @@ export function calculateBubblePosition(thread: Thread) {
       yWithoutScroll,
       "TEXT_RANGE"
     );
-    thread.tracking.liveCoords = { x, y, clientRects: range.getClientRects() };
+    thread.tracking.liveCoords = { x, y, clientRects };
     return thread;
   }
   const rect = element.getBoundingClientRect();
