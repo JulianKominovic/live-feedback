@@ -7,22 +7,17 @@
   "type": "module",
   "license": "MIT",
   "keywords": [
-    "chrome-extension",
     "react",
     "vite",
     "live-feedback"
   ],
   "engines": {
-    "node": ">=14.18.0"
+    "node": ">=18.12.0"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "debug": "vite --debug",
-    "preview": "vite preview",
+    "build": "tsc --noEmit && node ./esbuild.dev.js",
     "start-server": "node ./server.js",
-    "fmt": "prettier --write '**/*.{tsx,ts,json,css,scss,md}'",
-    "zip": "npm run build && node src/zip.js"
+    "fmt": "prettier --write '**/*.{tsx,ts,json,css,scss,md}'"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",
@@ -40,6 +35,7 @@
     "css-selector-generator": "^3.6.7",
     "framer-motion": "^11.1.7",
     "html2canvas": "^1.4.1",
+    "js-cookie": "^3.0.5",
     "octokit": "^4.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -48,17 +44,15 @@
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.0.0-beta.19",
     "@types/chrome": "^0.0.246",
+    "@types/js-cookie": "^3.0.6",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
-    "@vitejs/plugin-react": "^4.1.0",
-    "@vitejs/plugin-react-swc": "^3.5.0",
+    "esbuild": "^0.21.4",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
-    "gulp": "^4.0.2",
-    "gulp-zip": "^6.0.0",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"

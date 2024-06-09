@@ -193,7 +193,7 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
                 </header>
                 <a
                   target="_blank"
-                  href={`https://github.com/${GH_OWNER()}/${GH_REPO()}/issues/${thread.GHissueId}`}
+                  href={`https://github.com/${GH_OWNER}/${GH_REPO}/issues/${thread.GHissueId}`}
                 >
                   <h2
                     style={{

@@ -10,14 +10,17 @@ export async function getOpenPullRequests() {
   });
 
   try {
-    const response = await octokit.request("GET /repos/{owner}/{repo}/pulls", {
-      owner: GH_OWNER(),
-      repo: GH_REPO(),
-      state: "open",
-      headers: {
-        "X-GitHub-Api-Version": "2022-11-28",
-      },
-    });
+    const response = await octokit().request(
+      "GET /repos/{owner}/{repo}/pulls",
+      {
+        owner: GH_OWNER,
+        repo: GH_REPO,
+        state: "open",
+        headers: {
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      }
+    );
 
     useSystemStore.getState().updateTaskStatus({
       id: "get-open-pull-requests",

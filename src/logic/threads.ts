@@ -1,8 +1,4 @@
-import {
-  createIssue,
-  getIssues,
-  updateIssue,
-} from "../integrations/github/issues";
+import { createIssue, getIssues } from "../integrations/github/issues";
 import { Thread } from "../types/Threads";
 import { log, pipe } from "../utils";
 import {
@@ -60,15 +56,6 @@ export async function createThreadOnTextRange({
   log("Thread created", thread);
   try {
     log("Creating issue");
-    const issueResponse = await createIssue({
-      body: "",
-      title: thread.title,
-    });
-    if (!issueResponse) return null;
-    const GHissueId = issueResponse.data.number;
-    const GHIssueCreatorName =
-      issueResponse.data.user?.name || issueResponse.data.user?.login;
-    const GHIssueCreatorAvatar = issueResponse.data.user?.avatar_url;
 
     const issueBody = `
   # ${thread.title}
@@ -87,12 +74,16 @@ export async function createThreadOnTextRange({
   ${JSON.stringify(thread.tracking)}
   \`\`\`
               `;
-    log("Updating issue");
-    await updateIssue({
+    const issueResponse = await createIssue({
       body: issueBody,
       title: thread.title,
-      issue_number: GHissueId,
     });
+    if (!issueResponse) return null;
+    const GHissueId = issueResponse.data.number;
+    const GHIssueCreatorName =
+      issueResponse.data.user?.name || issueResponse.data.user?.login;
+    const GHIssueCreatorAvatar = issueResponse.data.user?.avatar_url;
+
     thread.GHissueId = GHissueId + "";
     thread.creator = {
       name: GHIssueCreatorName,
@@ -149,16 +140,6 @@ export async function createThreadOnElement({
   log("Thread created", thread);
   try {
     log("Creating issue");
-    const issueResponse = await createIssue({
-      body: "",
-      title: thread.title,
-    });
-    if (!issueResponse) return null;
-    const GHissueId = issueResponse.data.number;
-    const GHIssueCreatorName =
-      issueResponse.data.user?.name || issueResponse.data.user?.login;
-    const GHIssueCreatorAvatar = issueResponse.data.user?.avatar_url;
-
     const issueBody = `
   # ${thread.title}
 
@@ -176,12 +157,17 @@ export async function createThreadOnElement({
   ${JSON.stringify(thread.tracking)}
   \`\`\`
               `;
-    log("Updating issue");
-    await updateIssue({
+
+    const issueResponse = await createIssue({
       body: issueBody,
       title: thread.title,
-      issue_number: GHissueId,
     });
+    if (!issueResponse) return null;
+    const GHissueId = issueResponse.data.number;
+    const GHIssueCreatorName =
+      issueResponse.data.user?.name || issueResponse.data.user?.login;
+    const GHIssueCreatorAvatar = issueResponse.data.user?.avatar_url;
+
     thread.GHissueId = GHissueId + "";
     thread.creator = {
       name: GHIssueCreatorName,
