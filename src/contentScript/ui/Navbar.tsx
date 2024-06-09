@@ -5,7 +5,6 @@ import {
   CursorTextIcon,
   GearIcon,
   PlusIcon,
-  UpdateIcon,
 } from "@radix-ui/react-icons";
 import styled from "@emotion/styled";
 import { COLORS, CSS_FRAGMENTS, Z_INDEXES } from "../styles/tokens";
@@ -13,7 +12,6 @@ import { useEffect, useState } from "react";
 import { VerticalDivider } from "./atoms/VerticalDivider";
 import { Button } from "./atoms/Button";
 import useSystemStore from "../store/system";
-import { clearGithubCache } from "../integrations/github/client";
 import SemaphoreIndicator from "./atoms/SemaphoreIndicator";
 import { recursiveGetParentUntilItIsAnHTMLElement } from "../logic/dom";
 
@@ -206,15 +204,6 @@ function Navbar() {
           title="Create thread bubble on text selected"
         >
           <CursorTextIcon />
-        </Button>
-        <Button
-          variant="flat"
-          layout
-          key="clear-github-cache"
-          onClick={clearGithubCache}
-          title="Clear GitHub cache"
-        >
-          <UpdateIcon />
         </Button>
         <Button
           title="Mentions"

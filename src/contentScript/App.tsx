@@ -15,28 +15,12 @@ function RegisterEvents() {
       updateThreadCoords: state.updateThreadCoords,
     }));
 
-  function handleStorageChange(
-    changes: { [key: string]: chrome.storage.StorageChange },
-    areaName: "local" | "sync" | "managed" | "session"
-  ) {
-    if (areaName !== "local") return;
-    if (
-      changes.gh_token?.newValue ||
-      changes.repo?.newValue ||
-      changes.owner?.newValue
-    ) {
-      populateThreads();
-    }
-  }
-
   useEffect(() => {
     populateThreads();
-    chrome.storage.onChanged.addListener(handleStorageChange);
     window.addEventListener("resize", updateThreadCoords);
     updateThreadCoords();
     const interval = setInterval(checkThreadsVisibility, 1000);
     return () => {
-      chrome.storage.onChanged.removeListener(handleStorageChange);
       window.removeEventListener("resize", updateThreadCoords);
       clearInterval(interval);
     };

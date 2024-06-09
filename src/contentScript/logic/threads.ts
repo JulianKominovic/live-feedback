@@ -4,14 +4,7 @@ import {
   updateIssue,
 } from "../integrations/github/issues";
 import { Thread } from "../types/Threads";
-import { uploadDomPhoto, uploadElementPhoto } from "./github";
 import { log, pipe } from "../utils";
-import {
-  takeElementScreenshot,
-  takeTabScreenshot,
-} from "../integrations/background/tabs";
-import { GH_OWNER, GH_REPO } from "../const";
-import { getRepository } from "../integrations/github/repositories";
 import {
   buildSelectors,
   getCssSelectorForTextNode,
@@ -36,15 +29,6 @@ export async function createThreadOnTextRange({
   endNode: Node;
   bindedPullRequestId: number;
 }) {
-  const elementPhoto = (await takeElementScreenshot(commonAncestor))?.replace(
-    "data:image/png;base64,",
-    ""
-  );
-  const domPhoto = (await takeTabScreenshot())?.replace(
-    "data:image/png;base64,",
-    ""
-  );
-
   const startNodeSelector = getCssSelectorForTextNode(startNode);
   const endNodeSelector = getCssSelectorForTextNode(endNode);
 
@@ -75,9 +59,6 @@ export async function createThreadOnTextRange({
   };
   log("Thread created", thread);
   try {
-    log("Gettings repo info");
-    const repoInfo = await getRepository();
-    const isPrivateRepo = repoInfo?.data.private;
     log("Creating issue");
     const issueResponse = await createIssue({
       body: "",
@@ -88,14 +69,6 @@ export async function createThreadOnTextRange({
     const GHIssueCreatorName =
       issueResponse.data.user?.name || issueResponse.data.user?.login;
     const GHIssueCreatorAvatar = issueResponse.data.user?.avatar_url;
-    log("Uploading dom & element photos");
-    const domPhotoUpload = await uploadDomPhoto(GHissueId.toString(), domPhoto);
-    if (!domPhotoUpload) return null;
-    const elementPhotoUpload = await uploadElementPhoto(
-      GHissueId.toString(),
-      elementPhoto
-    );
-    if (!elementPhotoUpload) return null;
 
     const issueBody = `
   # ${thread.title}
@@ -108,13 +81,6 @@ export async function createThreadOnTextRange({
   - **Browser**: ${navigator.appVersion}
   - **Resolution**: ${window.screen.width}w x${window.screen.height}h
   ${bindedPullRequestId !== 0 ? `- **Pull Request**: #${bindedPullRequestId}` : ""}
-
-  ## Images
-  ### DOM Photo
-  ${isPrivateRepo ? `https://github.com/${GH_OWNER()}/${GH_REPO()}/blob/master/.github/live-feedback/${domPhotoUpload.data.content?.name}` : `![Dom Photo](${domPhotoUpload.data.content?.download_url})`}
-
-  ### Element Photo
-  ${isPrivateRepo ? `https://github.com/${GH_OWNER()}/${GH_REPO()}/blob/master/.github/live-feedback/${elementPhotoUpload.data.content?.name}` : `![Element Photo](${elementPhotoUpload.data.content?.download_url})`}
 
   ## Tracking (internal use)
   \`\`\`json
@@ -152,14 +118,6 @@ export async function createThreadOnElement({
   clickYCoord: number;
   bindedPullRequestId: number;
 }) {
-  const elementPhoto = (await takeElementScreenshot(element))?.replace(
-    "data:image/png;base64,",
-    ""
-  );
-  const domPhoto = (await takeTabScreenshot())?.replace(
-    "data:image/png;base64,",
-    ""
-  );
   const elementRect = element.getBoundingClientRect();
   const xPercentageFromSelectedElement =
     ((clickXCoord - elementRect.left) / elementRect.width) * 100;
@@ -190,9 +148,6 @@ export async function createThreadOnElement({
   };
   log("Thread created", thread);
   try {
-    log("Gettings repo info");
-    const repoInfo = await getRepository();
-    const isPrivateRepo = repoInfo?.data.private;
     log("Creating issue");
     const issueResponse = await createIssue({
       body: "",
@@ -203,14 +158,6 @@ export async function createThreadOnElement({
     const GHIssueCreatorName =
       issueResponse.data.user?.name || issueResponse.data.user?.login;
     const GHIssueCreatorAvatar = issueResponse.data.user?.avatar_url;
-    log("Uploading dom & element photos");
-    const domPhotoUpload = await uploadDomPhoto(GHissueId.toString(), domPhoto);
-    if (!domPhotoUpload) return null;
-    const elementPhotoUpload = await uploadElementPhoto(
-      GHissueId.toString(),
-      elementPhoto
-    );
-    if (!elementPhotoUpload) return null;
 
     const issueBody = `
   # ${thread.title}
@@ -223,13 +170,6 @@ export async function createThreadOnElement({
   - **Browser**: ${navigator.appVersion}
   - **Resolution**: ${window.screen.width}w x${window.screen.height}h
   ${bindedPullRequestId !== 0 ? `- **Pull Request**: #${bindedPullRequestId}` : ""}
-
-  ## Images
-  ### DOM Photo
-  ${isPrivateRepo ? `https://github.com/${GH_OWNER()}/${GH_REPO()}/blob/master/.github/live-feedback/${domPhotoUpload.data.content?.name}` : `![Dom Photo](${domPhotoUpload.data.content?.download_url})`}
-
-  ### Element Photo
-  ${isPrivateRepo ? `https://github.com/${GH_OWNER()}/${GH_REPO()}/blob/master/.github/live-feedback/${elementPhotoUpload.data.content?.name}` : `![Element Photo](${elementPhotoUpload.data.content?.download_url})`}
 
   ## Tracking (internal use)
   \`\`\`json

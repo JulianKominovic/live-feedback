@@ -1,28 +1,8 @@
-// import { dataURL } from "@gripeless/pico";
-import { uploadFile } from "../integrations/github/files";
-import { GH_TEMP_FILES_PATH_FOLDER } from "../const";
-// import html2canvas from "html2canvas";
 import {
   createIssueComment,
   getIssueComments,
 } from "../integrations/github/issues";
 import { Thread } from "../types/Threads";
-
-export async function uploadDomPhoto(id: string, base64: string) {
-  const uploadResponse = await uploadFile({
-    fileContent: base64,
-    path: `${GH_TEMP_FILES_PATH_FOLDER}/${id}-dom-photo.png`,
-  });
-  return uploadResponse;
-}
-
-export async function uploadElementPhoto(id: string, base64: string) {
-  const uploadResponse = await uploadFile({
-    fileContent: base64,
-    path: `${GH_TEMP_FILES_PATH_FOLDER}/${id}-element-photo.png`,
-  });
-  return uploadResponse;
-}
 
 export async function getComments(thread: Thread) {
   if (!thread.GHissueId) return thread;

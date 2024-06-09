@@ -1,7 +1,7 @@
 import { GH_OWNER, GH_REPO } from "../../const";
 import useSystemStore from "../../store/system";
 import { log } from "../../utils";
-import octokit, { fetchCache } from "./client";
+import octokit from "./client";
 
 export async function getIssue({ issue_number }: { issue_number: number }) {
   useSystemStore.getState().addTask({
@@ -10,7 +10,7 @@ export async function getIssue({ issue_number }: { issue_number: number }) {
   });
 
   try {
-    const response = await octokit().request(
+    const response = await octokit.request(
       "GET /repos/{owner}/{repo}/issues/{issue_number}",
       {
         owner: GH_OWNER(),
@@ -18,9 +18,6 @@ export async function getIssue({ issue_number }: { issue_number: number }) {
         issue_number,
         headers: {
           "X-GitHub-Api-Version": "2022-11-28",
-        },
-        request: {
-          fetch: fetchCache,
         },
       }
     );
@@ -56,7 +53,7 @@ export async function createIssue({
   });
 
   try {
-    const response = await octokit().request(
+    const response = await octokit.request(
       "POST /repos/{owner}/{repo}/issues",
       {
         owner: GH_OWNER(),
@@ -103,7 +100,7 @@ export async function updateIssue({
   });
 
   try {
-    const response = await octokit().request(
+    const response = await octokit.request(
       "PATCH /repos/{owner}/{repo}/issues/{issue_number}",
       {
         owner: GH_OWNER(),
@@ -142,20 +139,14 @@ export async function getIssues() {
   });
 
   try {
-    const response = await octokit().request(
-      "GET /repos/{owner}/{repo}/issues",
-      {
-        owner: GH_OWNER(),
-        repo: GH_REPO(),
-        headers: {
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-        state: "open",
-        request: {
-          fetch: fetchCache,
-        },
-      }
-    );
+    const response = await octokit.request("GET /repos/{owner}/{repo}/issues", {
+      owner: GH_OWNER(),
+      repo: GH_REPO(),
+      headers: {
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+      state: "open",
+    });
     useSystemStore.getState().updateTaskStatus({
       id: "get-issues",
       title: `Fetched issues`,
@@ -186,7 +177,7 @@ export async function getIssueComments({
   });
 
   try {
-    const response = await octokit().request(
+    const response = await octokit.request(
       "GET /repos/{owner}/{repo}/issues/{issue_number}/comments",
       {
         owner: GH_OWNER(),
@@ -197,9 +188,6 @@ export async function getIssueComments({
         },
         headers: {
           "X-GitHub-Api-Version": "2022-11-28",
-        },
-        request: {
-          fetch: fetchCache,
         },
       }
     );
@@ -237,7 +225,7 @@ export async function createIssueComment({
   });
 
   try {
-    const response = await octokit().request(
+    const response = await octokit.request(
       "POST /repos/{owner}/{repo}/issues/{issue_number}/comments",
       {
         owner: GH_OWNER(),
