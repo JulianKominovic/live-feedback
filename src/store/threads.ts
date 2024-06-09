@@ -9,6 +9,7 @@ import {
 } from "../logic/threads";
 import { addComment, getComments } from "../logic/github";
 import { log } from "../utils";
+import { closeIssue } from "../integrations/github/issues";
 
 export type ThreadsStore = {
   // Threads
@@ -17,6 +18,7 @@ export type ThreadsStore = {
   populateThreads: () => void;
   populateThreadComments: (thread: Thread) => void;
   createThread: (comment: string, bindedPullRequestId: number) => Promise<void>;
+  closeThread: (thread: Thread) => void;
   checkThreadsVisibility: () => void;
   createThreadComment: (thread: Thread, comment: string) => Promise<void>;
   updateThreadCoords: () => Thread[];
@@ -93,6 +95,16 @@ const useThreadsStore = create<ThreadsStore>((set, get) => ({
       calculateBubblePosition
     );
     set({ threads: updatedThreads });
+  },
+  closeThread: async (thread) => {
+    set({ isLoading: true });
+    await closeIssue({
+      issue_number: parseInt(thread.GHissueId as string, 10),
+    });
+    set({
+      threads: get().threads.filter((t) => t.GHissueId !== thread.GHissueId),
+      isLoading: false,
+    });
   },
   createThread: async (comment, bindedPullRequestId) => {
     if (!get().tempThreadCreationIntent) return;

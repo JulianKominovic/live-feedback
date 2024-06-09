@@ -41,6 +41,45 @@ export async function getIssue({ issue_number }: { issue_number: number }) {
   }
 }
 
+export async function closeIssue({ issue_number }: { issue_number: number }) {
+  useSystemStore.getState().addTask({
+    id: `close-issue-${issue_number}`,
+    title: `Closing issue #${issue_number}`,
+  });
+
+  try {
+    const client = await octokit();
+    const response = await client.request(
+      "PATCH /repos/{owner}/{repo}/issues/{issue_number}",
+      {
+        owner: GH_OWNER,
+        repo: GH_REPO,
+        issue_number,
+        state: "closed",
+        headers: {
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      }
+    );
+    useSystemStore.getState().updateTaskStatus({
+      id: `close-issue-${issue_number}`,
+      title: `Closed issue #${issue_number}`,
+      status: "success",
+    });
+
+    return response;
+  } catch (err) {
+    log(err);
+    useSystemStore.getState().updateTaskStatus({
+      id: `close-issue-${issue_number}`,
+      title: `Error closing issue #${issue_number}`,
+      status: "error",
+    });
+
+    return null;
+  }
+}
+
 export async function createIssue({
   body,
   title,

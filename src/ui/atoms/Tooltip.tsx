@@ -25,6 +25,7 @@ const StyledContent = styled(TooltipRadix.Content)`
   will-change: transform, opacity;
   z-index: ${Z_INDEXES.TOOLTIP};
   ${CSS_FRAGMENTS["box-styles"]};
+  font-size: 12px;
   * {
     font-size: 12px;
   }
