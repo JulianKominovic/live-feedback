@@ -27,7 +27,10 @@ export const ConversationalCommentForm = ({ action }: CommentFormProps) => {
 
         if (comment) {
           setIsLoading(true);
-          action(comment as string).finally(() => setIsLoading(false));
+          action(comment as string).finally(() => {
+            setIsLoading(false);
+            (e.target as any).reset();
+          });
         }
       }}
     >

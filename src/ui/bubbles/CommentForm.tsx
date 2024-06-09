@@ -41,16 +41,15 @@ export const CommentForm = ({ action }: CommentFormProps) => {
         );
         if (comment) {
           setIsLoading(true);
-          action(comment as string, Number(bindedPullRequest)).finally(() =>
-            setIsLoading(false)
-          );
+          action(comment as string, Number(bindedPullRequest)).finally(() => {
+            setIsLoading(false);
+            (e.target as any).reset();
+          });
         }
       }}
     >
-      <Select name="pull-request-binded" width="100%">
-        <Option selected value={"0"}>
-          No pull request associated
-        </Option>
+      <Select name="pull-request-binded" width="100%" defaultValue={"0"}>
+        <Option value={"0"}>No pull request associated</Option>
         {pullRequests.map((pr) => (
           <Option key={"pr" + pr.id} value={pr.id}>
             {pr.title}
