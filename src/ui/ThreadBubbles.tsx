@@ -1,22 +1,21 @@
 import * as Popover from "@radix-ui/react-popover";
 import {
-  ChatBubbleIcon,
   CheckCircledIcon,
   Cross2Icon,
   InfoCircledIcon,
 } from "@radix-ui/react-icons";
 import { Thread } from "../types/Threads";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { GH_OWNER, GH_REPO } from "../const";
 import useThreadsStore from "../store/threads";
 import { COLORS } from "../styles/tokens";
-import { VerticalDivider } from "./atoms/VerticalDivider";
 import { getRelativeTimeString } from "../utils";
 import { Content } from "./bubbles/Content";
 import { CloseButton } from "./bubbles/CloseButton";
 import { Trigger } from "./bubbles/Trigger";
 import { ConversationalCommentForm } from "./bubbles/ConversationalCommentForm";
 import Tooltip from "./atoms/Tooltip";
+import { CopyButton } from "./atoms/CopyButton";
 
 const ThreadBubble = ({ thread }: { thread: Thread }) => {
   const [open, setOpen] = useState(false);
@@ -27,6 +26,12 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
       closeThread: state.closeThread,
     })
   );
+  const copyUrl = useMemo(() => {
+    if (!thread.GHissueId) return "";
+    const url = new URL(thread.tracking.url);
+    url.searchParams.set("thread", thread.GHissueId);
+    return url.toString();
+  }, [thread.GHissueId, thread.tracking.url]);
   const coords = thread.tracking.liveCoords;
   return (
     thread.tracking.show &&
@@ -119,32 +124,7 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
                   {thread.status === "OPEN" ? "Open" : "Closed"}
                 </span>
               </div>
-              <VerticalDivider
-                style={{
-                  height: "50%",
-                }}
-              />
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "4px",
-                }}
-              >
-                <ChatBubbleIcon />
-                <span
-                  style={{
-                    fontSize: "12px",
-                  }}
-                >
-                  {thread.comments?.length}
-                </span>
-              </div>
-              <VerticalDivider
-                style={{
-                  height: "50%",
-                }}
-              />
+
               <Tooltip>
                 <Tooltip.Trigger asChild>
                   <InfoCircledIcon />
@@ -198,11 +178,20 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
                   ) : null}
                 </Tooltip.Content>
               </Tooltip>
-              <VerticalDivider
-                style={{
-                  height: "50%",
-                }}
-              />
+              <Tooltip>
+                <Tooltip.Trigger asChild>
+                  <CopyButton textToCopy={copyUrl} />
+                </Tooltip.Trigger>
+                <Tooltip.Content
+                  style={{
+                    padding: "8px 16px",
+                  }}
+                  sideOffset={5}
+                >
+                  Copy thread link
+                </Tooltip.Content>
+              </Tooltip>
+
               <Tooltip>
                 <Tooltip.Trigger asChild onClick={() => closeThread(thread)}>
                   <CheckCircledIcon />
@@ -216,11 +205,7 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
                   Close thread
                 </Tooltip.Content>
               </Tooltip>
-              <VerticalDivider
-                style={{
-                  height: "50%",
-                }}
-              />
+
               <span
                 style={{
                   fontSize: "12px",
