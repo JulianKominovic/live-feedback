@@ -30,7 +30,7 @@
     "minor": "npm version minor -m \"chore: release version %s\"",
     "major": "npm version major -m \"chore: release version %s\"",
     "version": "pnpm run prod && git add build",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags && echo \"\n\nUse https://www.jsdelivr.com/tools/purge to clear cdn cache!\""
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",
