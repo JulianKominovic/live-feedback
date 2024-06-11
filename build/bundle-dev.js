@@ -1,9 +1,9 @@
 
 /**
  * Live Feedback script.
- * @version 1.0.0
+ * @version 1.1.1
  * @description Leave feedback on any website and share it with your team 🚀.
- * @date 2024-06-11T02:41:03.515Z
+ * @date 2024-06-11T22:50:24.678Z
  * @see https://github.com/JulianKominovic/live-feedback
  * @see https://jkominovic.dev/live-feedback
  **/
@@ -990,7 +990,7 @@
             }
             return lazyType;
           }
-          function forwardRef7(render) {
+          function forwardRef8(render) {
             {
               if (render != null && render.$$typeof === REACT_MEMO_TYPE) {
                 error("forwardRef requires a render function but received a `memo` component. Instead of forwardRef(memo(...)), use memo(forwardRef(...)).");
@@ -1103,7 +1103,7 @@
             }
             return dispatcher.useContext(Context);
           }
-          function useState11(initialState) {
+          function useState12(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1131,7 +1131,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useCallback(callback, deps);
           }
-          function useMemo11(create2, deps) {
+          function useMemo12(create2, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useMemo(create2, deps);
           }
@@ -1888,7 +1888,7 @@
           exports.createElement = createElement$1;
           exports.createFactory = createFactory;
           exports.createRef = createRef;
-          exports.forwardRef = forwardRef7;
+          exports.forwardRef = forwardRef8;
           exports.isValidElement = isValidElement2;
           exports.lazy = lazy;
           exports.memo = memo2;
@@ -1903,10 +1903,10 @@
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect5;
           exports.useLayoutEffect = useLayoutEffect5;
-          exports.useMemo = useMemo11;
+          exports.useMemo = useMemo12;
           exports.useReducer = useReducer;
           exports.useRef = useRef10;
-          exports.useState = useState11;
+          exports.useState = useState12;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -2402,9 +2402,9 @@
           if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === "function") {
             __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
           }
-          var React17 = require_react();
+          var React18 = require_react();
           var Scheduler = require_scheduler();
-          var ReactSharedInternals = React17.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React18.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           var suppressWarning = false;
           function setSuppressWarning(newSuppressWarning) {
             {
@@ -4009,7 +4009,7 @@
             {
               if (props.value == null) {
                 if (typeof props.children === "object" && props.children !== null) {
-                  React17.Children.forEach(props.children, function(child) {
+                  React18.Children.forEach(props.children, function(child) {
                     if (child == null) {
                       return;
                     }
@@ -23552,8 +23552,8 @@
           if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === "function") {
             __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
           }
-          var React17 = require_react();
-          var ReactSharedInternals = React17.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var React18 = require_react();
+          var ReactSharedInternals = React18.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           function error(format) {
             {
               {
@@ -23583,13 +23583,13 @@
             return x === y && (x !== 0 || 1 / x === 1 / y) || x !== x && y !== y;
           }
           var objectIs = typeof Object.is === "function" ? Object.is : is;
-          var useState11 = React17.useState, useEffect14 = React17.useEffect, useLayoutEffect5 = React17.useLayoutEffect, useDebugValue2 = React17.useDebugValue;
+          var useState12 = React18.useState, useEffect14 = React18.useEffect, useLayoutEffect5 = React18.useLayoutEffect, useDebugValue2 = React18.useDebugValue;
           var didWarnOld18Alpha = false;
           var didWarnUncachedGetSnapshot = false;
           function useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot) {
             {
               if (!didWarnOld18Alpha) {
-                if (React17.startTransition !== void 0) {
+                if (React18.startTransition !== void 0) {
                   didWarnOld18Alpha = true;
                   error("You are using an outdated, pre-release alpha of React 18 that does not support useSyncExternalStore. The use-sync-external-store shim will not work correctly. Upgrade to a newer pre-release.");
                 }
@@ -23605,7 +23605,7 @@
                 }
               }
             }
-            var _useState = useState11({
+            var _useState = useState12({
               inst: {
                 value,
                 getSnapshot
@@ -23654,7 +23654,7 @@
           var canUseDOM = !!(typeof window !== "undefined" && typeof window.document !== "undefined" && typeof window.document.createElement !== "undefined");
           var isServerEnvironment = !canUseDOM;
           var shim = isServerEnvironment ? useSyncExternalStore$1 : useSyncExternalStore;
-          var useSyncExternalStore$2 = React17.useSyncExternalStore !== void 0 ? React17.useSyncExternalStore : shim;
+          var useSyncExternalStore$2 = React18.useSyncExternalStore !== void 0 ? React18.useSyncExternalStore : shim;
           exports.useSyncExternalStore = useSyncExternalStore$2;
           if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop === "function") {
             __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(new Error());
@@ -23686,14 +23686,14 @@
           if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === "function") {
             __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
           }
-          var React17 = require_react();
+          var React18 = require_react();
           var shim = require_shim();
           function is(x, y) {
             return x === y && (x !== 0 || 1 / x === 1 / y) || x !== x && y !== y;
           }
           var objectIs = typeof Object.is === "function" ? Object.is : is;
           var useSyncExternalStore = shim.useSyncExternalStore;
-          var useRef10 = React17.useRef, useEffect14 = React17.useEffect, useMemo11 = React17.useMemo, useDebugValue2 = React17.useDebugValue;
+          var useRef10 = React18.useRef, useEffect14 = React18.useEffect, useMemo12 = React18.useMemo, useDebugValue2 = React18.useDebugValue;
           function useSyncExternalStoreWithSelector2(subscribe, getSnapshot, getServerSnapshot, selector2, isEqual) {
             var instRef = useRef10(null);
             var inst;
@@ -23706,7 +23706,7 @@
             } else {
               inst = instRef.current;
             }
-            var _useMemo = useMemo11(function() {
+            var _useMemo = useMemo12(function() {
               var hasMemo = false;
               var memoizedSnapshot;
               var memoizedSelection;
@@ -23785,7 +23785,7 @@
       if (true) {
         (function() {
           "use strict";
-          var React17 = require_react();
+          var React18 = require_react();
           var REACT_ELEMENT_TYPE = Symbol.for("react.element");
           var REACT_PORTAL_TYPE = Symbol.for("react.portal");
           var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
@@ -23811,7 +23811,7 @@
             }
             return null;
           }
-          var ReactSharedInternals = React17.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React18.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           function error(format) {
             {
               {
@@ -24661,10 +24661,10 @@
               return jsxWithValidation(type, props, key, false);
             }
           }
-          var jsx18 = jsxWithValidationDynamic;
+          var jsx19 = jsxWithValidationDynamic;
           var jsxs10 = jsxWithValidationStatic;
           exports.Fragment = REACT_FRAGMENT_TYPE;
-          exports.jsx = jsx18;
+          exports.jsx = jsx19;
           exports.jsxs = jsxs10;
         })();
       }
@@ -24971,11 +24971,11 @@
   });
 
   // src/index.tsx
-  var import_react61 = __toESM(require_react(), 1);
+  var import_react62 = __toESM(require_react(), 1);
   var import_client4 = __toESM(require_client(), 1);
 
   // src/App.tsx
-  var import_react59 = __toESM(require_react(), 1);
+  var import_react60 = __toESM(require_react(), 1);
 
   // node_modules/.pnpm/zustand@4.5.2_@types+react@18.3.1_react@18.3.1/node_modules/zustand/esm/vanilla.mjs
   var import_meta = {};
@@ -29241,6 +29241,55 @@
     );
     thread.tracking.liveCoords = { x, y };
     return thread;
+  }
+  function waitForElementToBeVisible(selector2) {
+    const TIMEOUT = 1e4;
+    const INTERVAL = 100;
+    return new Promise((resolve, reject) => {
+      let time2 = 0;
+      const interval = setInterval(() => {
+        const element = document.querySelector("#live-feedback")?.shadowRoot?.querySelector(selector2);
+        if (element) {
+          clearInterval(interval);
+          resolve(element);
+        }
+        time2 += INTERVAL;
+        if (time2 > TIMEOUT) {
+          clearInterval(interval);
+          reject("Timeout");
+        }
+      }, INTERVAL);
+    });
+  }
+  async function openThread(thread) {
+    const bubbleIdSelector = `#live-feedback-bubble-${thread.GHissueId}`;
+    return waitForElementToBeVisible(bubbleIdSelector).then((element) => {
+      if (element === "Timeout") return;
+      const bubble = element;
+      bubble.scrollIntoView({ behavior: "smooth" });
+      bubble.click();
+      bubble.focus();
+    }).catch((err) => {
+      log(err);
+    });
+  }
+  async function focusThreadIfUrlMatches(threads) {
+    if (threads.length === 0 || !window.location.href.includes("thread")) return;
+    const windowUrl = new URL(window.location.href);
+    const threadUrl = windowUrl.searchParams.get("thread");
+    windowUrl.searchParams.delete("thread");
+    window.history.replaceState({}, "", windowUrl.toString());
+    if (!threadUrl) return;
+    const thread = threads.find((thread2) => thread2.GHissueId === threadUrl);
+    if (!thread) return;
+    thread.tracking.show = true;
+    const coords = calculateBubblePosition(thread).tracking.liveCoords;
+    if (coords) {
+      const x = coords.x - window.innerWidth / 2;
+      const y = coords.y - window.innerHeight / 2;
+      window.scrollTo(x, y);
+      openThread(thread);
+    }
   }
 
   // src/logic/github.ts
@@ -36878,9 +36927,9 @@
       clipRule: "evenodd"
     }));
   });
-  var _excluded$S = ["color"];
-  var ChatBubbleIcon = /* @__PURE__ */ (0, import_react27.forwardRef)(function(_ref, forwardedRef) {
-    var _ref$color = _ref.color, color2 = _ref$color === void 0 ? "currentColor" : _ref$color, props = _objectWithoutPropertiesLoose(_ref, _excluded$S);
+  var _excluded$T = ["color"];
+  var CheckIcon = /* @__PURE__ */ (0, import_react27.forwardRef)(function(_ref, forwardedRef) {
+    var _ref$color = _ref.color, color2 = _ref$color === void 0 ? "currentColor" : _ref$color, props = _objectWithoutPropertiesLoose(_ref, _excluded$T);
     return (0, import_react27.createElement)("svg", Object.assign({
       width: "15",
       height: "15",
@@ -36890,7 +36939,7 @@
     }, props, {
       ref: forwardedRef
     }), (0, import_react27.createElement)("path", {
-      d: "M12.5 3L2.5 3.00002C1.67157 3.00002 1 3.6716 1 4.50002V9.50003C1 10.3285 1.67157 11 2.5 11H7.50003C7.63264 11 7.75982 11.0527 7.85358 11.1465L10 13.2929V11.5C10 11.2239 10.2239 11 10.5 11H12.5C13.3284 11 14 10.3285 14 9.50003V4.5C14 3.67157 13.3284 3 12.5 3ZM2.49999 2.00002L12.5 2C13.8807 2 15 3.11929 15 4.5V9.50003C15 10.8807 13.8807 12 12.5 12H11V14.5C11 14.7022 10.8782 14.8845 10.6913 14.9619C10.5045 15.0393 10.2894 14.9965 10.1464 14.8536L7.29292 12H2.5C1.11929 12 0 10.8807 0 9.50003V4.50002C0 3.11931 1.11928 2.00003 2.49999 2.00002Z",
+      d: "M11.4669 3.72684C11.7558 3.91574 11.8369 4.30308 11.648 4.59198L7.39799 11.092C7.29783 11.2452 7.13556 11.3467 6.95402 11.3699C6.77247 11.3931 6.58989 11.3355 6.45446 11.2124L3.70446 8.71241C3.44905 8.48022 3.43023 8.08494 3.66242 7.82953C3.89461 7.57412 4.28989 7.55529 4.5453 7.78749L6.75292 9.79441L10.6018 3.90792C10.7907 3.61902 11.178 3.53795 11.4669 3.72684Z",
       fill: color2,
       fillRule: "evenodd",
       clipRule: "evenodd"
@@ -36981,6 +37030,24 @@
       ref: forwardedRef
     }), (0, import_react27.createElement)("path", {
       d: "M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM8.24992 4.49999C8.24992 4.9142 7.91413 5.24999 7.49992 5.24999C7.08571 5.24999 6.74992 4.9142 6.74992 4.49999C6.74992 4.08577 7.08571 3.74999 7.49992 3.74999C7.91413 3.74999 8.24992 4.08577 8.24992 4.49999ZM6.00003 5.99999H6.50003H7.50003C7.77618 5.99999 8.00003 6.22384 8.00003 6.49999V9.99999H8.50003H9.00003V11H8.50003H7.50003H6.50003H6.00003V9.99999H6.50003H7.00003V6.99999H6.50003H6.00003V5.99999Z",
+      fill: color2,
+      fillRule: "evenodd",
+      clipRule: "evenodd"
+    }));
+  });
+  var _excluded$2T = ["color"];
+  var Link2Icon = /* @__PURE__ */ (0, import_react27.forwardRef)(function(_ref, forwardedRef) {
+    var _ref$color = _ref.color, color2 = _ref$color === void 0 ? "currentColor" : _ref$color, props = _objectWithoutPropertiesLoose(_ref, _excluded$2T);
+    return (0, import_react27.createElement)("svg", Object.assign({
+      width: "15",
+      height: "15",
+      viewBox: "0 0 15 15",
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg"
+    }, props, {
+      ref: forwardedRef
+    }), (0, import_react27.createElement)("path", {
+      d: "M8.51194 3.00541C9.18829 2.54594 10.0435 2.53694 10.6788 2.95419C10.8231 3.04893 10.9771 3.1993 11.389 3.61119C11.8009 4.02307 11.9513 4.17714 12.046 4.32141C12.4633 4.95675 12.4543 5.81192 11.9948 6.48827C11.8899 6.64264 11.7276 6.80811 11.3006 7.23511L10.6819 7.85383C10.4867 8.04909 10.4867 8.36567 10.6819 8.56093C10.8772 8.7562 11.1938 8.7562 11.389 8.56093L12.0077 7.94221L12.0507 7.89929C12.4203 7.52976 12.6568 7.2933 12.822 7.0502C13.4972 6.05623 13.5321 4.76252 12.8819 3.77248C12.7233 3.53102 12.4922 3.30001 12.1408 2.94871L12.0961 2.90408L12.0515 2.85942C11.7002 2.508 11.4692 2.27689 11.2277 2.11832C10.2377 1.46813 8.94398 1.50299 7.95001 2.17822C7.70691 2.34336 7.47044 2.57991 7.1009 2.94955L7.058 2.99247L6.43928 3.61119C6.24401 3.80645 6.24401 4.12303 6.43928 4.31829C6.63454 4.51355 6.95112 4.51355 7.14638 4.31829L7.7651 3.69957C8.1921 3.27257 8.35757 3.11027 8.51194 3.00541ZM4.31796 7.14672C4.51322 6.95146 4.51322 6.63487 4.31796 6.43961C4.12269 6.24435 3.80611 6.24435 3.61085 6.43961L2.99213 7.05833L2.94922 7.10124C2.57957 7.47077 2.34303 7.70724 2.17788 7.95035C1.50265 8.94432 1.4678 10.238 2.11799 11.2281C2.27656 11.4695 2.50766 11.7005 2.8591 12.0518L2.90374 12.0965L2.94837 12.1411C3.29967 12.4925 3.53068 12.7237 3.77214 12.8822C4.76219 13.5324 6.05589 13.4976 7.04986 12.8223C7.29296 12.6572 7.52943 12.4206 7.89896 12.051L7.89897 12.051L7.94188 12.0081L8.5606 11.3894C8.75586 11.1941 8.75586 10.8775 8.5606 10.6823C8.36533 10.487 8.04875 10.487 7.85349 10.6823L7.23477 11.301C6.80777 11.728 6.6423 11.8903 6.48794 11.9951C5.81158 12.4546 4.95642 12.4636 4.32107 12.0464C4.17681 11.9516 4.02274 11.8012 3.61085 11.3894C3.19896 10.9775 3.0486 10.8234 2.95385 10.6791C2.53661 10.0438 2.54561 9.18863 3.00507 8.51227C3.10993 8.35791 3.27224 8.19244 3.69924 7.76544L4.31796 7.14672ZM9.62172 6.08558C9.81698 5.89032 9.81698 5.57373 9.62172 5.37847C9.42646 5.18321 9.10988 5.18321 8.91461 5.37847L5.37908 8.91401C5.18382 9.10927 5.18382 9.42585 5.37908 9.62111C5.57434 9.81637 5.89092 9.81637 6.08619 9.62111L9.62172 6.08558Z",
       fill: color2,
       fillRule: "evenodd",
       clipRule: "evenodd"
@@ -44058,7 +44125,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
   var $cb5cc270b50c6fcd$export$21b07c8f274aebd5 = $cb5cc270b50c6fcd$export$3152841115e061b2;
 
   // src/ui/ThreadBubbles.tsx
-  var import_react55 = __toESM(require_react(), 1);
+  var import_react56 = __toESM(require_react(), 1);
 
   // src/ui/bubbles/Content.tsx
   var Content = newStyled($cb5cc270b50c6fcd$export$7c6e2c02157bb7d2)`
@@ -44787,10 +44854,36 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
   Tooltip.Trigger = Trigger2;
   Tooltip.Content = Content2;
 
-  // src/ui/ThreadBubbles.tsx
+  // src/ui/atoms/CopyButton.tsx
+  var import_react55 = __toESM(require_react(), 1);
   var import_jsx_runtime12 = __toESM(require_jsx_runtime(), 1);
+  var Button2 = newStyled.button`
+  border: none;
+  line-height: 0;
+  :focus {
+    outline: none !important;
+  }
+`;
+  var CopyButton = (0, import_react55.forwardRef)(function CopyButton2({
+    textToCopy,
+    ...rest
+  }, ref) {
+    const [copied, setCopied] = (0, import_react55.useState)(false);
+    const copy2 = () => {
+      if (navigator.clipboard && !copied) {
+        setCopied(true);
+        navigator.clipboard.writeText(textToCopy).finally(() => {
+          setTimeout(() => setCopied(false), 2e3);
+        });
+      }
+    };
+    return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Button2, { ...rest, ref, onClick: copy2, children: copied ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(CheckIcon, {}) : /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Link2Icon, {}) });
+  });
+
+  // src/ui/ThreadBubbles.tsx
+  var import_jsx_runtime13 = __toESM(require_jsx_runtime(), 1);
   var ThreadBubble = ({ thread }) => {
-    const [open, setOpen] = (0, import_react55.useState)(false);
+    const [open, setOpen] = (0, import_react56.useState)(false);
     const { addComment: addComment2, loadComments, closeThread } = threads_default(
       (state) => ({
         loadComments: state.populateThreadComments,
@@ -44798,8 +44891,14 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
         closeThread: state.closeThread
       })
     );
+    const copyUrl = (0, import_react56.useMemo)(() => {
+      if (!thread.GHissueId) return "";
+      const url = new URL(thread.tracking.url);
+      url.searchParams.set("thread", thread.GHissueId);
+      return url.toString();
+    }, [thread.GHissueId, thread.tracking.url]);
     const coords = thread.tracking.liveCoords;
-    return thread.tracking.show && coords && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+    return thread.tracking.show && coords && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
       $cb5cc270b50c6fcd$export$be92b6f5f03c0fe9,
       {
         open,
@@ -44810,7 +44909,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
           }
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
             Trigger,
             {
               id: "live-feedback-bubble-" + thread.GHissueId,
@@ -44820,7 +44919,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                 left: coords.x,
                 overflow: "hidden"
               },
-              children: thread.creator?.avatar ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+              children: thread.creator?.avatar ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                 "img",
                 {
                   style: {
@@ -44832,11 +44931,11 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
               ) : thread.comments?.length
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
             $cb5cc270b50c6fcd$export$602eac185826482c,
             {
               container: document.getElementById("live-feedback")?.shadowRoot?.querySelector("#live-feedback-styles-wrapper") || document.body,
-              children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+              children: /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
                 Content,
                 {
                   "data-live-feedback": true,
@@ -44850,7 +44949,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                   },
                   sideOffset: 8,
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
                       "header",
                       {
                         style: {
@@ -44862,7 +44961,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                           borderBottom: "1px solid rgba(0,0,0,.1)"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+                          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
                             "div",
                             {
                               style: {
@@ -44871,7 +44970,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                                 gap: "4px"
                               },
                               children: [
-                                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                                /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                                   "span",
                                   {
                                     style: {
@@ -44884,7 +44983,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                                     }
                                   }
                                 ),
-                                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                                /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                                   "span",
                                   {
                                     style: {
@@ -44896,47 +44995,9 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                               ]
                             }
                           ),
-                          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-                            VerticalDivider,
-                            {
-                              style: {
-                                height: "50%"
-                              }
-                            }
-                          ),
-                          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
-                            "div",
-                            {
-                              style: {
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "4px"
-                              },
-                              children: [
-                                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(ChatBubbleIcon, {}),
-                                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-                                  "span",
-                                  {
-                                    style: {
-                                      fontSize: "12px"
-                                    },
-                                    children: thread.comments?.length
-                                  }
-                                )
-                              ]
-                            }
-                          ),
-                          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-                            VerticalDivider,
-                            {
-                              style: {
-                                height: "50%"
-                              }
-                            }
-                          ),
-                          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Tooltip, { children: [
-                            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Tooltip.Trigger, { asChild: true, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(InfoCircledIcon, {}) }),
-                            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+                          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Tooltip, { children: [
+                            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Tooltip.Trigger, { asChild: true, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(InfoCircledIcon, {}) }),
+                            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
                               Tooltip.Content,
                               {
                                 style: {
@@ -44944,8 +45005,8 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                                 },
                                 sideOffset: 5,
                                 children: [
-                                  /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
-                                    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Screen" }),
+                                  /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+                                    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Screen" }),
                                     ":",
                                     " ",
                                     thread.tracking.device.screen.width,
@@ -44954,40 +45015,40 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                                     thread.tracking.device.screen.height,
                                     "h"
                                   ] }),
-                                  thread.tracking.device.browser.version && thread.tracking.device.browser.name ? /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
-                                    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Browser" }),
+                                  thread.tracking.device.browser.version && thread.tracking.device.browser.name ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+                                    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Browser" }),
                                     ":",
                                     " ",
                                     thread.tracking.device.browser.name,
                                     " ",
                                     thread.tracking.device.browser.version
                                   ] }) : null,
-                                  thread.tracking.device.os.name ? /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
-                                    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "OS" }),
+                                  thread.tracking.device.os.name ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+                                    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "OS" }),
                                     ": ",
                                     thread.tracking.device.os.name
                                   ] }) : null,
-                                  thread.tracking.device.type.vendor && thread.tracking.device.type.model ? /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
-                                    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Device" }),
+                                  thread.tracking.device.type.vendor && thread.tracking.device.type.model ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+                                    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Device" }),
                                     ":",
                                     " ",
                                     thread.tracking.device.type.vendor,
                                     " ",
                                     thread.tracking.device.type.model
                                   ] }) : null,
-                                  thread.tracking.device.type.type ? /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
-                                    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Device type" }),
+                                  thread.tracking.device.type.type ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+                                    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Device type" }),
                                     ":",
                                     " ",
                                     thread.tracking.device.type.type
                                   ] }) : null,
-                                  /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
-                                    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Timezone" }),
+                                  /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+                                    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Timezone" }),
                                     ": ",
                                     thread.tracking.device.tz
                                   ] }),
-                                  thread.tracking.device.network?.effectiveType ? /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
-                                    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Network" }),
+                                  thread.tracking.device.network?.effectiveType ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+                                    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Network" }),
                                     ":",
                                     " ",
                                     thread.tracking.device.network.effectiveType
@@ -44996,17 +45057,22 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                               }
                             )
                           ] }),
-                          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-                            VerticalDivider,
-                            {
-                              style: {
-                                height: "50%"
+                          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Tooltip, { children: [
+                            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Tooltip.Trigger, { asChild: true, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(CopyButton, { textToCopy: copyUrl }) }),
+                            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+                              Tooltip.Content,
+                              {
+                                style: {
+                                  padding: "8px 16px"
+                                },
+                                sideOffset: 5,
+                                children: "Copy thread link"
                               }
-                            }
-                          ),
-                          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Tooltip, { children: [
-                            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Tooltip.Trigger, { asChild: true, onClick: () => closeThread(thread), children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(CheckCircledIcon, {}) }),
-                            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                            )
+                          ] }),
+                          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Tooltip, { children: [
+                            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Tooltip.Trigger, { asChild: true, onClick: () => closeThread(thread), children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(CheckCircledIcon, {}) }),
+                            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                               Tooltip.Content,
                               {
                                 style: {
@@ -45017,15 +45083,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                               }
                             )
                           ] }),
-                          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-                            VerticalDivider,
-                            {
-                              style: {
-                                height: "50%"
-                              }
-                            }
-                          ),
-                          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                             "span",
                             {
                               style: {
@@ -45037,14 +45095,14 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                         ]
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
                       "ul",
                       {
                         style: {
                           overflow: "auto"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+                          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
                             "li",
                             {
                               style: {
@@ -45052,7 +45110,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                                 borderBottom: "1px solid rgba(0,0,0,.1)"
                               },
                               children: [
-                                /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+                                /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
                                   "header",
                                   {
                                     style: {
@@ -45061,7 +45119,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                                       alignItems: "center"
                                     },
                                     children: [
-                                      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                                      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                                         "img",
                                         {
                                           style: {
@@ -45073,7 +45131,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                                           alt: thread.creator?.name
                                         }
                                       ),
-                                      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                                      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                                         "span",
                                         {
                                           style: {
@@ -45083,7 +45141,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                                           children: thread.creator?.name
                                         }
                                       ),
-                                      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                                      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                                         "span",
                                         {
                                           style: {
@@ -45097,12 +45155,12 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                                     ]
                                   }
                                 ),
-                                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                                /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                                   "a",
                                   {
                                     target: "_blank",
                                     href: `https://github.com/${GH_OWNER}/${GH_REPO}/issues/${thread.GHissueId}`,
-                                    children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                                    children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                                       "h2",
                                       {
                                         style: {
@@ -45115,7 +45173,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                                     )
                                   }
                                 ),
-                                /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { opacity: 0.5 }, children: [
+                                /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { opacity: 0.5 }, children: [
                                   " ",
                                   "> ",
                                   "Issue opened"
@@ -45124,7 +45182,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                             },
                             thread.GHissueId + "title"
                           ),
-                          thread.comments?.map((comment2, i) => /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+                          thread.comments?.map((comment2, i) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
                             "li",
                             {
                               style: {
@@ -45132,7 +45190,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                                 borderBottom: "1px solid rgba(0,0,0,.1)"
                               },
                               children: [
-                                comment2?.user?.name && comment2?.user?.avatar && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+                                comment2?.user?.name && comment2?.user?.avatar && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
                                   "div",
                                   {
                                     style: {
@@ -45142,7 +45200,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                                       marginBlockEnd: "8px"
                                     },
                                     children: [
-                                      comment2.user.avatar && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                                      comment2.user.avatar && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                                         "img",
                                         {
                                           style: {
@@ -45154,8 +45212,8 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                                           alt: comment2.user.name
                                         }
                                       ),
-                                      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { style: { opacity: 0.8, fontSize: "12px" }, children: comment2.user.name }),
-                                      comment2?.date && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                                      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { opacity: 0.8, fontSize: "12px" }, children: comment2.user.name }),
+                                      comment2?.date && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                                         "span",
                                         {
                                           style: {
@@ -45172,7 +45230,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                                     ]
                                   }
                                 ),
-                                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                                /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                                   "div",
                                   {
                                     dangerouslySetInnerHTML: {
@@ -45187,13 +45245,13 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                         ]
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                       ConversationalCommentForm,
                       {
                         action: (comment2) => addComment2(thread, comment2)
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(CloseButton, { "aria-label": "Close", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Cross2Icon, {}) })
+                    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(CloseButton, { "aria-label": "Close", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Cross2Icon, {}) })
                   ]
                 }
               )
@@ -45205,12 +45263,12 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
   };
   function ThreadBubbles() {
     const threads = threads_default((state) => state.threads);
-    return threads.map((thread) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(ThreadBubble, { thread }, thread.GHissueId ?? ""));
+    return threads.map((thread) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ThreadBubble, { thread }, thread.GHissueId ?? ""));
   }
   var ThreadBubbles_default = ThreadBubbles;
 
   // src/ui/bubbles/CommentForm.tsx
-  var import_react56 = __toESM(require_react(), 1);
+  var import_react57 = __toESM(require_react(), 1);
 
   // src/ui/atoms/Select.tsx
   var Select = newStyled.select`
@@ -45266,11 +45324,11 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
   }
 
   // src/ui/bubbles/CommentForm.tsx
-  var import_jsx_runtime13 = __toESM(require_jsx_runtime(), 1);
+  var import_jsx_runtime14 = __toESM(require_jsx_runtime(), 1);
   var CommentForm = ({ action }) => {
-    const [isLoading, setIsLoading] = (0, import_react56.useState)(false);
-    const [pullRequests, setPullRequests] = (0, import_react56.useState)([]);
-    (0, import_react56.useEffect)(() => {
+    const [isLoading, setIsLoading] = (0, import_react57.useState)(false);
+    const [pullRequests, setPullRequests] = (0, import_react57.useState)([]);
+    (0, import_react57.useEffect)(() => {
       getOpenPullRequests().then((prs) => {
         if (prs)
           setPullRequests(
@@ -45278,7 +45336,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
           );
       });
     }, []);
-    return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
       "form",
       {
         style: {
@@ -45305,11 +45363,11 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
           }
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(Select, { name: "pull-request-binded", width: "100%", defaultValue: "0", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Option, { value: "0", children: "No pull request associated" }),
-            pullRequests.map((pr) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Option, { value: pr.id, children: pr.title }, "pr" + pr.id))
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Select, { name: "pull-request-binded", width: "100%", defaultValue: "0", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Option, { value: "0", children: "No pull request associated" }),
+            pullRequests.map((pr) => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Option, { value: pr.id, children: pr.title }, "pr" + pr.id))
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
             "div",
             {
               style: {
@@ -45317,7 +45375,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                 gap: "8px"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
                   TextArea,
                   {
                     name: "comment",
@@ -45330,7 +45388,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                     }
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
                   Button,
                   {
                     type: "submit",
@@ -45342,7 +45400,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                     },
                     width: "40px",
                     height: "40px",
-                    children: isLoading ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(LoadingSpinner, {}) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(PaperPlaneIcon, {})
+                    children: isLoading ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(LoadingSpinner, {}) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(PaperPlaneIcon, {})
                   }
                 )
               ]
@@ -45354,8 +45412,8 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
   };
 
   // src/ui/TemporalThreadBubble.tsx
-  var import_react57 = __toESM(require_react(), 1);
-  var import_jsx_runtime14 = __toESM(require_jsx_runtime(), 1);
+  var import_react58 = __toESM(require_react(), 1);
+  var import_jsx_runtime15 = __toESM(require_jsx_runtime(), 1);
   var TemporalThreadBubble = () => {
     const {
       tempThreadCreationIntent,
@@ -45367,7 +45425,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
       createThread: state.createThread
     }));
     const isCreatingThreadPromptOpen = tempThreadCreationIntent !== null;
-    const y = (0, import_react57.useMemo)(() => {
+    const y = (0, import_react58.useMemo)(() => {
       if (!tempThreadCreationIntent) return null;
       if (tempThreadCreationIntent.type === "TEXT_RANGE") {
         const clientRect = window.getSelection()?.getRangeAt(0).getClientRects().item(0);
@@ -45376,7 +45434,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
       }
       return tempThreadCreationIntent.y;
     }, [tempThreadCreationIntent]);
-    const x = (0, import_react57.useMemo)(() => {
+    const x = (0, import_react58.useMemo)(() => {
       if (!tempThreadCreationIntent) return null;
       if (tempThreadCreationIntent.type === "TEXT_RANGE") {
         const clientRect = window.getSelection()?.getRangeAt(0).getClientRects().item(0);
@@ -45387,7 +45445,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
     }, [tempThreadCreationIntent]);
     if (!isCreatingThreadPromptOpen) return null;
     if (!x || !y) return null;
-    return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_jsx_runtime14.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_jsx_runtime15.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
       $cb5cc270b50c6fcd$export$be92b6f5f03c0fe9,
       {
         onOpenChange: (open) => {
@@ -45397,7 +45455,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
         },
         open: isCreatingThreadPromptOpen,
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
             Trigger,
             {
               style: {
@@ -45408,11 +45466,11 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
               }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
             $cb5cc270b50c6fcd$export$602eac185826482c,
             {
               container: document.getElementById("live-feedback")?.shadowRoot?.querySelector("#live-feedback-styles-wrapper") || document.body,
-              children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+              children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
                 Content,
                 {
                   onOpenAutoFocus: (e) => e.preventDefault(),
@@ -45423,13 +45481,13 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
                   },
                   side: "bottom",
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
                       CommentForm,
                       {
                         action: (comment2, bindedPullRequestId) => createThread(comment2, bindedPullRequestId)
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)($cb5cc270b50c6fcd$export$21b07c8f274aebd5, { className: "!lf-fill-white" })
+                    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)($cb5cc270b50c6fcd$export$21b07c8f274aebd5, { className: "!lf-fill-white" })
                   ]
                 }
               )
@@ -45442,8 +45500,8 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
   var TemporalThreadBubble_default = TemporalThreadBubble;
 
   // src/ui/ThreadSelectionRange.tsx
-  var import_react58 = __toESM(require_react(), 1);
-  var import_jsx_runtime15 = __toESM(require_jsx_runtime(), 1);
+  var import_react59 = __toESM(require_react(), 1);
+  var import_jsx_runtime16 = __toESM(require_jsx_runtime(), 1);
   var SelectionRangeOverlay = newStyled.div`
   position: absolute;
   width: ${({ rect }) => rect.width + "px"};
@@ -45461,7 +45519,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
     const tempThreadCreationIntent = threads_default(
       (state) => state.tempThreadCreationIntent
     );
-    const tempRange = (0, import_react58.useMemo)(
+    const tempRange = (0, import_react59.useMemo)(
       () => {
         if (tempThreadCreationIntent?.type === "TEXT_RANGE") {
           const { start: start2, end } = tempThreadCreationIntent;
@@ -45496,9 +45554,9 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
         window.location.href
       ]
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(import_jsx_runtime15.Fragment, { children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_jsx_runtime16.Fragment, { children: [
       tempRange && tempRange.length > 0 ? [...tempRange].map((rect, index3) => {
-        return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+        return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
           SelectionRangeOverlay,
           {
             "data-live-feedback-text-selection": "temp-rect",
@@ -45517,7 +45575,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
         (thread) => thread.tracking.show && thread.tracking.type === "TEXT_RANGE" && thread.tracking.liveCoords?.clientRects
       ).flatMap((thread) => {
         return [...thread.tracking.liveCoords.clientRects].map(
-          (rect, index3) => /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+          (rect, index3) => /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
             SelectionRangeOverlay,
             {
               "data-live-feedback-text-selection": thread.GHissueId || "",
@@ -45538,17 +45596,27 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
   var ThreadSelectionRange_default = ThreadSelectionRange;
 
   // src/App.tsx
-  var import_jsx_runtime16 = __toESM(require_jsx_runtime(), 1);
+  var import_jsx_runtime17 = __toESM(require_jsx_runtime(), 1);
   function RegisterEvents() {
-    const { populateThreads, checkThreadsVisibility, updateThreadCoords } = threads_default((state) => ({
+    const {
+      populateThreads,
+      checkThreadsVisibility,
+      updateThreadCoords,
+      threads
+    } = threads_default((state) => ({
       populateThreads: state.populateThreads,
       checkThreadsVisibility: state.checkThreadsVisibility,
-      updateThreadCoords: state.updateThreadCoords
+      updateThreadCoords: state.updateThreadCoords,
+      threads: state.threads
     }));
-    (0, import_react59.useEffect)(() => {
+    (0, import_react60.useEffect)(() => {
+      focusThreadIfUrlMatches(threads);
+    }, [threads, window.location]);
+    (0, import_react60.useEffect)(() => {
       populateThreads();
       window.addEventListener("resize", updateThreadCoords);
       updateThreadCoords();
+      focusThreadIfUrlMatches(threads);
       const interval = setInterval(checkThreadsVisibility, TRACKING_INTERVAL);
       return () => {
         window.removeEventListener("resize", updateThreadCoords);
@@ -45563,7 +45631,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
       setTempThreadCreationIntent: state.setTempThreadCreationIntent,
       setIsPicking: state.setIsPicking
     }));
-    const cache = (0, import_react59.useMemo)(
+    const cache = (0, import_react60.useMemo)(
       () => createCache({
         key: "livfeeb",
         // Work
@@ -45572,7 +45640,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
       }),
       []
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(CacheProvider, { value: cache, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(CacheProvider, { value: cache, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
       ResetCSS,
       {
         id: "live-feedback-styles-wrapper",
@@ -45597,12 +45665,12 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
           }
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(GlobalStyles, {}),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(RegisterEvents, {}),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Navbar_default, {}),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(TemporalThreadBubble_default, {}),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(ThreadBubbles_default, {}),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(ThreadSelectionRange_default, {})
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GlobalStyles, {}),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(RegisterEvents, {}),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Navbar_default, {}),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(TemporalThreadBubble_default, {}),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ThreadBubbles_default, {}),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ThreadSelectionRange_default, {})
         ]
       }
     ) });
@@ -45610,7 +45678,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
   var App_default = App;
 
   // src/index.tsx
-  var import_jsx_runtime17 = __toESM(require_jsx_runtime(), 1);
+  var import_jsx_runtime18 = __toESM(require_jsx_runtime(), 1);
   var root = null;
   if (!GH_REPO) {
     const error = "You must declare 'repo' attribute in the script tag.";
@@ -45629,7 +45697,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_liter
   var shadowRoot = div.attachShadow({ mode: "open" });
   root = import_client4.default.createRoot(shadowRoot);
   root.render(
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_react61.default.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(App_default, { shadowRoot }) })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_react62.default.StrictMode, { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(App_default, { shadowRoot }) })
   );
 })();
 /*! Bundled license information:

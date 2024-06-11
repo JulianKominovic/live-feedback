@@ -8,18 +8,29 @@ import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import ThreadSelectionRange from "./ui/ThreadSelectionRange";
 import { TRACKING_INTERVAL } from "./const";
+import { focusThreadIfUrlMatches } from "./logic/threads";
 function RegisterEvents() {
-  const { populateThreads, checkThreadsVisibility, updateThreadCoords } =
-    useGithubStore((state) => ({
-      populateThreads: state.populateThreads,
-      checkThreadsVisibility: state.checkThreadsVisibility,
-      updateThreadCoords: state.updateThreadCoords,
-    }));
+  const {
+    populateThreads,
+    checkThreadsVisibility,
+    updateThreadCoords,
+    threads,
+  } = useGithubStore((state) => ({
+    populateThreads: state.populateThreads,
+    checkThreadsVisibility: state.checkThreadsVisibility,
+    updateThreadCoords: state.updateThreadCoords,
+    threads: state.threads,
+  }));
+
+  useEffect(() => {
+    focusThreadIfUrlMatches(threads);
+  }, [threads, window.location]);
 
   useEffect(() => {
     populateThreads();
     window.addEventListener("resize", updateThreadCoords);
     updateThreadCoords();
+    focusThreadIfUrlMatches(threads);
     const interval = setInterval(checkThreadsVisibility, TRACKING_INTERVAL);
     return () => {
       window.removeEventListener("resize", updateThreadCoords);
