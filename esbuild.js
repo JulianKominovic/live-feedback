@@ -6,7 +6,7 @@ async function watch() {
   let ctx = await esbuild.context({
     entryPoints: ["./src/index.tsx"],
     minify: !isDev,
-    outfile: "./build/bundle.js",
+    outfile: isDev ? "./build/bundle-dev.js" : "./build/bundle.js",
     bundle: true,
     loader: { ".ts": "ts" },
     jsx: "automatic",
@@ -15,7 +15,13 @@ async function watch() {
     await ctx.serve({ port: 5000, servedir: "./build" });
   } else {
     await ctx.cancel();
-    await ctx.rebuild();
+    await ctx
+      .rebuild()
+      .catch(console.error)
+      .finally(() => {
+        console.log("Build finished");
+        process.exit(0);
+      });
   }
 }
 watch();

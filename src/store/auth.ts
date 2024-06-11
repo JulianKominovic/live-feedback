@@ -4,16 +4,13 @@ import Cookies from "js-cookie";
 import { getUserInstallations } from "../integrations/github/get-installed-apps";
 
 export type AuthStore = {
-  getToken: () => Promise<string>;
+  getToken: () => Promise<string | undefined>;
   createToken: () => Promise<string>;
   isAuthed: boolean;
 };
 
-const useAuthStore = create<AuthStore>((set, get) => ({
+const useAuthStore = create<AuthStore>((set) => ({
   async getToken() {
-    if (Cookies.get(GH_TOKEN_COOKIE_KEY) === undefined) {
-      return await get().createToken();
-    }
     return Cookies.get(GH_TOKEN_COOKIE_KEY) as string;
   },
   isAuthed: Cookies.get(GH_TOKEN_COOKIE_KEY) !== undefined,

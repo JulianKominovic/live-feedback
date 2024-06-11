@@ -2,7 +2,6 @@ import useThreadsStore from "../store/threads";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArchiveIcon,
-  CursorTextIcon,
   GearIcon,
   GitHubLogoIcon,
   PlusIcon,
