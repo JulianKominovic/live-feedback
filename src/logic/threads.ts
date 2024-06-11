@@ -352,3 +352,21 @@ export function calculateBubblePosition(thread: Thread) {
   thread.tracking.liveCoords = { x, y };
   return thread;
 }
+
+export function focusThreadIfUrlMatches(threads: Thread[]) {
+  if (threads.length === 0 || !window.location.href.includes("thread")) return;
+  const windowUrl = new URL(window.location.href);
+  const threadUrl = windowUrl.searchParams.get("thread");
+  windowUrl.searchParams.delete("thread");
+  window.history.replaceState({}, "", windowUrl.toString());
+  if (!threadUrl) return;
+  const thread = threads.find((thread) => thread.GHissueId === threadUrl);
+  if (!thread) return;
+  thread.tracking.show = true;
+  const coords = calculateBubblePosition(thread).tracking.liveCoords;
+  if (coords) {
+    const x = coords.x - window.innerWidth / 2;
+    const y = coords.y - window.innerHeight / 2;
+    window.scrollTo(x, y);
+  }
+}
