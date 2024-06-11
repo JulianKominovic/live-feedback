@@ -3,7 +3,7 @@
  * Live Feedback script.
  * @version 1.1.1
  * @description Leave feedback on any website and share it with your team 🚀.
- * @date 2024-06-11T22:33:10.395Z
+ * @date 2024-06-11T22:50:24.678Z
  * @see https://github.com/JulianKominovic/live-feedback
  * @see https://jkominovic.dev/live-feedback
  **/
@@ -29242,7 +29242,38 @@
     thread.tracking.liveCoords = { x, y };
     return thread;
   }
-  function focusThreadIfUrlMatches(threads) {
+  function waitForElementToBeVisible(selector2) {
+    const TIMEOUT = 1e4;
+    const INTERVAL = 100;
+    return new Promise((resolve, reject) => {
+      let time2 = 0;
+      const interval = setInterval(() => {
+        const element = document.querySelector("#live-feedback")?.shadowRoot?.querySelector(selector2);
+        if (element) {
+          clearInterval(interval);
+          resolve(element);
+        }
+        time2 += INTERVAL;
+        if (time2 > TIMEOUT) {
+          clearInterval(interval);
+          reject("Timeout");
+        }
+      }, INTERVAL);
+    });
+  }
+  async function openThread(thread) {
+    const bubbleIdSelector = `#live-feedback-bubble-${thread.GHissueId}`;
+    return waitForElementToBeVisible(bubbleIdSelector).then((element) => {
+      if (element === "Timeout") return;
+      const bubble = element;
+      bubble.scrollIntoView({ behavior: "smooth" });
+      bubble.click();
+      bubble.focus();
+    }).catch((err) => {
+      log(err);
+    });
+  }
+  async function focusThreadIfUrlMatches(threads) {
     if (threads.length === 0 || !window.location.href.includes("thread")) return;
     const windowUrl = new URL(window.location.href);
     const threadUrl = windowUrl.searchParams.get("thread");
@@ -29257,6 +29288,7 @@
       const x = coords.x - window.innerWidth / 2;
       const y = coords.y - window.innerHeight / 2;
       window.scrollTo(x, y);
+      openThread(thread);
     }
   }
 

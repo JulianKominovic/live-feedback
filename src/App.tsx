@@ -21,9 +21,11 @@ function RegisterEvents() {
     updateThreadCoords: state.updateThreadCoords,
     threads: state.threads,
   }));
+
   useEffect(() => {
     focusThreadIfUrlMatches(threads);
   }, [threads, window.location]);
+
   useEffect(() => {
     populateThreads();
     window.addEventListener("resize", updateThreadCoords);

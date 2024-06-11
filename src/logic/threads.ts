@@ -353,7 +353,45 @@ export function calculateBubblePosition(thread: Thread) {
   return thread;
 }
 
-export function focusThreadIfUrlMatches(threads: Thread[]) {
+export function waitForElementToBeVisible(
+  selector: string
+): Promise<HTMLElement | "Timeout"> {
+  const TIMEOUT = 10000;
+  const INTERVAL = 100;
+  return new Promise((resolve, reject) => {
+    let time = 0;
+    const interval = setInterval(() => {
+      const element = document
+        .querySelector("#live-feedback")
+        ?.shadowRoot?.querySelector(selector);
+      if (element) {
+        clearInterval(interval);
+        resolve(element as HTMLElement);
+      }
+      time += INTERVAL;
+      if (time > TIMEOUT) {
+        clearInterval(interval);
+        reject("Timeout");
+      }
+    }, INTERVAL);
+  });
+}
+export async function openThread(thread: Thread) {
+  const bubbleIdSelector = `#live-feedback-bubble-${thread.GHissueId}`;
+  return waitForElementToBeVisible(bubbleIdSelector)
+    .then((element) => {
+      if (element === "Timeout") return;
+      const bubble = element as HTMLElement;
+      bubble.scrollIntoView({ behavior: "smooth" });
+      bubble.click();
+      bubble.focus();
+    })
+    .catch((err) => {
+      log(err);
+    });
+}
+
+export async function focusThreadIfUrlMatches(threads: Thread[]) {
   if (threads.length === 0 || !window.location.href.includes("thread")) return;
   const windowUrl = new URL(window.location.href);
   const threadUrl = windowUrl.searchParams.get("thread");
@@ -368,5 +406,6 @@ export function focusThreadIfUrlMatches(threads: Thread[]) {
     const x = coords.x - window.innerWidth / 2;
     const y = coords.y - window.innerHeight / 2;
     window.scrollTo(x, y);
+    openThread(thread);
   }
 }
