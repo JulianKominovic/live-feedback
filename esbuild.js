@@ -1,4 +1,5 @@
 import esbuild from "esbuild";
+import packageJson from "./package.json" assert { type: "json" };
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -9,6 +10,18 @@ async function watch() {
     outfile: isDev ? "./build/bundle-dev.js" : "./build/bundle.js",
     bundle: true,
     loader: { ".ts": "ts" },
+    banner: {
+      js: `
+/**
+ * Live Feedback script.
+ * @version ${packageJson.version}
+ * @description ${packageJson.description}
+ * @date ${new Date().toISOString()}
+ * @see https://github.com/JulianKominovic/live-feedback
+ * @see https://jkominovic.dev/live-feedback
+ **/
+      `,
+    },
     jsx: "automatic",
   });
   if (isDev) {
