@@ -26,7 +26,11 @@
     "start-dev-server": "NODE_ENV=development node ./server.js",
     "fmt": "prettier --write '**/*.{tsx,ts,json,css,scss,md}'",
     "prepare": "husky",
-    "minor": "npm version minor"
+    "patch": "npm version patch -m \"chore: release version %s\"",
+    "minor": "npm version minor -m \"chore: release version %s\"",
+    "major": "npm version major -m \"chore: release version %s\"",
+    "version": "pnpm run prod && git add build",
+    "postversion": "git push && git push --tags"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",
