@@ -3,7 +3,7 @@ import { GH_AUTH_SERVER_BASE_URL, GH_TOKEN_COOKIE_KEY } from "../const";
 import Cookies from "js-cookie";
 import { getUserInstallations } from "../integrations/github/get-installed-apps";
 
-export type AuthStore = {
+type AuthStore = {
   getToken: () => Promise<string | undefined>;
   createToken: () => Promise<string>;
   isAuthed: boolean;

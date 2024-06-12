@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import "./index.css";
 import { GH_OWNER, GH_REPO } from "./const";
 let root: ReactDOM.Root | null = null;
 

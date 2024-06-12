@@ -1,16 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-export async function sha256(str: string) {
-  const buf = await crypto.subtle.digest(
-    "SHA-256",
-    // @ts-expect-error no errors here
-    new TextEncoder("utf-8").encode(str)
-  );
-  return Array.prototype.map
-    .call(new Uint8Array(buf), (x) => ("00" + x.toString(16)).slice(-2))
-    .join("");
-}
-
 /**
  * Convert a date to a relative time string, such as
  * "a minute ago", "in 2 hours", "yesterday", "3 months ago", etc.
@@ -66,45 +55,9 @@ export function getRelativeTimeString(
   return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
 }
 
-export function cancelScrolling() {
-  function handleScrollCancel(e: Event) {
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
-  }
-  window.addEventListener("scroll", handleScrollCancel, { capture: true });
-  window.addEventListener("wheel", handleScrollCancel, { capture: true });
-
-  return () => {
-    window.removeEventListener("scroll", handleScrollCancel, { capture: true });
-    window.removeEventListener("wheel", handleScrollCancel, { capture: true });
-  };
-}
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function log(...args: any[]) {
   console.debug("[LIVE FEEDBACK]", new Date(), ...args);
-}
-
-export function getHTMLSettingsTagProperties() {
-  const settingsTag = document.querySelector(
-    'meta[name="live-feedback-settings"]'
-  );
-  if (!settingsTag) return null;
-  const ghRepo = settingsTag.getAttribute("gh-repo");
-  const ghOwner = settingsTag.getAttribute("gh-owner");
-  return {
-    ghRepo,
-    ghOwner,
-  };
-}
-
-export function platformIsPopup() {
-  return location.href.includes("/popup.html");
-}
-
-export function randomBetween(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 interface Pipe {

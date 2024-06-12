@@ -4,7 +4,7 @@ type Task = {
   title: string;
   status: "pending" | "success" | "error";
 };
-export type SystemType = {
+type SystemType = {
   queue: Task[];
   asyncOperations: {
     pending: number;
