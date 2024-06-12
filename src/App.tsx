@@ -10,17 +10,14 @@ import ThreadSelectionRange from "./ui/ThreadSelectionRange";
 import { TRACKING_INTERVAL } from "./const";
 import { focusThreadIfUrlMatches } from "./logic/threads";
 function RegisterEvents() {
-  const {
-    populateThreads,
-    checkThreadsVisibility,
-    updateThreadCoords,
-    threads,
-  } = useGithubStore((state) => ({
-    populateThreads: state.populateThreads,
-    checkThreadsVisibility: state.checkThreadsVisibility,
-    updateThreadCoords: state.updateThreadCoords,
-    threads: state.threads,
-  }));
+  const populateThreads = useGithubStore((state) => state.populateThreads);
+  const checkThreadsVisibility = useGithubStore(
+    (state) => state.checkThreadsVisibility
+  );
+  const updateThreadCoords = useGithubStore(
+    (state) => state.updateThreadCoords
+  );
+  const threads = useGithubStore((state) => state.threads);
 
   useEffect(() => {
     focusThreadIfUrlMatches(threads);
@@ -42,12 +39,12 @@ function RegisterEvents() {
 }
 
 function App({ shadowRoot }: { shadowRoot: ShadowRoot }) {
-  const { isPicking, setTempThreadCreationIntent, setIsPicking } =
-    useGithubStore((state) => ({
-      isPicking: state.isPicking,
-      setTempThreadCreationIntent: state.setTempThreadCreationIntent,
-      setIsPicking: state.setIsPicking,
-    }));
+  const isPicking = useGithubStore((state) => state.isPicking);
+  const setTempThreadCreationIntent = useGithubStore(
+    (state) => state.setTempThreadCreationIntent
+  );
+  const setIsPicking = useGithubStore((state) => state.setIsPicking);
+
   const cache = useMemo(
     () =>
       createCache({

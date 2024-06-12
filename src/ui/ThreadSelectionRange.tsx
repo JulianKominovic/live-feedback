@@ -99,6 +99,7 @@ const ThreadSelectionRange = () => {
             thread.tracking.liveCoords?.clientRects
         )
         .flatMap((thread) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           return [...(thread.tracking.liveCoords as any).clientRects].map(
             (rect, index) => (
               <SelectionRangeOverlay

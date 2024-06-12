@@ -9,7 +9,9 @@ async function watch() {
     minify: !isDev,
     outfile: isDev ? "./build/bundle-dev.js" : "./build/bundle.js",
     bundle: true,
+    platform: "browser",
     loader: { ".ts": "ts" },
+    sourcemap: isDev ? "inline" : false,
     banner: {
       js: `
 /**

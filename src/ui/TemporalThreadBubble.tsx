@@ -6,15 +6,14 @@ import { Trigger } from "./bubbles/Trigger";
 import { useMemo } from "react";
 
 const TemporalThreadBubble = () => {
-  const {
-    tempThreadCreationIntent,
-    createThread,
-    setTempThreadCreationIntent,
-  } = useThreadsStore((state) => ({
-    tempThreadCreationIntent: state.tempThreadCreationIntent,
-    setTempThreadCreationIntent: state.setTempThreadCreationIntent,
-    createThread: state.createThread,
-  }));
+  const tempThreadCreationIntent = useThreadsStore(
+    (state) => state.tempThreadCreationIntent
+  );
+  const createThread = useThreadsStore((state) => state.createThread);
+  const setTempThreadCreationIntent = useThreadsStore(
+    (state) => state.setTempThreadCreationIntent
+  );
+
   const isCreatingThreadPromptOpen = tempThreadCreationIntent !== null;
   const y = useMemo(() => {
     if (!tempThreadCreationIntent) return null;
@@ -31,7 +30,6 @@ const TemporalThreadBubble = () => {
   }, [tempThreadCreationIntent]);
   const x = useMemo(() => {
     if (!tempThreadCreationIntent) return null;
-
     if (tempThreadCreationIntent.type === "TEXT_RANGE") {
       const clientRect = window
         .getSelection()
@@ -68,7 +66,7 @@ const TemporalThreadBubble = () => {
             document
               .getElementById("live-feedback")
               ?.shadowRoot?.querySelector("#live-feedback-styles-wrapper") ||
-            (document.body as any)
+            document.body
           }
         >
           <Content
@@ -85,7 +83,7 @@ const TemporalThreadBubble = () => {
                 createThread(comment, bindedPullRequestId)
               }
             />
-            <Popover.Arrow className="!lf-fill-white" />
+            <Popover.Arrow />
           </Content>
         </Popover.Portal>
       </Popover.Root>

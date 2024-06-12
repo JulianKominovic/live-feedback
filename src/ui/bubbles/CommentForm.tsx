@@ -7,7 +7,7 @@ import { Option, Select } from "../atoms/Select";
 import { getOpenPullRequests } from "../../integrations/github/pull-requests";
 
 type CommentFormProps = {
-  action: (comment: string, bindedPullRequestId: number) => Promise<any>;
+  action: (comment: string, bindedPullRequestId: number) => Promise<void>;
 };
 export const CommentForm = ({ action }: CommentFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,12 +15,14 @@ export const CommentForm = ({ action }: CommentFormProps) => {
     { title: string; id: number }[]
   >([]);
   useEffect(() => {
-    getOpenPullRequests().then((prs) => {
-      if (prs)
-        setPullRequests(
-          prs.data.map((pr) => ({ title: pr.title, id: pr.number }))
-        );
-    });
+    getOpenPullRequests()
+      .then((prs) => {
+        if (prs)
+          setPullRequests(
+            prs.data.map((pr) => ({ title: pr.title, id: pr.number }))
+          );
+      })
+      .catch(console.error);
   }, []);
   return (
     <form
@@ -43,7 +45,7 @@ export const CommentForm = ({ action }: CommentFormProps) => {
           setIsLoading(true);
           action(comment as string, Number(bindedPullRequest)).finally(() => {
             setIsLoading(false);
-            (e.target as any).reset();
+            (e.target as HTMLFormElement).reset();
           });
         }
       }}

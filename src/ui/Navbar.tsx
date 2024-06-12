@@ -8,19 +8,21 @@ import {
 } from "@radix-ui/react-icons";
 import styled from "@emotion/styled";
 import { COLORS, CSS_FRAGMENTS, Z_INDEXES } from "../styles/tokens";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { VerticalDivider } from "./atoms/VerticalDivider";
 import { Button } from "./atoms/Button";
 import useSystemStore from "../store/system";
 import SemaphoreIndicator from "./atoms/SemaphoreIndicator";
-import { recursiveGetParentUntilItIsAnHTMLElement } from "../logic/dom";
+import {
+  nodeIsChildOfLiveFeedbackElement,
+  recursiveGetParentUntilItIsAnHTMLElement,
+} from "../logic/dom";
 import useAuthStore from "../store/auth";
+import { useDebounceFunction } from "../utils";
 
 function AsyncOperationsStatus() {
-  const { asyncOperations, queue } = useSystemStore((state) => ({
-    asyncOperations: state.asyncOperations,
-    queue: state.queue,
-  }));
+  const asyncOperations = useSystemStore((state) => state.asyncOperations);
+  const queue = useSystemStore((state) => state.queue);
 
   return (
     <>
@@ -62,15 +64,14 @@ const Toolbar = styled(motion.div)`
 `;
 
 function AuthenticatedNavbar() {
-  const { isPicking, threads, setIsPicking, setTempThreadCreationIntent } =
-    useThreadsStore((state) => ({
-      isPicking: state.isPicking,
-      threads: state.threads,
-      setIsPicking: state.setIsPicking,
-      setTempThreadCreationIntent: state.setTempThreadCreationIntent,
-    }));
-  const [textRangeExists, setTextRangeExists] = useState(false);
+  const isPicking = useThreadsStore((state) => state.isPicking);
+  const threads = useThreadsStore((state) => state.threads);
+  const setIsPicking = useThreadsStore((state) => state.setIsPicking);
+  const setTempThreadCreationIntent = useThreadsStore(
+    (state) => state.setTempThreadCreationIntent
+  );
   const { pending } = useSystemStore((state) => state.asyncOperations);
+  const { debounce } = useDebounceFunction(700);
 
   const participants = new Set(
     threads
@@ -78,53 +79,49 @@ function AuthenticatedNavbar() {
       .map((thread) => ({ ...thread.creator, GHissueId: thread.GHissueId }))
   );
 
-  function createThreadCreationBubbleOnTextSelection() {
-    if (isPicking || !textRangeExists) return;
-
-    const selection = window.getSelection();
-    const range = selection?.getRangeAt(0);
-    if (!range) return;
-    const clientRect = range.getClientRects()?.[0];
-    if (!clientRect) return;
-    const target = recursiveGetParentUntilItIsAnHTMLElement(
-      range.commonAncestorContainer
-    );
-    if (!target) return;
-    setTempThreadCreationIntent({
-      type: "TEXT_RANGE",
-      commonAncestor: target,
-      start: range.startOffset,
-      end: range.endOffset,
-      startNode: range.startContainer,
-      endNode: range.endContainer,
-    });
-  }
-
   useEffect(() => {
-    function handleSelectionChange(e: any) {
+    console.log("Adding selection listener");
+    function handleSelectionRange() {
       if (isPicking) return;
       const selection = window.getSelection();
-      setTextRangeExists(
-        Boolean(
-          selection &&
-            selection.toString().length > 0 &&
-            selection.rangeCount > 0
-        )
-      );
-    }
-    function handlePointerUp(e: any) {
-      if (isPicking) return;
-      if (textRangeExists) {
-        createThreadCreationBubbleOnTextSelection();
+
+      // If the selection is not inside any live feedback children, we can safely ignore it
+      if (nodeIsChildOfLiveFeedbackElement(document.activeElement!)) {
+        return;
+      }
+
+      setTempThreadCreationIntent(null);
+      if (
+        selection &&
+        selection.toString().length > 0 &&
+        selection.rangeCount > 0
+      ) {
+        debounce(() => {
+          const range = selection.getRangeAt(0);
+          if (!range) return;
+          const clientRect = range.getClientRects()?.[0];
+          if (!clientRect) return;
+          const target = recursiveGetParentUntilItIsAnHTMLElement(
+            range.commonAncestorContainer
+          );
+          if (!target) return;
+          setTempThreadCreationIntent({
+            type: "TEXT_RANGE",
+            commonAncestor: target,
+            start: range.startOffset,
+            end: range.endOffset,
+            startNode: range.startContainer,
+            endNode: range.endContainer,
+          });
+        });
       }
     }
-    document.addEventListener("pointerup", handlePointerUp);
-    document.addEventListener("selectionchange", handleSelectionChange);
+    document.addEventListener("selectionchange", handleSelectionRange);
+
     return () => {
-      document.removeEventListener("selectionchange", handleSelectionChange);
-      document.removeEventListener("pointerup", handlePointerUp);
+      document.removeEventListener("selectionchange", handleSelectionRange);
     };
-  }, [textRangeExists, isPicking]);
+  }, [debounce, isPicking, setTempThreadCreationIntent]);
   return (
     <>
       <Button
