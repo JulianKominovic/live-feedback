@@ -19,6 +19,7 @@ import {
 } from "../logic/dom";
 import useAuthStore from "../store/auth";
 import { useDebounceFunction } from "../utils";
+import { TEXT_RANGE_BUBBLE_THREAD_CREATION_DEBOUNCE } from "../const";
 
 function AsyncOperationsStatus() {
   const asyncOperations = useSystemStore((state) => state.asyncOperations);
@@ -71,7 +72,9 @@ function AuthenticatedNavbar() {
     (state) => state.setTempThreadCreationIntent
   );
   const { pending } = useSystemStore((state) => state.asyncOperations);
-  const { debounce } = useDebounceFunction(700);
+  const { debounce } = useDebounceFunction(
+    TEXT_RANGE_BUBBLE_THREAD_CREATION_DEBOUNCE
+  );
 
   const participants = new Set(
     threads
