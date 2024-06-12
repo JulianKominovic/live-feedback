@@ -304,9 +304,22 @@ export function calculateBubblePosition(thread: Thread) {
         getElementFromCssSelectorAndChildrenIndex(cssSelectors, childrenIndex)
     );
     const range = document.createRange();
-
-    if (startNodeFound) range.setStart(startNodeFound, start);
-    if (endNodeFound) range.setEnd(endNodeFound, end);
+    if (startNodeFound) {
+      try {
+        range.setStart(startNodeFound, start);
+      } catch (err) {
+        // In case text node now is shorted than the time of the thread creation
+        range.setStart(startNodeFound, startNodeFound.textContent?.length || 0);
+      }
+    }
+    if (endNodeFound) {
+      try {
+        range.setEnd(endNodeFound, end);
+      } catch (err) {
+        // In case text node now is shorted than the time of the thread creation
+        range.setEnd(endNodeFound, endNodeFound.textContent?.length || 0);
+      }
+    }
     const clientRects = range.getClientRects();
     if (!clientRects.length) {
       thread.tracking.show = false;
