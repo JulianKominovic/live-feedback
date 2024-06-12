@@ -128,15 +128,35 @@ export function recursiveGetParentUntilItIsAnHTMLElement(
   return recursiveGetParentUntilItIsAnHTMLElement(element.parentElement);
 }
 
-export function getCssSelectorForTextNode(textNode: Node) {
-  const parentElement = textNode.parentElement;
+export function nodeIsChildOfLiveFeedbackElement(node: Node) {
+  const liveFeedbackElementShadowRoot =
+    document.querySelector("#live-feedback")?.shadowRoot;
+  const liveFeedbackElement = document.querySelector("#live-feedback")!;
+  return (
+    liveFeedbackElement.contains(node) ||
+    liveFeedbackElement.isSameNode(node) ||
+    liveFeedbackElementShadowRoot?.contains(node) ||
+    liveFeedbackElementShadowRoot?.isSameNode(node)
+  );
+}
+
+export function getCssSelectorForTextNode(
+  textNodeOrHTMLElement: Node | HTMLElement
+) {
+  if (textNodeOrHTMLElement instanceof HTMLElement) {
+    return {
+      cssSelectors: buildSelectors(textNodeOrHTMLElement),
+      childrenIndex: -1,
+    };
+  }
+  const parentElement = textNodeOrHTMLElement.parentElement;
 
   return {
     cssSelectors: buildSelectors(parentElement as HTMLElement),
     childrenIndex:
-      textNode.nodeName === "#text" && parentElement
+      textNodeOrHTMLElement.nodeName === "#text" && parentElement
         ? Array.from(parentElement.childNodes).findIndex((el) =>
-            el.isSameNode(textNode)
+            el.isSameNode(textNodeOrHTMLElement)
           )
         : -1,
   };

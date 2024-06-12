@@ -19,13 +19,10 @@ import { CopyButton } from "./atoms/CopyButton";
 
 const ThreadBubble = ({ thread }: { thread: Thread }) => {
   const [open, setOpen] = useState(false);
-  const { addComment, loadComments, closeThread } = useThreadsStore(
-    (state) => ({
-      loadComments: state.populateThreadComments,
-      addComment: state.createThreadComment,
-      closeThread: state.closeThread,
-    })
-  );
+  const addComment = useThreadsStore((state) => state.createThreadComment);
+  const loadComments = useThreadsStore((state) => state.populateThreadComments);
+  const closeThread = useThreadsStore((state) => state.closeThread);
+
   const copyUrl = useMemo(() => {
     if (!thread.GHissueId) return "";
     const url = new URL(thread.tracking.url);
@@ -71,7 +68,7 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
             document
               .getElementById("live-feedback")
               ?.shadowRoot?.querySelector("#live-feedback-styles-wrapper") ||
-            (document.body as any)
+            document.body
           }
         >
           <Content

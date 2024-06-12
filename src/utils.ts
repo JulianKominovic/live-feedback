@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+
 export async function sha256(str: string) {
   const buf = await crypto.subtle.digest(
     "SHA-256",
@@ -79,6 +81,7 @@ export function cancelScrolling() {
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function log(...args: any[]) {
   console.debug("[LIVE FEEDBACK]", new Date(), ...args);
 }
@@ -124,6 +127,31 @@ interface Pipe {
   // ... and so on
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any
 export const pipe: Pipe = (value: any, ...fns: Function[]): unknown => {
   return fns.reduce((acc, fn) => fn(acc), value);
 };
+
+export function useDebounceFunction(delay: number) {
+  const timeoutId = useRef<number | null>(null);
+  const [init, setInit] = useState(() => () => {});
+  const debounce = (callback: () => void) => {
+    setInit(() => callback);
+  };
+
+  useEffect(() => {
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current);
+    }
+    timeoutId.current = setTimeout(init, delay);
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId.current as number);
+      }
+    };
+  }, [init]);
+
+  return {
+    debounce,
+  };
+}
