@@ -1,4 +1,4 @@
-export type ThreadTargetType = "ELEMENT" | "TEXT_RANGE";
+//  type ThreadTargetType = "ELEMENT" | "TEXT_RANGE";
 type ThreadTrackingForElement = {
   selectors: string[] | string;
   // textContentHash: string;
@@ -82,9 +82,9 @@ type ThreadTrackingCommonProps = {
     };
   };
 };
-export type ThreadInternalProps = ThreadTrackingCommonProps &
+type ThreadInternalProps = ThreadTrackingCommonProps &
   (ThreadTrackingForElement | ThreadTrackingForTextRange);
-export type ThreadComment = {
+type ThreadComment = {
   body?: string;
   user?: {
     avatar?: string | null;

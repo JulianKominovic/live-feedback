@@ -1,13 +1,10 @@
-export const IS_DEV = false;
-export const GH_APP_CLIENT_ID = "Iv23liew39xOtD118vnM";
+const IS_DEV = false;
 export const GH_TOKEN_COOKIE_KEY = "GH-LIVE-FEEDBACK-TOKEN";
 export const GH_AUTH_SERVER_BASE_URL = IS_DEV
   ? "http://localhost:4000"
   : "https://live-feedback.onrender.com";
-export const GH_SCOPES = ["repo", "user"];
 export const GH_REPO = document.currentScript?.getAttribute("repo") ?? "";
 export const GH_OWNER = document.currentScript?.getAttribute("owner") ?? "";
-export const GH_TEMP_FILES_PATH_FOLDER = ".github/live-feedback";
 export const MINIMUM_CSS_SELECTORS_FOR_ELEMENT_TO_SHOW_BUBBLE = 2;
 export const TRACKING_INTERVAL = 1000;
 

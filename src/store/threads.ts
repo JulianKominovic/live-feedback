@@ -11,7 +11,7 @@ import { addComment, getComments } from "../logic/github";
 import { log } from "../utils";
 import { closeIssue } from "../integrations/github/issues";
 
-export type ThreadsStore = {
+type ThreadsStore = {
   // Threads
   threads: Thread[];
   setThreads: (threads: Thread[]) => void;

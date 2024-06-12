@@ -3,44 +3,6 @@ import useSystemStore from "../../store/system";
 import { log } from "../../utils";
 import octokit from "./client";
 
-export async function getIssue({ issue_number }: { issue_number: number }) {
-  useSystemStore.getState().addTask({
-    id: `issue-${issue_number}`,
-    title: `Fetching issue #${issue_number}`,
-  });
-
-  try {
-    const client = await octokit();
-    const response = await client.request(
-      "GET /repos/{owner}/{repo}/issues/{issue_number}",
-      {
-        owner: GH_OWNER,
-        repo: GH_REPO,
-        issue_number,
-        headers: {
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      }
-    );
-    useSystemStore.getState().updateTaskStatus({
-      id: `issue-${issue_number}`,
-      title: `Fetched issue #${issue_number}`,
-      status: "success",
-    });
-
-    return response;
-  } catch (err) {
-    log(err);
-    useSystemStore.getState().updateTaskStatus({
-      id: `issue-${issue_number}`,
-      title: `Error fetching issue #${issue_number}`,
-      status: "error",
-    });
-
-    return null;
-  }
-}
-
 export async function closeIssue({ issue_number }: { issue_number: number }) {
   useSystemStore.getState().addTask({
     id: `close-issue-${issue_number}`,
@@ -116,54 +78,6 @@ export async function createIssue({
     useSystemStore.getState().updateTaskStatus({
       id: "create-issue-" + title,
       title: `Error creating issue ${title}`,
-      status: "error",
-    });
-
-    return null;
-  }
-}
-
-export async function updateIssue({
-  body,
-  issue_number,
-  title,
-}: {
-  body: string;
-  issue_number: number;
-  title: string;
-}) {
-  useSystemStore.getState().addTask({
-    id: `update-issue-${issue_number}`,
-    title: `Updating issue #${issue_number}`,
-  });
-
-  try {
-    const client = await octokit();
-    const response = await client.request(
-      "PATCH /repos/{owner}/{repo}/issues/{issue_number}",
-      {
-        owner: GH_OWNER,
-        repo: GH_REPO,
-        title,
-        issue_number,
-        body,
-        headers: {
-          "X-GitHub-Api-Version": "2022-11-28",
-        },
-      }
-    );
-    useSystemStore.getState().updateTaskStatus({
-      id: `update-issue-${issue_number}`,
-      title: `Updated issue #${issue_number}`,
-      status: "success",
-    });
-
-    return response;
-  } catch (err) {
-    log(err);
-    useSystemStore.getState().updateTaskStatus({
-      id: `update-issue-${issue_number}`,
-      title: `Error updating issue #${issue_number}`,
       status: "error",
     });
 

@@ -353,7 +353,7 @@ export function calculateBubblePosition(thread: Thread) {
   return thread;
 }
 
-export function waitForElementToBeVisible(
+function waitForElementToBeVisible(
   selector: string
 ): Promise<HTMLElement | "Timeout"> {
   const TIMEOUT = 10000;
@@ -376,7 +376,7 @@ export function waitForElementToBeVisible(
     }, INTERVAL);
   });
 }
-export async function openThread(thread: Thread) {
+async function openThread(thread: Thread) {
   const bubbleIdSelector = `#live-feedback-bubble-${thread.GHissueId}`;
   return waitForElementToBeVisible(bubbleIdSelector)
     .then((element) => {

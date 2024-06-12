@@ -25,6 +25,7 @@
     "start-server": "node ./server.js",
     "start-dev-server": "NODE_ENV=development node ./server.js",
     "fmt": "prettier --write '**/*.{tsx,ts,json,css,scss,md}'",
+    "unused-exports": "ts-unused-exports ./tsconfig.json",
     "prepare": "husky",
     "patch": "npm version patch -m \"chore: release version %s\"",
     "minor": "npm version minor -m \"chore: release version %s\"",
@@ -69,6 +70,7 @@
     "eslint-plugin-react-refresh": "^0.4.6",
     "husky": "^9.0.11",
     "prettier": "^3.0.3",
+    "ts-unused-exports": "^10.1.0",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
   }
