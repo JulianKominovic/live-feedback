@@ -80,7 +80,6 @@ function AuthenticatedNavbar() {
   );
 
   useEffect(() => {
-    console.log("Adding selection listener");
     function handleSelectionRange() {
       if (isPicking) return;
       const selection = window.getSelection();
