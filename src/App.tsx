@@ -9,8 +9,8 @@ import { CacheProvider } from "@emotion/react";
 import ThreadSelectionRange from "./ui/ThreadSelectionRange";
 import { TRACKING_INTERVAL } from "./const";
 import { focusThreadIfUrlMatches } from "./logic/threads";
-import { AnimatePresence } from "framer-motion";
 import ThreadsPanel from "./ui/ThreadsPanel";
+
 function RegisterEvents() {
   const populateThreads = useThreadsStore((state) => state.populateThreads);
   const checkThreadsVisibility = useThreadsStore(

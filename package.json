@@ -20,8 +20,12 @@
     "node": ">=18.12.0"
   },
   "scripts": {
-    "dev": "tsc --noEmit && NODE_ENV=development node ./esbuild.js",
-    "prod": "tsc --noEmit && NODE_ENV=production node ./esbuild.js",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "script:dev": "tsc --noEmit && NODE_ENV=development node ./esbuild.js",
+    "script:prod": "tsc --noEmit && NODE_ENV=production node ./esbuild.js",
     "start-server": "node ./server.js",
     "start-dev-server": "NODE_ENV=development node ./server.js",
     "fmt": "prettier --write '**/*.{tsx,ts,json,css,scss,md}'",
@@ -30,7 +34,7 @@
     "patch": "npm version patch -m \"chore: release version %s\"",
     "minor": "npm version minor -m \"chore: release version %s\"",
     "major": "npm version major -m \"chore: release version %s\"",
-    "version": "pnpm run prod && git add build",
+    "version": "pnpm run script:prod && git add build",
     "postversion": "git push && git push --tags && echo \"\n\nUse https://www.jsdelivr.com/tools/purge to clear cdn cache!\""
   },
   "dependencies": {
@@ -51,6 +55,7 @@
     "framer-motion": "^11.1.7",
     "html2canvas": "^1.4.1",
     "js-cookie": "^3.0.5",
+    "next": "^14.2.4",
     "octokit": "^4.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

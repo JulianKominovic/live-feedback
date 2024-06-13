@@ -3,7 +3,7 @@
  * Live Feedback script.
  * @version 2.0.1
  * @description Leave feedback on any website and share it with your team 🚀.
- * @date 2024-06-13T02:48:48.320Z
+ * @date 2024-06-13T23:45:55.804Z
  * @see https://github.com/JulianKominovic/live-feedback
  * @see https://jkominovic.dev/live-feedback
  **/
@@ -165,7 +165,6 @@ Error generating stack: `+i.message+`
   }
   button {
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.2);
   }
   ul {
     list-style: none;
@@ -182,8 +181,8 @@ Error generating stack: `+i.message+`
   margin: 0;
   background-color: rgba(0, 0, 0, 0.2);
 `;var At=j(te.button)`
-  background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(8px);
+  background-color: ${({variant:e})=>e==="flat"?"transparent":"rgba(0, 0, 0, 0.2)"};
+  backdrop-filter: ${({variant:e})=>e==="flat"?"none":"blur(8px)"};
   flex-shrink: 0;
   display: flex;
   justify-content: center;

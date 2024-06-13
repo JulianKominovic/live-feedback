@@ -680,7 +680,6 @@ export const ResetCSS = styled.div`
   }
   button {
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.2);
   }
   ul {
     list-style: none;

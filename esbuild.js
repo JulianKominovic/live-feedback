@@ -27,6 +27,7 @@ async function watch() {
     jsx: "automatic",
   });
   if (isDev) {
+    await ctx.watch();
     await ctx.serve({ port: 5000, servedir: "./build" });
   } else {
     await ctx.cancel();
