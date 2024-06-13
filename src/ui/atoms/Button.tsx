@@ -14,6 +14,7 @@ export const Button = styled<
   >
 >(motion.button)`
   background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
   flex-shrink: 0;
   display: flex;
   justify-content: center;

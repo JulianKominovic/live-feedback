@@ -85,7 +85,7 @@ export async function createIssue({
   }
 }
 
-export async function getIssues() {
+export async function getIssues(state?: "open" | "closed" | "all") {
   useSystemStore.getState().addTask({
     id: "get-issues",
     title: `Fetching issues`,
@@ -99,7 +99,7 @@ export async function getIssues() {
       headers: {
         "X-GitHub-Api-Version": "2022-11-28",
       },
-      state: "open",
+      state: state ?? "open",
     });
     useSystemStore.getState().updateTaskStatus({
       id: "get-issues",
