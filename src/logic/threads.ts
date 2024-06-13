@@ -210,14 +210,11 @@ export async function createThreadOnElement({
   }
 }
 
-export async function getThreads() {
-  const issues = await getIssues();
+export async function getThreads(state?: "open" | "closed" | "all") {
+  const issues = await getIssues(state);
   if (!issues) return [];
   return issues.data
-    .filter(
-      (issue) =>
-        issue.state === "open" && issue.title.startsWith("[LIVE FEEDBACK]")
-    )
+    .filter((issue) => issue.title.startsWith("[LIVE FEEDBACK]"))
     .map((issue) => {
       const trackingJSON =
         issue.body?.split("```json")[1].split("```")[0].trim() || "{}";
@@ -421,4 +418,14 @@ export async function focusThreadIfUrlMatches(threads: Thread[]) {
     window.scrollTo(x, y);
     openThread(thread);
   }
+}
+
+export function buildThreadLink(
+  threadId: Thread["GHissueId"],
+  threadUrl: Thread["tracking"]["url"]
+) {
+  if (!threadId) return "";
+  const url = new URL(threadUrl);
+  url.searchParams.set("thread", threadId);
+  return url.toString();
 }

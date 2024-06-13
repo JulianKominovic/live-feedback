@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import Navbar from "./ui/Navbar";
-import useGithubStore from "./store/threads";
+import useThreadsStore from "./store/threads";
 import ThreadBubbles from "./ui/ThreadBubbles";
 import TemporalThreadBubble from "./ui/TemporalThreadBubble";
 import { GlobalStyles, ResetCSS } from "./styles/tokens";
@@ -9,15 +9,17 @@ import { CacheProvider } from "@emotion/react";
 import ThreadSelectionRange from "./ui/ThreadSelectionRange";
 import { TRACKING_INTERVAL } from "./const";
 import { focusThreadIfUrlMatches } from "./logic/threads";
+import { AnimatePresence } from "framer-motion";
+import ThreadsPanel from "./ui/ThreadsPanel";
 function RegisterEvents() {
-  const populateThreads = useGithubStore((state) => state.populateThreads);
-  const checkThreadsVisibility = useGithubStore(
+  const populateThreads = useThreadsStore((state) => state.populateThreads);
+  const checkThreadsVisibility = useThreadsStore(
     (state) => state.checkThreadsVisibility
   );
-  const updateThreadCoords = useGithubStore(
+  const updateThreadCoords = useThreadsStore(
     (state) => state.updateThreadCoords
   );
-  const threads = useGithubStore((state) => state.threads);
+  const threads = useThreadsStore((state) => state.threads);
 
   useEffect(() => {
     focusThreadIfUrlMatches(threads);
@@ -39,11 +41,11 @@ function RegisterEvents() {
 }
 
 function App({ shadowRoot }: { shadowRoot: ShadowRoot }) {
-  const isPicking = useGithubStore((state) => state.isPicking);
-  const setTempThreadCreationIntent = useGithubStore(
+  const isPicking = useThreadsStore((state) => state.isPicking);
+  const setTempThreadCreationIntent = useThreadsStore(
     (state) => state.setTempThreadCreationIntent
   );
-  const setIsPicking = useGithubStore((state) => state.setIsPicking);
+  const setIsPicking = useThreadsStore((state) => state.setIsPicking);
 
   const cache = useMemo(
     () =>
@@ -85,6 +87,7 @@ function App({ shadowRoot }: { shadowRoot: ShadowRoot }) {
         <TemporalThreadBubble />
         <ThreadBubbles />
         <ThreadSelectionRange />
+        <ThreadsPanel />
       </ResetCSS>
     </CacheProvider>
   );

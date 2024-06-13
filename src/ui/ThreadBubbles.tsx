@@ -16,6 +16,7 @@ import { Trigger } from "./bubbles/Trigger";
 import { ConversationalCommentForm } from "./bubbles/ConversationalCommentForm";
 import Tooltip from "./atoms/Tooltip";
 import { CopyButton } from "./atoms/CopyButton";
+import { buildThreadLink } from "../logic/threads";
 
 const ThreadBubble = ({ thread }: { thread: Thread }) => {
   const [open, setOpen] = useState(false);
@@ -23,12 +24,6 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
   const loadComments = useThreadsStore((state) => state.populateThreadComments);
   const closeThread = useThreadsStore((state) => state.closeThread);
 
-  const copyUrl = useMemo(() => {
-    if (!thread.GHissueId) return "";
-    const url = new URL(thread.tracking.url);
-    url.searchParams.set("thread", thread.GHissueId);
-    return url.toString();
-  }, [thread.GHissueId, thread.tracking.url]);
   const coords = thread.tracking.liveCoords;
   return (
     thread.tracking.show &&
@@ -177,7 +172,12 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
               </Tooltip>
               <Tooltip>
                 <Tooltip.Trigger asChild>
-                  <CopyButton textToCopy={copyUrl} />
+                  <CopyButton
+                    textToCopy={buildThreadLink(
+                      thread.GHissueId,
+                      thread.tracking.url
+                    )}
+                  />
                 </Tooltip.Trigger>
                 <Tooltip.Content
                   style={{

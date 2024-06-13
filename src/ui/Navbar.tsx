@@ -20,6 +20,7 @@ import {
 import useAuthStore from "../store/auth";
 import { useDebounceFunction } from "../utils";
 import { TEXT_RANGE_BUBBLE_THREAD_CREATION_DEBOUNCE } from "../const";
+import useUIStore from "../store/ui";
 
 function AsyncOperationsStatus() {
   const asyncOperations = useSystemStore((state) => state.asyncOperations);
@@ -72,6 +73,8 @@ function AuthenticatedNavbar() {
     (state) => state.setTempThreadCreationIntent
   );
   const { pending } = useSystemStore((state) => state.asyncOperations);
+  const setIsThreadListOpen = useUIStore((state) => state.setIsThreadListOpen);
+  const isThreadListOpen = useUIStore((state) => state.isThreadListOpen);
   const { debounce } = useDebounceFunction(
     TEXT_RANGE_BUBBLE_THREAD_CREATION_DEBOUNCE
   );
@@ -202,14 +205,9 @@ function AuthenticatedNavbar() {
       <Button
         variant="flat"
         layout
-        disabled
         key="all-threads"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-        style={{
-          opacity: 0.2,
+        onClick={() => {
+          setIsThreadListOpen(!isThreadListOpen);
         }}
       >
         <ArchiveIcon />
