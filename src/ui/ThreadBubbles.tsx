@@ -17,6 +17,7 @@ import { ConversationalCommentForm } from "./bubbles/ConversationalCommentForm";
 import Tooltip from "./atoms/Tooltip";
 import { CopyButton } from "./atoms/CopyButton";
 import { buildThreadLink } from "../logic/threads";
+import DeviceInfoTags from "./molecules/DeviceInfoTags";
 
 const ThreadBubble = ({ thread }: { thread: Thread }) => {
   const [open, setOpen] = useState(false);
@@ -117,59 +118,22 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
                 </span>
               </div>
 
-              <Tooltip>
-                <Tooltip.Trigger asChild>
-                  <InfoCircledIcon />
-                </Tooltip.Trigger>
-                <Tooltip.Content
-                  style={{
-                    padding: "8px 16px",
-                  }}
-                  sideOffset={5}
-                >
-                  <div>
-                    <strong>Screen</strong>:{" "}
-                    {thread.tracking.device.screen.width}w x{" "}
-                    {thread.tracking.device.screen.height}h
-                  </div>
-                  {thread.tracking.device.browser.version &&
-                  thread.tracking.device.browser.name ? (
-                    <div>
-                      <strong>Browser</strong>:{" "}
-                      {thread.tracking.device.browser.name}{" "}
-                      {thread.tracking.device.browser.version}
-                    </div>
-                  ) : null}
-                  {thread.tracking.device.os.name ? (
-                    <div>
-                      <strong>OS</strong>: {thread.tracking.device.os.name}
-                    </div>
-                  ) : null}
-                  {thread.tracking.device.type.vendor &&
-                  thread.tracking.device.type.model ? (
-                    <div>
-                      <strong>Device</strong>:{" "}
-                      {thread.tracking.device.type.vendor}{" "}
-                      {thread.tracking.device.type.model}
-                    </div>
-                  ) : null}
-                  {thread.tracking.device.type.type ? (
-                    <div>
-                      <strong>Device type</strong>:{" "}
-                      {thread.tracking.device.type.type}
-                    </div>
-                  ) : null}
-                  <div>
-                    <strong>Timezone</strong>: {thread.tracking.device.tz}
-                  </div>
-                  {thread.tracking.device.network?.effectiveType ? (
-                    <div>
-                      <strong>Network</strong>:{" "}
-                      {thread.tracking.device.network.effectiveType}
-                    </div>
-                  ) : null}
-                </Tooltip.Content>
-              </Tooltip>
+              {thread.tracking.device && (
+                <Tooltip>
+                  <Tooltip.Trigger asChild>
+                    <InfoCircledIcon />
+                  </Tooltip.Trigger>
+                  <Tooltip.Content
+                    style={{
+                      padding: "8px",
+                      width: 320,
+                    }}
+                    sideOffset={5}
+                  >
+                    <DeviceInfoTags {...thread.tracking.device} />
+                  </Tooltip.Content>
+                </Tooltip>
+              )}
               <Tooltip>
                 <Tooltip.Trigger asChild>
                   <CopyButton
