@@ -12,6 +12,7 @@ import DeviceInfoTags from "./molecules/DeviceInfoTags";
 import { buildThreadLink, getThreads } from "../logic/threads";
 import { useEffect, useMemo, useState } from "react";
 import Tooltip from "./atoms/Tooltip";
+import { LoadingSpinner } from "./atoms/Loading";
 
 const Panel = styled(motion.aside)`
   position: fixed;
@@ -173,18 +174,35 @@ export default function ThreadsPanel() {
   const isThreadListOpen = useUIStore((state) => state.isThreadListOpen);
   const setIsThreadListOpen = useUIStore((state) => state.setIsThreadListOpen);
   const [status, setStatus] = useState<"all" | "open" | "closed">("all");
+  const [isLoading, setIsLoading] = useState(true);
   const filteredThreads = useMemo(() => {
     if (status === "all") return threads;
     return threads.filter((t) => t.status.toLowerCase() === status);
   }, [threads, status]);
   useEffect(() => {
     if (isThreadListOpen)
-      getThreads("all").then((threads) => setThreads(threads.slice(0, 50)));
+      getThreads("all")
+        .then((threads) => setThreads(threads.slice(0, 50)))
+        .finally(() => setIsLoading(false));
   }, [isThreadListOpen]);
 
   return (
     <AnimatePresence>
-      {isThreadListOpen ? (
+      {isThreadListOpen && isLoading ? (
+        <Panel
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            fontSize: 32,
+          }}
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 100 }}
+        >
+          <LoadingSpinner />
+        </Panel>
+      ) : isThreadListOpen ? (
         <Panel
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
