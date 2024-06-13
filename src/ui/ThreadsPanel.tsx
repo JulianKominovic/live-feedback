@@ -1,5 +1,4 @@
 import { AnimatePresence, motion } from "framer-motion";
-import useThreadsStore from "../store/threads";
 import { COLORS, CSS_FRAGMENTS, Z_INDEXES } from "../styles/tokens";
 import styled from "@emotion/styled";
 import useUIStore from "../store/ui";
@@ -20,6 +19,7 @@ const Panel = styled(motion.aside)`
   max-width: 400px;
   width: 100%;
   overflow-y: auto;
+  overscroll-behavior: contain;
   z-index: ${Z_INDEXES.THREADS_LIST};
   right: 16px;
   top: 16px;
