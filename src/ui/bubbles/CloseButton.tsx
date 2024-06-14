@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
-import * as Popover from "@radix-ui/react-popover";
+import { CloseButton as CloseBtn } from "@headlessui/react";
 import { CSS_FRAGMENTS } from "../../styles/tokens";
 
-export const CloseButton = styled(Popover.Close)`
+export const CloseButton = styled(CloseBtn)`
   border-radius: 50%;
   height: 24px;
   width: 24px;

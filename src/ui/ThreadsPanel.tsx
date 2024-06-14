@@ -27,6 +27,8 @@ const Panel = styled(motion.aside)`
   height: calc(100dvh - 32px);
   border-radius: 12px;
   ${CSS_FRAGMENTS["box-styles"]};
+  backdrop-filter: blur(60px);
+  background-color: rgba(0, 0, 0, 0.6);
 `;
 const List = styled(motion.main)`
   list-style: none;

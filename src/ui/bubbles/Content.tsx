@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
-import * as Popover from "@radix-ui/react-popover";
+import { PopoverPanel, PopoverPanelProps } from "@headlessui/react";
 import { CSS_FRAGMENTS, Z_INDEXES } from "../../styles/tokens";
 
-export const Content = styled(Popover.Content)<
-  Popover.PopoverContentProps &
+export const Content = styled(PopoverPanel)<
+  PopoverPanelProps &
     React.RefAttributes<HTMLDivElement> & {
       width?: string;
       height?: string;

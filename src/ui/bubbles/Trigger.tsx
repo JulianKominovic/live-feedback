@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
-import * as Popover from "@radix-ui/react-popover";
+import { PopoverButton } from "@headlessui/react";
 import { CSS_FRAGMENTS, Z_INDEXES } from "../../styles/tokens";
 
-export const Trigger = styled(Popover.Trigger)`
+export const Trigger = styled(PopoverButton)`
   width: 32px;
   height: 32px;
   padding: 2px;

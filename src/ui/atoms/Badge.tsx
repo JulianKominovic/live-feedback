@@ -10,6 +10,7 @@ export const Badge = styled(motion.div)<{
   gap: 8px;
   padding: 4px 12px;
   border-radius: 9999px;
+  background-color: rgba(0, 0, 0, 0.2);
   ${CSS_FRAGMENTS["button-styles"]};
 
   &[aria-selected="true"] {

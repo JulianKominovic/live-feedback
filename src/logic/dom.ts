@@ -2,11 +2,16 @@ import { getCssSelector } from "css-selector-generator";
 import { finder } from "@medv/finder";
 import { MINIMUM_CSS_SELECTORS_FOR_ELEMENT_TO_SHOW_BUBBLE } from "../const";
 
-export const buildSelectors = (target: HTMLElement) => {
-  // Temporal thread bubble is using radix, and it adds a focus guard that we don't want to include in the selectors since it adds noise to the body
+// Temporal thread bubble is using radix, and it adds a focus guard that we don't want to include in the selectors since it adds noise to the body
+export const removeRadixFocusGuard = () => {
   document
     .querySelectorAll("[data-radix-focus-guard]")
     .forEach((el) => el.remove());
+};
+
+export const buildSelectors = (target: HTMLElement) => {
+  // Temporal thread bubble is using radix, and it adds a focus guard that we don't want to include in the selectors since it adds noise to the body
+  removeRadixFocusGuard();
   const selectors = new Set<string>();
   selectors.add(
     finder(target, {

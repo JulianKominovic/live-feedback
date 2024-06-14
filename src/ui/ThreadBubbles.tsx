@@ -1,11 +1,12 @@
-import * as Popover from "@radix-ui/react-popover";
+import { Popover } from "@headlessui/react";
+
 import {
   CheckCircledIcon,
   Cross2Icon,
   InfoCircledIcon,
 } from "@radix-ui/react-icons";
 import { Thread } from "../types/Threads";
-import { useMemo, useState } from "react";
+import { useEffect } from "react";
 import { GH_OWNER, GH_REPO } from "../const";
 import useThreadsStore from "../store/threads";
 import { COLORS } from "../styles/tokens";
@@ -18,66 +19,55 @@ import Tooltip from "./atoms/Tooltip";
 import { CopyButton } from "./atoms/CopyButton";
 import { buildThreadLink } from "../logic/threads";
 import DeviceInfoTags from "./molecules/DeviceInfoTags";
+import { AnimatePresence, motion } from "framer-motion";
 
-const ThreadBubble = ({ thread }: { thread: Thread }) => {
-  const [open, setOpen] = useState(false);
+function ThreadPopoverContent({
+  thread,
+  open,
+}: {
+  thread: Thread;
+  open: boolean;
+}) {
   const addComment = useThreadsStore((state) => state.createThreadComment);
   const loadComments = useThreadsStore((state) => state.populateThreadComments);
   const closeThread = useThreadsStore((state) => state.closeThread);
-
   const coords = thread.tracking.liveCoords;
+  useEffect(() => {
+    if (open && thread.comments?.filter(Boolean)?.length === 0) {
+      loadComments(thread);
+    }
+  }, [open]);
+  if (!coords) return null;
   return (
-    thread.tracking.show &&
-    coords && (
-      <Popover.Root
-        open={open}
-        onOpenChange={(open) => {
-          setOpen(open);
-          if (open && thread.comments?.filter(Boolean)?.length === 0) {
-            loadComments(thread);
-          }
-        }}
+    <>
+      <Trigger
+        id={"live-feedback-bubble-" + thread.GHissueId}
+        data-live-feedback
       >
-        <Trigger
-          id={"live-feedback-bubble-" + thread.GHissueId}
-          data-live-feedback
-          style={{
-            top: coords.y,
-            left: coords.x,
-            overflow: "hidden",
-          }}
-        >
-          {thread.creator?.avatar ? (
-            <img
-              style={{
-                borderRadius: "50%",
-              }}
-              src={thread.creator.avatar}
-              alt={thread.creator.name}
-            />
-          ) : (
-            thread.comments?.length
-          )}
-        </Trigger>
-        <Popover.Portal
-          container={
-            document
-              .getElementById("live-feedback")
-              ?.shadowRoot?.querySelector("#live-feedback-styles-wrapper") ||
-            document.body
-          }
-        >
-          <Content
-            data-live-feedback
-            side="right"
-            align="center"
-            collisionPadding={{
-              top: 8,
-              right: 8,
-              bottom: 72,
-              left: 8,
+        {thread.creator?.avatar ? (
+          <img
+            style={{
+              borderRadius: "50%",
             }}
-            sideOffset={8}
+            src={thread.creator.avatar}
+            alt={thread.creator.name}
+          />
+        ) : (
+          thread.comments?.length
+        )}
+      </Trigger>
+      <AnimatePresence>
+        {open && (
+          <Content
+            static
+            // @ts-expect-error - framer-motion types
+            as={motion.div}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            style={{
+              padding: "64px",
+            }}
           >
             <header
               style={{
@@ -302,8 +292,27 @@ const ThreadBubble = ({ thread }: { thread: Thread }) => {
               <Cross2Icon />
             </CloseButton>
           </Content>
-        </Popover.Portal>
-      </Popover.Root>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+const ThreadBubble = ({ thread }: { thread: Thread }) => {
+  const coords = thread.tracking.liveCoords;
+
+  return (
+    thread.tracking.show &&
+    coords && (
+      <Popover
+        style={{
+          top: coords.y,
+          left: coords.x,
+          position: "absolute",
+        }}
+      >
+        {({ open }) => <ThreadPopoverContent thread={thread} open={open} />}
+      </Popover>
     )
   );
 };
