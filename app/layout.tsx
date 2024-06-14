@@ -14,7 +14,7 @@ export default function RootLayout({
           repo="live-feedback"
           owner="JulianKominovic"
           // src="https://cdn.jsdelivr.net/gh/JulianKominovic/live-feedback@latest/build/bundle.js"
-          src="http://localhost:5000/bundle-dev.js"
+          src="http://192.168.1.48:5000/bundle-dev.js"
         />
       </body>
     </html>

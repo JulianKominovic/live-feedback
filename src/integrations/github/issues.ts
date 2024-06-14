@@ -1,6 +1,8 @@
+import { RequestError } from "octokit";
 import { GH_OWNER, GH_REPO } from "../../const";
 import useSystemStore from "../../store/system";
 import { log } from "../../utils";
+import { checkAuthError } from "./auth-error-msg";
 import octokit from "./client";
 
 export async function closeIssue({ issue_number }: { issue_number: number }) {
@@ -32,6 +34,9 @@ export async function closeIssue({ issue_number }: { issue_number: number }) {
     return response;
   } catch (err) {
     log(err);
+    if (err instanceof RequestError) {
+      checkAuthError(err);
+    }
     useSystemStore.getState().updateTaskStatus({
       id: `close-issue-${issue_number}`,
       title: `Error closing issue #${issue_number}`,
@@ -75,6 +80,9 @@ export async function createIssue({
     return response;
   } catch (err) {
     log(err);
+    if (err instanceof RequestError) {
+      checkAuthError(err);
+    }
     useSystemStore.getState().updateTaskStatus({
       id: "create-issue-" + title,
       title: `Error creating issue ${title}`,
@@ -110,6 +118,9 @@ export async function getIssues(state?: "open" | "closed" | "all") {
     return response;
   } catch (err) {
     log(err);
+    if (err instanceof RequestError) {
+      checkAuthError(err);
+    }
     useSystemStore.getState().updateTaskStatus({
       id: "get-issues",
       title: `Error fetching issues`,
@@ -156,6 +167,9 @@ export async function getIssueComments({
     return response;
   } catch (err) {
     log(err);
+    if (err instanceof RequestError) {
+      checkAuthError(err);
+    }
 
     useSystemStore.getState().updateTaskStatus({
       id: `issue-comments-${issue_number}`,
@@ -203,6 +217,9 @@ export async function createIssueComment({
     return response;
   } catch (err) {
     log(err);
+    if (err instanceof RequestError) {
+      checkAuthError(err);
+    }
 
     useSystemStore.getState().updateTaskStatus({
       id: `create-issue-comment-${issue_number}`,
