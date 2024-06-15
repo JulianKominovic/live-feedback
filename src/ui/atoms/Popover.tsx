@@ -171,11 +171,7 @@ Popover.Content = function Content({
           tabIndex={-1}
           onBlur={(e) => {
             console.log(e);
-            if (
-              e.currentTarget &&
-              e.relatedTarget &&
-              !e.currentTarget.contains(e.relatedTarget as Node)
-            ) {
+            if (!e.currentTarget.contains(e.relatedTarget as Node)) {
               setOpen(false);
             }
           }}
