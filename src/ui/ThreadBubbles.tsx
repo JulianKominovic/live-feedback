@@ -52,6 +52,7 @@ function ThreadPopoverContent({ thread }: { thread: Thread }) {
             paddingInline: "4px",
             gap: "8px",
             alignItems: "center",
+            height: "22px",
           }}
         >
           <div
@@ -91,9 +92,10 @@ function ThreadPopoverContent({ thread }: { thread: Thread }) {
               <Tooltip.Content
                 style={{
                   padding: "8px",
-                  width: 320,
+                  width: 200,
                 }}
-                sideOffset={5}
+                sideOffset={4}
+                side="bottom"
               >
                 <DeviceInfoTags {...thread.tracking.device} />
               </Tooltip.Content>
@@ -102,6 +104,7 @@ function ThreadPopoverContent({ thread }: { thread: Thread }) {
           <Tooltip>
             <Tooltip.Trigger asChild>
               <CopyButton
+                variant="flat"
                 textToCopy={buildThreadLink(
                   thread.GHissueId,
                   thread.tracking.url
@@ -112,7 +115,8 @@ function ThreadPopoverContent({ thread }: { thread: Thread }) {
               style={{
                 padding: "8px 16px",
               }}
-              sideOffset={5}
+              sideOffset={4}
+              side="bottom"
             >
               Copy thread link
             </Tooltip.Content>
@@ -126,7 +130,8 @@ function ThreadPopoverContent({ thread }: { thread: Thread }) {
               style={{
                 padding: "8px 16px",
               }}
-              sideOffset={5}
+              sideOffset={4}
+              side="bottom"
             >
               Close thread
             </Tooltip.Content>

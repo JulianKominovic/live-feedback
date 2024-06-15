@@ -3,7 +3,7 @@
  * Live Feedback script.
  * @version 2.0.1
  * @description Leave feedback on any website and share it with your team 🚀.
- * @date 2024-06-15T15:59:54.668Z
+ * @date 2024-06-15T16:00:21.236Z
  * @see https://github.com/JulianKominovic/live-feedback
  * @see https://jkominovic.dev/live-feedback
  **/

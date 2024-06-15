@@ -79,8 +79,8 @@ const StyledCloseButton = styled(motion.button)`
   position: absolute;
   background-color: rgba(0, 0, 0, 0.2) !important;
   color: white;
-  top: 8px;
-  right: 8px;
+  top: 12px;
+  right: 12px;
   outline: none;
   cursor: default;
   ${CSS_FRAGMENTS["button-styles"]};
@@ -170,7 +170,12 @@ Popover.Content = function Content({
         <StyledContent
           tabIndex={-1}
           onBlur={(e) => {
-            if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+            console.log(e);
+            if (
+              e.currentTarget &&
+              e.relatedTarget &&
+              !e.currentTarget.contains(e.relatedTarget as Node)
+            ) {
               setOpen(false);
             }
           }}
