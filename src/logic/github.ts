@@ -29,7 +29,7 @@ export async function addComment(thread: Thread, comment: string) {
   });
   if (!commentResponse) return thread;
   thread.comments?.push({
-    body: comment,
+    body: commentResponse.data.body_html,
     user: {
       name: commentResponse.data.user?.name || commentResponse.data.user?.login,
       avatar:
