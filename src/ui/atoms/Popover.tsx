@@ -138,7 +138,11 @@ export default function Popover({
 type TriggerProps =
   typeof StyledTrigger extends React.ComponentType<infer P> ? P : never;
 
-Popover.Trigger = function Trigger({ children, ...props }: TriggerProps) {
+Popover.Trigger = function Trigger({
+  children,
+  style,
+  ...props
+}: TriggerProps) {
   const { refs, setOpen, open } = useContext(PopoverContext)!;
   return (
     <StyledTrigger
@@ -146,6 +150,11 @@ Popover.Trigger = function Trigger({ children, ...props }: TriggerProps) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0 }}
       ref={refs.setReference}
+      style={{
+        ...style,
+        backgroundColor: open ? "rgba(0, 0, 0, 1)" : "rgba(0, 0, 0, 0.2)",
+        transition: "background-color 0.2s",
+      }}
       onClick={() => setOpen(!open)}
       aria-expanded={open}
       {...props}
