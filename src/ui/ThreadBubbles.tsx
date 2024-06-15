@@ -4,7 +4,7 @@ import {
   InfoCircledIcon,
 } from "@radix-ui/react-icons";
 import { Thread } from "../types/Threads";
-import { GH_OWNER, GH_REPO } from "../const";
+import { GH_OWNER, GH_REPO, TOOLTIP_DELAY } from "../const";
 import useThreadsStore from "../store/threads";
 import { COLORS } from "../styles/tokens";
 import { getRelativeTimeString } from "../utils";
@@ -86,7 +86,7 @@ function ThreadPopoverContent({ thread }: { thread: Thread }) {
           </div>
 
           {thread.tracking.device && (
-            <Tooltip>
+            <Tooltip delayDuration={TOOLTIP_DELAY}>
               <Tooltip.Trigger asChild>
                 <InfoCircledIcon />
               </Tooltip.Trigger>
@@ -102,7 +102,7 @@ function ThreadPopoverContent({ thread }: { thread: Thread }) {
               </Tooltip.Content>
             </Tooltip>
           )}
-          <Tooltip>
+          <Tooltip delayDuration={TOOLTIP_DELAY}>
             <Tooltip.Trigger asChild>
               <CopyButton
                 style={{ padding: 0 }}
@@ -126,7 +126,7 @@ function ThreadPopoverContent({ thread }: { thread: Thread }) {
             </Tooltip.Content>
           </Tooltip>
 
-          <Tooltip>
+          <Tooltip delayDuration={TOOLTIP_DELAY}>
             <Tooltip.Trigger asChild onClick={() => closeThread(thread)}>
               <Button
                 style={{ padding: 0 }}
@@ -219,58 +219,64 @@ function ThreadPopoverContent({ thread }: { thread: Thread }) {
             </a>
             <div style={{ opacity: 0.5 }}> {"> "}Issue opened</div>
           </li>
-          {thread.comments?.map((comment, i) => (
-            <li
-              style={{
-                paddingBlock: "24px",
-                borderBottom: "1px solid rgba(0,0,0,.1)",
-              }}
-              key={thread.GHissueId + "" + i + comment}
-            >
-              {comment?.user?.name && comment?.user?.avatar && (
-                <div
+          {thread.comments?.map(
+            (comment, i) =>
+              comment?.body && (
+                <li
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    marginBlockEnd: "8px",
+                    paddingBlock: "24px",
+                    borderBottom: "1px solid rgba(0,0,0,.1)",
                   }}
+                  key={thread.GHissueId + "" + i + comment}
                 >
-                  {comment.user.avatar && (
-                    <img
+                  {comment?.user?.name && comment?.user?.avatar && (
+                    <div
                       style={{
-                        width: "18px",
-                        height: "18px",
-                        borderRadius: "50%",
-                      }}
-                      src={comment.user.avatar}
-                      alt={comment.user.name}
-                    />
-                  )}
-                  <span style={{ opacity: 0.8, fontSize: "12px" }}>
-                    {comment.user.name}
-                  </span>
-
-                  {comment?.date && (
-                    <span
-                      style={{
-                        fontSize: "12px",
-                        marginInlineStart: "auto",
-                        opacity: 0.8,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        marginBlockEnd: "8px",
                       }}
                     >
-                      {getRelativeTimeString(new Date(comment.date), "narrow")}
-                    </span>
+                      {comment.user.avatar && (
+                        <img
+                          style={{
+                            width: "18px",
+                            height: "18px",
+                            borderRadius: "50%",
+                          }}
+                          src={comment.user.avatar}
+                          alt={comment.user.name}
+                        />
+                      )}
+                      <span style={{ opacity: 0.8, fontSize: "12px" }}>
+                        {comment.user.name}
+                      </span>
+
+                      {comment?.date && (
+                        <span
+                          style={{
+                            fontSize: "12px",
+                            marginInlineStart: "auto",
+                            opacity: 0.8,
+                          }}
+                        >
+                          {getRelativeTimeString(
+                            new Date(comment.date),
+                            "narrow"
+                          )}
+                        </span>
+                      )}
+                    </div>
                   )}
-                </div>
-              )}
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: comment?.body || "",
-                }}
-              ></div>
-            </li>
-          ))}
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: comment?.body || "",
+                    }}
+                  ></div>
+                </li>
+              )
+          )}
         </ul>
         <ConversationalCommentForm
           action={(comment) => addComment(thread, comment)}

@@ -13,6 +13,7 @@ import { buildThreadLink, getThreads } from "../logic/threads";
 import { useEffect, useMemo, useState } from "react";
 import Tooltip from "./atoms/Tooltip";
 import { LoadingSpinner } from "./atoms/Loading";
+import { TOOLTIP_DELAY } from "../const";
 
 const Panel = styled(motion.aside)`
   position: fixed;
@@ -53,8 +54,8 @@ const ListItem = styled(motion.a)<{ threadStatus: Thread["status"] }>`
     transition: background-color 0.2s;
     background-color: ${({ threadStatus }) =>
       threadStatus === "OPEN"
-        ? COLORS["green-500"] + 33
-        : COLORS["purple-500"] + 33};
+        ? COLORS["green-500"] + 88
+        : COLORS["purple-500"] + 88};
   }
   .dot {
     position: absolute;
@@ -116,7 +117,7 @@ const ThreadItem = ({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 100 }}
     >
-      <Tooltip>
+      <Tooltip delayDuration={TOOLTIP_DELAY}>
         <Tooltip.Trigger asChild>
           <Dot
             className="dot"
@@ -222,7 +223,7 @@ export default function ThreadsPanel() {
             <Cross2Icon />
           </Button>
           <Title>
-            Thread list <span>{`(${threads.length})`}</span>
+            Threads <span>{`(${threads.length})`}</span>
           </Title>
           <ThreadsCounter>
             <Badge
