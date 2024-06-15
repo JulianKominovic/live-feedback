@@ -104,6 +104,9 @@ function ThreadPopoverContent({ thread }: { thread: Thread }) {
           <Tooltip>
             <Tooltip.Trigger asChild>
               <CopyButton
+                style={{ padding: 0 }}
+                height="fit-content"
+                width="fit-content"
                 variant="flat"
                 textToCopy={buildThreadLink(
                   thread.GHissueId,
