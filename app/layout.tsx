@@ -10,7 +10,7 @@ export default function RootLayout({
 
         <script
           async
-          // @ts-ignore - TS doesn't know about the `repo` prop
+          // @ts-expect-error - TS doesn't know about the `repo` prop
           repo="live-feedback"
           owner="JulianKominovic"
           // src="https://cdn.jsdelivr.net/gh/JulianKominovic/live-feedback@latest/build/bundle.js"
