@@ -203,6 +203,8 @@ export async function createIssueComment({
         issue_number,
         body,
         headers: {
+          // Accept html in response
+          accept: "application/vnd.github.v3.html+json",
           "X-GitHub-Api-Version": "2022-11-28",
         },
       }
