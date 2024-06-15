@@ -159,7 +159,9 @@ function ThreadPopoverContent({ thread }: { thread: Thread }) {
 
         <ul
           style={{
-            overflow: "auto",
+            overflowY: "auto",
+            overflowX: "hidden",
+            marginBlock: 12,
           }}
         >
           <li
