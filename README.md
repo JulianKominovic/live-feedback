@@ -1,9 +1,8 @@
-
 ![Github frame (2)](https://github.com/JulianKominovic/live-feedback/assets/70329467/074b2b42-61a6-452e-8dbe-5b359cae46ec)
 
 # Live feedback
 
-Live feedback is a script you can inject on your site that allows you to get feedback on your website in real time from your developers, designers, and clients. 
+Live feedback is a script you can inject on your site that allows you to get feedback on your website in real time from your developers, designers, and clients.
 It is a simple and easy-to-use tool that helps you to improve your website by getting feedback from your team.
 Integration is really simple.
 
@@ -15,23 +14,18 @@ In a few steps you can get feedback on your website:
 - You will see the `Login` button, click it.
 - After giving Live Feedback access to your repositories you can start giving feedback.
 
-
 ## Demo
-
-
 
 https://github.com/JulianKominovic/live-feedback/assets/70329467/b6847ac8-128a-4bd9-8fe4-46280fa1533e
 
-
-
-
-
-
 ## Instructions
+
 ### Add script tag
+
 Add this script at the end of `<body>` tag.
+
 ```html
- <script
+<script
   repo="{your repo}"
   owner="{repo owner}"
   async
@@ -40,8 +34,9 @@ Add this script at the end of `<body>` tag.
 ```
 
 i.e:
+
 ```html
- <script
+<script
   repo="live-feedback"
   owner="JulianKominovic"
   async
@@ -49,8 +44,8 @@ i.e:
 />
 ```
 
-
 ### We are ready!
+
 ![image](https://github.com/JulianKominovic/live-feedback/assets/70329467/64d1d32c-e1e8-4544-8a05-edfb1980b04a)
 
 Check the issue this example has created: https://github.com/JulianKominovic/live-feedback/issues/74
