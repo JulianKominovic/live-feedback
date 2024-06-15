@@ -1,9 +1,8 @@
-import * as Popover from "@radix-ui/react-popover";
+import Popover from "./atoms/Popover";
 import useThreadsStore from "../store/threads";
-import { Content } from "./bubbles/Content";
 import { CommentForm } from "./bubbles/CommentForm";
-import { Trigger } from "./bubbles/Trigger";
 import { useMemo } from "react";
+import { Z_INDEXES } from "../styles/tokens";
 
 const TemporalThreadBubble = () => {
   const tempThreadCreationIntent = useThreadsStore(
@@ -45,7 +44,7 @@ const TemporalThreadBubble = () => {
   if (!x || !y) return null;
   return (
     <>
-      <Popover.Root
+      <Popover
         onOpenChange={(open) => {
           if (!open) {
             setTempThreadCreationIntent(null);
@@ -53,40 +52,44 @@ const TemporalThreadBubble = () => {
         }}
         open={isCreatingThreadPromptOpen}
       >
-        <Trigger
+        <Popover.Trigger
           style={{
             top: y,
             left: x,
             position: "absolute",
-            zIndex: 999999,
+            zIndex: Z_INDEXES.HOVERED_BUBBLE,
           }}
-        ></Trigger>
-        <Popover.Portal
-          container={
-            document
-              .getElementById("live-feedback")
-              ?.shadowRoot?.querySelector("#live-feedback-styles-wrapper") ||
-            document.body
-          }
         >
-          <Content
-            onOpenAutoFocus={(e) => e.preventDefault()}
-            data-live-feedback
-            height="auto"
+          <div
             style={{
-              paddingBlockStart: "12px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%",
+              backgroundColor: "rgba(255, 255, 255, 1)",
             }}
-            side="bottom"
           >
-            <CommentForm
-              action={(comment, bindedPullRequestId: number) =>
-                createThread(comment, bindedPullRequestId)
-              }
-            />
-            <Popover.Arrow />
-          </Content>
-        </Popover.Portal>
-      </Popover.Root>
+            <span
+              style={{
+                color: "rgba(0, 0, 0, 1)",
+                fontSize: "16px",
+              }}
+            >
+              +
+            </span>
+          </div>
+        </Popover.Trigger>
+
+        <Popover.Content height="fit-content">
+          <CommentForm
+            action={(comment, bindedPullRequestId: number) =>
+              createThread(comment, bindedPullRequestId)
+            }
+          />
+        </Popover.Content>
+      </Popover>
     </>
   );
 };

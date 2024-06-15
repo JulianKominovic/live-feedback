@@ -2,7 +2,16 @@ import { getCssSelector } from "css-selector-generator";
 import { finder } from "@medv/finder";
 import { MINIMUM_CSS_SELECTORS_FOR_ELEMENT_TO_SHOW_BUBBLE } from "../const";
 
+// Temporal thread bubble is using radix, and it adds a focus guard that we don't want to include in the selectors since it adds noise to the body
+export const removeRadixFocusGuard = () => {
+  document
+    .querySelectorAll("[data-radix-focus-guard]")
+    .forEach((el) => el.remove());
+};
+
 export const buildSelectors = (target: HTMLElement) => {
+  // Temporal thread bubble is using radix, and it adds a focus guard that we don't want to include in the selectors since it adds noise to the body
+  removeRadixFocusGuard();
   const selectors = new Set<string>();
   selectors.add(
     finder(target, {
@@ -10,6 +19,11 @@ export const buildSelectors = (target: HTMLElement) => {
       className: () => false,
       tagName: () => false,
       attr: () => false,
+    })
+  );
+  selectors.add(
+    finder(target, {
+      tagName: (tag) => tag !== "script",
     })
   );
 
@@ -180,7 +194,11 @@ export function checkVisibilityInCoords(
   y: number,
   typeOfElement: "ELEMENT" | "TEXT_RANGE" = "ELEMENT"
 ) {
-  const elementFromPoint = document.elementFromPoint(x, y);
+  const elementsFromPoint = document
+    .elementsFromPoint(x, y)
+    // In some cases thread bubble is interfierring with the elementsFromPoint when decimating the coordinates
+    .filter((element) => element.id !== "live-feedback");
+  const elementFromPoint = elementsFromPoint.at(0);
   if (!elementFromPoint) return false;
   if (typeOfElement === "ELEMENT") {
     return elementFromPoint.isSameNode(element);

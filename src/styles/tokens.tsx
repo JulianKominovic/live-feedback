@@ -17,7 +17,9 @@ export const CSS_FRAGMENTS = {
     rgba(0, 0, 0, 0.25) 0px 4px 4px,
     rgba(255, 255, 255, 0.2) 0px 0px 1px 1px inset;
   backdrop-filter: blur(32px);`,
-  "button-styles": `box-shadow:
+  "button-styles": `
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow:
     rgba(0, 0, 0, 0.5) 0px 0px 1px 1px,
     rgba(0, 0, 0, 0.25) 0px 4px 4px,
     rgba(255, 255, 255, 0.2) 0px 0px 2px 0px inset; `,
@@ -632,6 +634,38 @@ export const ResetCSS = styled.div`
     transition: outline-offset 0.15s ease-in-out;
   }
 
+  /* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
+  /** {
+  scrollbar-width: thin;
+  scrollbar-color: #397524 rgba(0, 0, 0, 0.2);
+}*/
+
+  /* Chrome, Edge and Safari */
+  *::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  *::-webkit-scrollbar-track:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  *::-webkit-scrollbar-track:active {
+    background-color: rgba(255, 255, 255, 0.4);
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
   .spinner_V8m1 {
     transform-origin: center;
     animation: spinner_zKoa 2s linear infinite;
@@ -680,7 +714,6 @@ export const ResetCSS = styled.div`
   }
   button {
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.2);
   }
   ul {
     list-style: none;

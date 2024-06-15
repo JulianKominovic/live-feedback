@@ -2,6 +2,7 @@ import useThreadsStore from "../store/threads";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArchiveIcon,
+  ExitIcon,
   GearIcon,
   GitHubLogoIcon,
   PlusIcon,
@@ -24,7 +25,6 @@ import useUIStore from "../store/ui";
 
 function AsyncOperationsStatus() {
   const asyncOperations = useSystemStore((state) => state.asyncOperations);
-  const queue = useSystemStore((state) => state.queue);
 
   return (
     <>
@@ -35,8 +35,7 @@ function AsyncOperationsStatus() {
         {asyncOperations.error}
       </SemaphoreIndicator>
       <SemaphoreIndicator color={COLORS["orange-600"]}>
-        {queue.find((task) => task.status === "pending")?.title ||
-          asyncOperations.pending}
+        {asyncOperations.pending}
       </SemaphoreIndicator>
     </>
   );
@@ -55,6 +54,7 @@ const Nav = styled(motion.nav)`
   width: fit-content;
   overflow-x: hidden;
   padding-block: 4px;
+  border-radius: 24px;
   ${CSS_FRAGMENTS["box-styles"]};
 `;
 
@@ -72,6 +72,7 @@ function AuthenticatedNavbar() {
   const setTempThreadCreationIntent = useThreadsStore(
     (state) => state.setTempThreadCreationIntent
   );
+  const setIsAuthed = useAuthStore((state) => state.setIsAuthed);
   const { pending } = useSystemStore((state) => state.asyncOperations);
   const setIsThreadListOpen = useUIStore((state) => state.setIsThreadListOpen);
   const isThreadListOpen = useUIStore((state) => state.isThreadListOpen);
@@ -300,34 +301,31 @@ function AuthenticatedNavbar() {
       >
         <GearIcon />
       </Button>
+      <Button
+        variant="flat"
+        layout
+        key="logout"
+        onClick={() => setIsAuthed(false)}
+      >
+        <ExitIcon />
+      </Button>
       <AsyncOperationsStatus />
     </>
   );
 }
 
 function Navbar() {
-  const { isAuthed, createToken } = useAuthStore((state) => ({
-    isAuthed: state.isAuthed,
-    createToken: state.createToken,
-  }));
+  const isAuthed = useAuthStore((state) => state.isAuthed);
+  const createToken = useAuthStore((state) => state.createToken);
 
   return (
-    <Nav
-      data-live-feedback-navbar
-      style={{
-        borderRadius: "24px",
-        cursor: "grab",
-      }}
-      drag
-      layout="size"
-      layoutRoot
-    >
+    <Nav data-live-feedback-navbar layout="size" layoutRoot>
       <Toolbar layout>
         {isAuthed ? (
           <AuthenticatedNavbar />
         ) : (
           <>
-            <Button width="fit-content" onClick={createToken}>
+            <Button width="fit-content" variant="flat" onClick={createToken}>
               <GitHubLogoIcon /> Login with GitHub
             </Button>
           </>

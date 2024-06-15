@@ -13,8 +13,8 @@ export const Button = styled<
     }
   >
 >(motion.button)`
-  background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(8px);
+  background-color: ${({ variant }) =>
+    variant === "flat" ? "transparent" : ""};
   flex-shrink: 0;
   display: flex;
   justify-content: center;

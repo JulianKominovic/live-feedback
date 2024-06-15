@@ -1,8 +1,9 @@
 import { GH_OWNER, GH_REPO } from "../../const";
 import useSystemStore from "../../store/system";
 import { log } from "../../utils";
+import { checkAuthError } from "./auth-error-msg";
 import octokit from "./client";
-
+import { RequestError } from "octokit";
 export async function getOpenPullRequests() {
   useSystemStore.getState().addTask({
     id: "get-open-pull-requests",
@@ -29,6 +30,9 @@ export async function getOpenPullRequests() {
     return response;
   } catch (err) {
     log(err);
+    if (err instanceof RequestError) {
+      checkAuthError(err);
+    }
     useSystemStore.getState().updateTaskStatus({
       id: "get-open-pull-requests",
       title: "Error fetching open pull requests",

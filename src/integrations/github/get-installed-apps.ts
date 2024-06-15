@@ -1,5 +1,7 @@
+import { RequestError } from "octokit";
 import useSystemStore from "../../store/system";
 import { log } from "../../utils";
+import { checkAuthError } from "./auth-error-msg";
 import octokit from "./client";
 
 export async function getUserInstallations() {
@@ -21,6 +23,9 @@ export async function getUserInstallations() {
     return response;
   } catch (err) {
     log(err);
+    if (err instanceof RequestError) {
+      checkAuthError(err);
+    }
     useSystemStore.getState().updateTaskStatus({
       id: "get-user-installations",
       title: "Error fetching user installations",

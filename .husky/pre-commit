@@ -1,2 +1,2 @@
-pnpm run prod
+pnpm run script:prod
 git add build

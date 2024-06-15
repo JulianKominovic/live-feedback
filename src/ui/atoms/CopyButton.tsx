@@ -1,14 +1,6 @@
-import styled from "@emotion/styled";
 import { CheckIcon, Link2Icon } from "@radix-ui/react-icons";
 import React, { forwardRef, useState } from "react";
-
-const Button = styled.button`
-  border: none;
-  line-height: 0;
-  :focus {
-    outline: none !important;
-  }
-`;
+import { Button } from "./Button";
 
 export const useCopyToClipboard = () => {
   const [copied, setCopied] = useState(false);
@@ -27,7 +19,7 @@ export const CopyButton = forwardRef(function CopyButton(
   {
     textToCopy,
     ...rest
-  }: { textToCopy: string } & React.ComponentProps<"button">,
+  }: { textToCopy: string } & React.ComponentProps<typeof Button>,
   ref
 ) {
   const { copied, copy } = useCopyToClipboard();

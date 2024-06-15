@@ -13,20 +13,24 @@ import { buildThreadLink, getThreads } from "../logic/threads";
 import { useEffect, useMemo, useState } from "react";
 import Tooltip from "./atoms/Tooltip";
 import { LoadingSpinner } from "./atoms/Loading";
+import { TOOLTIP_DELAY } from "../const";
 
 const Panel = styled(motion.aside)`
   position: fixed;
   padding: 24px;
   max-width: 400px;
   width: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
   overscroll-behavior: contain;
   z-index: ${Z_INDEXES.THREADS_LIST};
   right: 16px;
   top: 16px;
   height: calc(100dvh - 32px);
-  border-radius: 12px;
+  border-radius: 12px 6px 12px 6px;
   ${CSS_FRAGMENTS["box-styles"]};
+  backdrop-filter: blur(60px);
+  background-color: rgba(0, 0, 0, 0.6);
 `;
 const List = styled(motion.main)`
   list-style: none;
@@ -50,8 +54,8 @@ const ListItem = styled(motion.a)<{ threadStatus: Thread["status"] }>`
     transition: background-color 0.2s;
     background-color: ${({ threadStatus }) =>
       threadStatus === "OPEN"
-        ? COLORS["green-500"] + 33
-        : COLORS["purple-500"] + 33};
+        ? COLORS["green-500"] + 88
+        : COLORS["purple-500"] + 88};
   }
   .dot {
     position: absolute;
@@ -113,7 +117,7 @@ const ThreadItem = ({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 100 }}
     >
-      <Tooltip>
+      <Tooltip delayDuration={TOOLTIP_DELAY}>
         <Tooltip.Trigger asChild>
           <Dot
             className="dot"
@@ -219,7 +223,7 @@ export default function ThreadsPanel() {
             <Cross2Icon />
           </Button>
           <Title>
-            Thread list <span>{`(${threads.length})`}</span>
+            Threads <span>{`(${threads.length})`}</span>
           </Title>
           <ThreadsCounter>
             <Badge

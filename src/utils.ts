@@ -96,7 +96,7 @@ export function useDebounceFunction(delay: number) {
     if (timeoutId.current) {
       clearTimeout(timeoutId.current);
     }
-    timeoutId.current = setTimeout(init, delay);
+    timeoutId.current = setTimeout(init, delay) as unknown as number;
     return () => {
       if (timeoutId) {
         clearTimeout(timeoutId.current as number);
