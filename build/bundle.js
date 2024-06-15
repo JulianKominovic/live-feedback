@@ -3,7 +3,7 @@
  * Live Feedback script.
  * @version 2.0.1
  * @description Leave feedback on any website and share it with your team 🚀.
- * @date 2024-06-15T19:03:55.848Z
+ * @date 2024-06-15T19:11:10.085Z
  * @see https://github.com/JulianKominovic/live-feedback
  * @see https://jkominovic.dev/live-feedback
  **/
@@ -353,7 +353,7 @@ Error generating stack: `+i.message+`
   outline: none;
   cursor: default;
   ${Xe["button-styles"]};
-`,d5=(0,Co.createContext)(void 0);function uA({open:e,onOpenChange:t,children:r}){let[o,n]=(0,Co.useState)(!1),i=e??o,{refs:s,floatingStyles:a}=Mx({open:i,onOpenChange:l,placement:"right",strategy:"absolute",middleware:[u5(12),R8(),L8({padding:8})],whileElementsMounted:V1});function l(c){t?.(c),n(c)}return(0,H1.jsx)(d5.Provider,{value:{open:i,setOpen:l,floatingStyles:a,refs:s},children:r})}function pr({open:e,onOpenChange:t,children:r}){return(0,H1.jsx)(uA,{open:e,onOpenChange:t,children:r})}pr.Trigger=function({children:t,...r}){let{refs:o,setOpen:n,open:i}=(0,Co.useContext)(d5);return(0,H1.jsx)(aA,{initial:{opacity:0,scale:0},animate:{opacity:1,scale:1},exit:{opacity:0,scale:0},ref:o.setReference,onClick:()=>n(!i),"aria-expanded":i,...r,children:t})};pr.Content=function({children:t,style:r,...o}){let{refs:n,floatingStyles:i,open:s,setOpen:a}=(0,Co.useContext)(d5);return(0,Co.useEffect)(()=>{s&&n.floating?.current?.focus()},[s,n.floating]),(0,H1.jsx)(_1,{children:s?(0,H1.jsx)(lA,{tabIndex:-1,onBlur:l=>{l.currentTarget.contains(l.relatedTarget)||a(!1)},ref:n.setFloating,style:{...r,...i},initial:{opacity:0,filter:"blur(8px)"},animate:{opacity:1,filter:"blur(0px)"},exit:{opacity:0,filter:"blur(8px)"},...o,children:s?t:null}):null})};pr.CloseButton=function({children:t,...r}){let{setOpen:o}=(0,Co.useContext)(d5);return(0,H1.jsx)(cA,{onClick:()=>o(!1),...r,children:t})};var f5=X(ie.textarea)`
+`,d5=(0,Co.createContext)(void 0);function uA({open:e,onOpenChange:t,children:r}){let[o,n]=(0,Co.useState)(!1),i=e??o,{refs:s,floatingStyles:a}=Mx({open:i,onOpenChange:l,placement:"right",strategy:"absolute",middleware:[u5(12),R8(),L8({padding:8})],whileElementsMounted:V1});function l(c){t?.(c),n(c)}return(0,H1.jsx)(d5.Provider,{value:{open:i,setOpen:l,floatingStyles:a,refs:s},children:r})}function pr({open:e,onOpenChange:t,children:r}){return(0,H1.jsx)(uA,{open:e,onOpenChange:t,children:r})}pr.Trigger=function({children:t,...r}){let{refs:o,setOpen:n,open:i}=(0,Co.useContext)(d5);return(0,H1.jsx)(aA,{initial:{opacity:0,scale:0},animate:{opacity:1,scale:1},exit:{opacity:0,scale:0},ref:o.setReference,onClick:()=>n(!i),"aria-expanded":i,...r,children:t})};pr.Content=function({children:t,style:r,...o}){let{refs:n,floatingStyles:i,open:s,setOpen:a}=(0,Co.useContext)(d5);return(0,Co.useEffect)(()=>{s&&n.floating?.current?.focus()},[s,n.floating]),(0,H1.jsx)(_1,{children:s?(0,H1.jsx)(lA,{tabIndex:-1,onBlur:l=>{!l.currentTarget.contains(l.relatedTarget)&&l.relatedTarget!==n.reference.current&&a(!1)},ref:n.setFloating,style:{...r,...i},initial:{opacity:0,filter:"blur(8px)"},animate:{opacity:1,filter:"blur(0px)"},exit:{opacity:0,filter:"blur(8px)"},...o,children:s?t:null}):null})};pr.CloseButton=function({children:t,...r}){let{setOpen:o}=(0,Co.useContext)(d5);return(0,H1.jsx)(cA,{onClick:()=>o(!1),...r,children:t})};var f5=X(ie.textarea)`
   color: white !important;
   background-color: rgba(0, 0, 0, 0.2) !important;
   font-size: 14px !important;

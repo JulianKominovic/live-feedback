@@ -175,7 +175,10 @@ Popover.Content = function Content({
         <StyledContent
           tabIndex={-1}
           onBlur={(e) => {
-            if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+            if (
+              !e.currentTarget.contains(e.relatedTarget as Node) &&
+              e.relatedTarget !== refs.reference.current
+            ) {
               setOpen(false);
             }
           }}
