@@ -30,7 +30,6 @@ export const CommentForm = ({ action }: CommentFormProps) => {
         display: "flex",
         flexDirection: "column",
         gap: "8px",
-        marginBlockEnd: "12px",
       }}
       onSubmit={(e) => {
         e.preventDefault();
