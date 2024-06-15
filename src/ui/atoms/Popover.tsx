@@ -52,6 +52,12 @@ const StyledContent = styled(motion.div)<
   * {
     color: white;
   }
+  video {
+    // Fix for github videos
+    max-height: none !important;
+    min-height: 0 !important;
+    width: 100% !important;
+  }
   h1,
   h2,
   h3,

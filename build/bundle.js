@@ -3,7 +3,7 @@
  * Live Feedback script.
  * @version 2.0.1
  * @description Leave feedback on any website and share it with your team 🚀.
- * @date 2024-06-15T19:54:40.305Z
+ * @date 2024-06-15T20:04:44.161Z
  * @see https://github.com/JulianKominovic/live-feedback
  * @see https://jkominovic.dev/live-feedback
  **/
@@ -322,6 +322,12 @@ Error generating stack: `+i.message+`
 
   * {
     color: white;
+  }
+  video {
+    // Fix for github videos
+    max-height: none !important;
+    min-height: 0 !important;
+    width: 100% !important;
   }
   h1,
   h2,
