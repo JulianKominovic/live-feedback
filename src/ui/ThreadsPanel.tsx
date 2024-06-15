@@ -19,14 +19,14 @@ const Panel = styled(motion.aside)`
   padding: 24px;
   max-width: 400px;
   width: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   overscroll-behavior: contain;
   z-index: ${Z_INDEXES.THREADS_LIST};
   right: 16px;
   top: 16px;
   height: calc(100dvh - 32px);
-  border-radius: 12px;
+  border-radius: 12px 6px 12px 6px;
   ${CSS_FRAGMENTS["box-styles"]};
   backdrop-filter: blur(60px);
   background-color: rgba(0, 0, 0, 0.6);

@@ -3,7 +3,7 @@
  * Live Feedback script.
  * @version 2.0.1
  * @description Leave feedback on any website and share it with your team 🚀.
- * @date 2024-06-15T18:49:19.228Z
+ * @date 2024-06-15T19:03:55.848Z
  * @see https://github.com/JulianKominovic/live-feedback
  * @see https://jkominovic.dev/live-feedback
  **/
@@ -133,6 +133,38 @@ Error generating stack: `+i.message+`
     outline: 2px solid transparent;
     outline-offset: 0px;
     transition: outline-offset 0.15s ease-in-out;
+  }
+
+  /* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
+  /** {
+  scrollbar-width: thin;
+  scrollbar-color: #397524 rgba(0, 0, 0, 0.2);
+}*/
+
+  /* Chrome, Edge and Safari */
+  *::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  *::-webkit-scrollbar-track:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  *::-webkit-scrollbar-track:active {
+    background-color: rgba(255, 255, 255, 0.4);
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
   }
 
   .spinner_V8m1 {
@@ -411,14 +443,14 @@ Error generating stack: `+i.message+`
   padding: 24px;
   max-width: 400px;
   width: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   overscroll-behavior: contain;
   z-index: ${Vt.THREADS_LIST};
   right: 16px;
   top: 16px;
   height: calc(100dvh - 32px);
-  border-radius: 12px;
+  border-radius: 12px 6px 12px 6px;
   ${Xe["box-styles"]};
   backdrop-filter: blur(60px);
   background-color: rgba(0, 0, 0, 0.6);
