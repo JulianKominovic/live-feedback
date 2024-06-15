@@ -3,7 +3,7 @@
  * Live Feedback script.
  * @version 2.0.1
  * @description Leave feedback on any website and share it with your team 🚀.
- * @date 2024-06-15T18:46:23.054Z
+ * @date 2024-06-15T18:49:19.228Z
  * @see https://github.com/JulianKominovic/live-feedback
  * @see https://jkominovic.dev/live-feedback
  **/
@@ -412,6 +412,7 @@ Error generating stack: `+i.message+`
   max-width: 400px;
   width: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
   z-index: ${Vt.THREADS_LIST};
   right: 16px;

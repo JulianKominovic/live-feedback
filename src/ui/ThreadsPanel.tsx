@@ -20,6 +20,7 @@ const Panel = styled(motion.aside)`
   max-width: 400px;
   width: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
   z-index: ${Z_INDEXES.THREADS_LIST};
   right: 16px;
