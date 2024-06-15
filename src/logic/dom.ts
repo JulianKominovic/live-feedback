@@ -194,7 +194,11 @@ export function checkVisibilityInCoords(
   y: number,
   typeOfElement: "ELEMENT" | "TEXT_RANGE" = "ELEMENT"
 ) {
-  const elementFromPoint = document.elementFromPoint(x, y);
+  const elementsFromPoint = document
+    .elementsFromPoint(x, y)
+    // In some cases thread bubble is interfierring with the elementsFromPoint when decimating the coordinates
+    .filter((element) => element.id !== "live-feedback");
+  const elementFromPoint = elementsFromPoint.at(0);
   if (!elementFromPoint) return false;
   if (typeOfElement === "ELEMENT") {
     return elementFromPoint.isSameNode(element);
