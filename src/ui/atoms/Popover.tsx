@@ -7,7 +7,7 @@ import {
   autoUpdate,
   shift,
 } from "@floating-ui/react";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const StyledTrigger = styled(motion.button)`
@@ -164,24 +164,22 @@ Popover.Content = function Content({
   ...props
 }: ContentProps) {
   const { refs, floatingStyles, open, setOpen } = useContext(PopoverContext)!;
+  useEffect(() => {
+    if (open) {
+      refs.floating?.current?.focus();
+    }
+  }, [open, refs.floating]);
   return (
     <AnimatePresence>
       {open ? (
         <StyledContent
           tabIndex={-1}
           onBlur={(e) => {
-            console.log(e);
             if (!e.currentTarget.contains(e.relatedTarget as Node)) {
               setOpen(false);
             }
           }}
-          ref={(e) => {
-            if (e) {
-              e.focus();
-            }
-
-            refs.setFloating(e);
-          }}
+          ref={refs.setFloating}
           style={{ ...style, ...floatingStyles }}
           initial={{ opacity: 0, filter: "blur(8px)" }}
           animate={{ opacity: 1, filter: "blur(0px)" }}
