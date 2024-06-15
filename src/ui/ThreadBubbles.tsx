@@ -14,6 +14,7 @@ import Tooltip from "./atoms/Tooltip";
 import { CopyButton } from "./atoms/CopyButton";
 import { buildThreadLink } from "../logic/threads";
 import DeviceInfoTags from "./molecules/DeviceInfoTags";
+import { Button } from "./atoms/Button";
 
 function ThreadPopoverContent({ thread }: { thread: Thread }) {
   const addComment = useThreadsStore((state) => state.createThreadComment);
@@ -127,7 +128,14 @@ function ThreadPopoverContent({ thread }: { thread: Thread }) {
 
           <Tooltip>
             <Tooltip.Trigger asChild onClick={() => closeThread(thread)}>
-              <CheckCircledIcon />
+              <Button
+                style={{ padding: 0 }}
+                height="fit-content"
+                width="fit-content"
+                variant="flat"
+              >
+                <CheckCircledIcon />
+              </Button>
             </Tooltip.Trigger>
             <Tooltip.Content
               style={{
