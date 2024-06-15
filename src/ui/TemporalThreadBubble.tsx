@@ -59,7 +59,28 @@ const TemporalThreadBubble = () => {
             position: "absolute",
             zIndex: Z_INDEXES.HOVERED_BUBBLE,
           }}
-        ></Popover.Trigger>
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%",
+              backgroundColor: "rgba(255, 255, 255, 1)",
+            }}
+          >
+            <span
+              style={{
+                color: "rgba(0, 0, 0, 1)",
+                fontSize: "16px",
+              }}
+            >
+              +
+            </span>
+          </div>
+        </Popover.Trigger>
 
         <Popover.Content height="fit-content">
           <CommentForm
