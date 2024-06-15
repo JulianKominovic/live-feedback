@@ -9,6 +9,7 @@ import {
 } from "@floating-ui/react";
 import { createContext, useContext, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+
 const StyledTrigger = styled(motion.button)`
   width: 32px;
   height: 32px;
@@ -107,7 +108,7 @@ function Context({
   const { refs, floatingStyles } = useFloating({
     open,
     onOpenChange: setOpen,
-    placement: "bottom",
+    placement: "right",
     strategy: "absolute",
     middleware: [offset(12), autoPlacement(), shift({ padding: 8 })],
     whileElementsMounted: autoUpdate,
@@ -162,16 +163,28 @@ Popover.Content = function Content({
   style,
   ...props
 }: ContentProps) {
-  const { refs, floatingStyles, open } = useContext(PopoverContext)!;
+  const { refs, floatingStyles, open, setOpen } = useContext(PopoverContext)!;
   return (
     <AnimatePresence>
       {open ? (
         <StyledContent
-          ref={refs.setFloating}
+          tabIndex={-1}
+          onBlur={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+              setOpen(false);
+            }
+          }}
+          ref={(e) => {
+            if (e) {
+              e.focus();
+            }
+
+            refs.setFloating(e);
+          }}
           style={{ ...style, ...floatingStyles }}
-          initial={{ opacity: 0, filter: "blur(16px)" }}
+          initial={{ opacity: 0, filter: "blur(8px)" }}
           animate={{ opacity: 1, filter: "blur(0px)" }}
-          exit={{ opacity: 0, filter: "blur(16px)" }}
+          exit={{ opacity: 0, filter: "blur(8px)" }}
           {...props}
         >
           {open ? children : null}
