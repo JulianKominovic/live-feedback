@@ -6,6 +6,8 @@ import {
   autoPlacement,
   autoUpdate,
   shift,
+  ReferenceType,
+  UseFloatingOptions,
 } from "@floating-ui/react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -96,7 +98,7 @@ type PopoverProps = {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   children: React.ReactNode;
-};
+} & Pick<UseFloatingOptions<ReferenceType>, "placement">;
 type PopoverContextType = Pick<PopoverProps, "open"> &
   Pick<ReturnType<typeof useFloating>, "refs" | "floatingStyles"> & {
     setOpen: (open: boolean) => void;
@@ -108,15 +110,30 @@ function Context({
   open: externalOpen,
   onOpenChange: externalOnOpenChange,
   children,
+  placement,
 }: PopoverProps) {
   const [internalOpen, setInternalOpen] = useState(false);
   const open = externalOpen ?? internalOpen;
   const { refs, floatingStyles } = useFloating({
     open,
     onOpenChange: setOpen,
-    placement: "right",
+    placement: placement ?? "right-start",
     strategy: "absolute",
-    middleware: [offset(12), autoPlacement(), shift({ padding: 8 })],
+    middleware: [
+      offset(12),
+      autoPlacement({
+        padding: 16,
+        alignment: "start",
+        allowedPlacements: [
+          "right",
+          "right-start",
+          "right-end",
+          "bottom",
+          "top",
+        ],
+      }),
+      shift({ padding: 8 }),
+    ],
     whileElementsMounted: autoUpdate,
   });
   function setOpen(open: boolean) {
