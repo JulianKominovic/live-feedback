@@ -35,7 +35,6 @@ async function LastVersionTag() {
 }
 
 export default async function Hero() {
-  console.log(ToolbarImage);
   return (
     <main
       id="hero"

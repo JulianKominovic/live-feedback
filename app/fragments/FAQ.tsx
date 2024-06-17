@@ -77,7 +77,10 @@ const FAQConst = [
 
 export default function FAQ() {
   return (
-    <section className="relative flex flex-col items-center max-w-screen-lg gap-4 px-8 pt-4 pb-32 mx-auto overflow-hidden">
+    <section
+      className="relative flex flex-col items-center max-w-screen-lg gap-4 px-8 pt-4 pb-32 mx-auto overflow-hidden"
+      id="faq"
+    >
       {FAQConst.map((item) => (
         <FAQItem
           key={item.question}

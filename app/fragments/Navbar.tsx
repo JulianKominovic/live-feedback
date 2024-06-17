@@ -34,7 +34,7 @@ export default async function Navbar() {
         </li>
         <li className="group">
           <Link
-            href="/auth"
+            href="/?demo=true"
             className="text-foreground bg-primary px-3.5 py-1.5 rounded-lg text-sm group-hover:bg-primary-accent flex items-center gap-2 transition-all group-hover:transition-all group-hover:shadow-primary-outline duration-200"
           >
             <span className="hidden sm:inline-block">Try it out</span> <Play />

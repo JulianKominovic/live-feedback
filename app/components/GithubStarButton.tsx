@@ -11,10 +11,7 @@ const GithubStarButton = async () => {
       next: { revalidate: 3600 },
     }
   );
-  console.log(
-    "stars rate limit",
-    response.headers.get("X-RateLimit-Remaining")
-  );
+
   const data = await response.json();
   const stars = data.stargazers_count;
   return (

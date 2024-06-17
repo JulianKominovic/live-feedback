@@ -7,7 +7,12 @@ import Hero from "./fragments/Hero";
 import Integration from "./fragments/Integration";
 import SecurityAndPrivacy from "./fragments/SecurityAndPrivacy";
 
-export default function IndexPage() {
+export default function IndexPage({
+  searchParams,
+}: {
+  searchParams: undefined | Record<string, string>;
+}) {
+  const demo = searchParams?.["demo"];
   return (
     <>
       <Hero />
@@ -18,6 +23,15 @@ export default function IndexPage() {
       <SecurityAndPrivacy />
       <FAQ />
       <FinalCTA />
+      {demo === "true" && (
+        <script
+          async
+          // @ts-expect-error - TS doesn't know about the `repo` prop
+          repo="live-feedback"
+          owner="JulianKominovic"
+          src="https://cdn.jsdelivr.net/gh/JulianKominovic/live-feedback@latest/build/bundle.js"
+        />
+      )}
     </>
   );
 }
