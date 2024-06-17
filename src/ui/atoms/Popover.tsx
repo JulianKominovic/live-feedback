@@ -13,7 +13,7 @@ import {
   useDismiss,
   UseInteractionsReturn,
 } from "@floating-ui/react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const StyledTrigger = styled(motion.button)`

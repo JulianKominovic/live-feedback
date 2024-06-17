@@ -7,20 +7,10 @@ import {
 } from "../logic/dom";
 import { pipe } from "../utils";
 import { Z_INDEXES } from "../styles/tokens";
+import { motion } from "framer-motion";
 
-const SelectionRangeOverlay = styled.div<{
-  rect: {
-    width: number;
-    height: number;
-    left: number;
-    top: number;
-  };
-}>`
+const SelectionRangeOverlay = styled(motion.div)`
   position: absolute;
-  width: ${({ rect }) => rect.width + "px"};
-  height: ${({ rect }) => rect.height + "px"};
-  left: ${({ rect }) => rect.left + "px"};
-  top: ${({ rect }) => rect.top + "px"};
   background-color: rgba(193, 55, 255, 0.3);
   border: 1px solid rgba(143, 51, 153, 0.6);
   z-index: ${Z_INDEXES.SELECTED_TEXT};
@@ -78,14 +68,17 @@ const ThreadSelectionRange = () => {
         ? [...tempRange].map((rect, index) => {
             return (
               <SelectionRangeOverlay
+                initial={{ opacity: 0, backdropFilter: "blur(10px)" }}
+                animate={{ opacity: 1, backdropFilter: "blur(0px)" }}
+                exit={{ opacity: 0, backdropFilter: "blur(10px)" }}
                 key={"temp-rect" + index}
                 data-live-feedback-text-selection={"temp-rect"}
                 data-live-feedback-text-selection-rect={index}
-                rect={{
-                  width: rect.width,
-                  height: rect.height,
-                  left: rect.left + window.scrollX,
-                  top: rect.top + window.scrollY,
+                style={{
+                  width: rect.width + "px",
+                  height: rect.height + "px",
+                  left: rect.left + window.scrollX + "px",
+                  top: rect.top + window.scrollY + "px",
                 }}
               />
             );
@@ -103,14 +96,17 @@ const ThreadSelectionRange = () => {
           return [...(thread.tracking.liveCoords as any).clientRects].map(
             (rect, index) => (
               <SelectionRangeOverlay
+                initial={{ opacity: 0, backdropFilter: "blur(10px)" }}
+                animate={{ opacity: 1, backdropFilter: "blur(0px)" }}
+                exit={{ opacity: 0, backdropFilter: "blur(10px)" }}
                 key={thread.GHissueId + "rect" + index}
                 data-live-feedback-text-selection={thread.GHissueId || ""}
                 data-live-feedback-text-selection-rect={index + ""}
-                rect={{
-                  width: rect.width,
-                  height: rect.height,
-                  left: rect.left + window.scrollX,
-                  top: rect.top + window.scrollY,
+                style={{
+                  width: rect.width + "px",
+                  height: rect.height + "px",
+                  left: rect.left + window.scrollX + "px",
+                  top: rect.top + window.scrollY + "px",
                 }}
               />
             )
