@@ -23,22 +23,25 @@ const pros = [
 
 export default function Comparison() {
   return (
-    <section className="flex overflow-visible max-w-screen-lg mx-auto px-8 flex-col gap-4 items-center pt-32 relative pb-32">
-      <span className="px-4 py-2 mb-8 text-xs border border-white/10 rounded-lg">
+    <section
+      id="comparison"
+      className="relative flex flex-col items-center max-w-screen-lg gap-4 px-8 pt-32 pb-32 mx-auto overflow-visible"
+    >
+      <span className="px-4 py-2 mb-8 text-xs border rounded-lg border-white/10">
         Comparison
       </span>
       <H2>But, why would you want to use this?</H2>
 
-      <article className="flex flex-col md:flex-row items-center gap-8 my-16">
+      <article className="flex flex-col items-center gap-8 my-16 md:flex-row">
         <div className="flex-grow">
           <H3 className="text-foreground-muted ">Without Live Feedback</H3>
-          <ul className="mt-8 rounded-3xl border border-white/10 p-8">
+          <ul className="p-8 mt-8 border rounded-3xl border-white/10">
             {cons.map((con) => (
               <li
                 key={con}
-                className="flex items-center mb-4 gap-2 text-foreground-muted"
+                className="flex items-center gap-2 mb-4 text-foreground-muted"
               >
-                <span className="flex-shrink-0 text-lg font-mono">x</span>
+                <span className="flex-shrink-0 font-mono text-lg">x</span>
                 <p>{con}</p>
               </li>
             ))}
@@ -55,11 +58,11 @@ export default function Comparison() {
               firstColor: "rgb(255, 69, 51)",
               secondColor: "#ea16f9",
             }}
-            className="mt-8 rounded-3xl border bg-background border-white/10"
+            className="mt-8 border rounded-3xl bg-background border-white/10"
           >
             <ul className="relative p-2">
               {pros.map((con) => (
-                <li key={con} className="flex items-center mb-4 gap-2">
+                <li key={con} className="flex items-center gap-2 mb-4">
                   <Check className="flex-shrink-0 text-primary" />
                   <p>{con}</p>
                 </li>

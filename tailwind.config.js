@@ -10,6 +10,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./app/**/*.{js,ts,jsx,tsx,mdx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
@@ -26,7 +27,7 @@ export default {
           "rgba(0, 0, 0, 0.05) 0px 4px 10px -2px, rgba(0, 0, 0, 0.1) 0px 2px 2px -1px, rgba(255, 255, 255, 0.05) 0px 0px 0px 5px",
       },
       animation: {
-        "spin-slow": "hero-spin 10s linear infinite",
+        "spin-slow": "hero-spin 20s linear infinite",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
         backgroundPositionSpin:
           "background-position-spin 3000ms infinite alternate",

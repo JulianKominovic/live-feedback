@@ -13,7 +13,7 @@ const integrationFeatures = [
       "In order to keep things simple, we use Github Issues to store your feedback.",
     href: "#",
     cta: "Learn more",
-    background: <GithubAnimatedBeam className="mt-12 px-4" />,
+    background: <GithubAnimatedBeam className="px-4 mt-12" />,
     className: "lg:row-start-1 lg:row-end-2 lg:col-start-2 lg:col-end-4",
   },
   {
@@ -51,12 +51,15 @@ const integrationFeatures = [
 
 export default function Integration() {
   return (
-    <section className="flex overflow-hidden max-w-screen-lg mx-auto px-8 flex-col gap-4 items-center pt-32 relative pb-32">
-      <span className="px-4 py-2 mb-8 text-xs border border-white/10 rounded-lg">
+    <section
+      id="github-integration"
+      className="relative flex flex-col items-center max-w-screen-lg gap-4 px-8 pt-32 pb-32 mx-auto overflow-hidden"
+    >
+      <span className="px-4 py-2 mb-8 text-xs border rounded-lg border-white/10">
         Integration
       </span>
       <H2>Github integration</H2>
-      <p className="text-foreground-muted text-center">
+      <p className="text-center text-foreground-muted">
         Your feedback remains private next to your source code.
       </p>
       <BentoGrid className="my-12">

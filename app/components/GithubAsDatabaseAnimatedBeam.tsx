@@ -47,19 +47,19 @@ const GithubAnimatedBeam = ({ className }: Props) => {
       />
       <div
         ref={div1Ref}
-        className="z-20 h-12 w-12 text-lg flex justify-center items-center rounded-full shadow-xl border border-white/10 bg-background text-foreground"
+        className="z-20 flex items-center justify-center w-12 h-12 text-lg border rounded-full shadow-xl border-white/10 bg-background text-foreground"
       >
         <LiveFeedbackIcon className="drop-shadow-sm" />
       </div>
       <div
         ref={div2Ref}
-        className="z-20 h-12 w-12 -translate-y-6 text-lg flex justify-center items-center rounded-full shadow-xl border border-white/10 bg-background text-foreground"
+        className="z-20 flex items-center justify-center w-12 h-12 text-lg -translate-y-6 border rounded-full shadow-xl border-white/10 bg-background text-foreground"
       >
         <GithubLogo />
       </div>
       <div
         ref={div3Ref}
-        className="z-20 h-12 w-12 text-lg flex justify-center items-center rounded-full shadow-xl border border-white/10 bg-background text-foreground"
+        className="z-20 flex items-center justify-center w-12 h-12 text-lg border rounded-full shadow-xl border-white/10 bg-background text-foreground"
       >
         <div className="flex h-4 w-4 justify-center items-center aspect-square border border-white rounded-[50%]">
           <span className="bg-white w-1 h-1 rounded-[50%]"></span>

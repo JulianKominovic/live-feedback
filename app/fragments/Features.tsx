@@ -84,7 +84,7 @@ const integrationFeatures = [
       <Image
         src={featureThreadList}
         alt="Octokit logo"
-        className="absolute -right-0 w-auto object-cover h-full -top-0 opacity-60"
+        className="absolute object-cover w-auto h-full -right-0 -top-0 opacity-60"
       />
     ),
     className: "md:col-start-1 md:col-end-2 md:row-start-2 md:row-end-4",
@@ -109,12 +109,15 @@ const integrationFeatures = [
 
 export default function Features() {
   return (
-    <section className="flex overflow-hidden max-w-screen-lg mx-auto px-8 flex-col gap-4 items-center pt-32 relative pb-32">
-      <span className="px-4 py-2 mb-8 text-xs border border-white/10 rounded-lg">
+    <section
+      id="features"
+      className="relative flex flex-col items-center max-w-screen-lg gap-4 px-8 pt-32 pb-32 mx-auto overflow-hidden"
+    >
+      <span className="px-4 py-2 mb-8 text-xs border rounded-lg border-white/10">
         Features
       </span>
       <H2>Some innovative features that will improve your workflow</H2>
-      <p className="text-foreground-muted text-center">
+      <p className="text-center text-foreground-muted">
         Remember that Live Feedback is under heavy development and we are always
         adding new features.
       </p>

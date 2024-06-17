@@ -23,7 +23,7 @@ async function LastVersionTag() {
       href="https://github.com/JulianKominovic/live-feedback/releases/latest"
       target="_blank"
       rel="noopener noreferrer"
-      className="text-xs flex gap-3 items-center px-3 py-2 hover:bg-white/10 p-1 rounded-lg transition-colors duration-200"
+      className="flex items-center gap-3 p-1 px-3 py-2 text-xs transition-colors duration-200 rounded-lg hover:bg-white/10"
     >
       <Badge className="inline-flex px-1.5 text-[10px] py-0.5 gap-1 items-center">
         <StarFour weight="fill" className="mr-1" />
@@ -37,34 +37,40 @@ async function LastVersionTag() {
 export default async function Hero() {
   console.log(ToolbarImage);
   return (
-    <main className="flex overflow-hidden max-w-screen-lg mx-auto px-8 flex-col gap-4 items-center pt-32 relative pb-32">
+    <main
+      id="hero"
+      className="relative flex flex-col items-center max-w-screen-lg gap-4 px-8 pt-32 pb-32 mx-auto overflow-hidden"
+    >
       <Suspense>
         <LastVersionTag />
       </Suspense>
-      <H1 id="title">Live Feedback</H1>
-      <H2 id="description" className="text-foreground-muted text-base">
+      <H1 id="hero-title">Live Feedback</H1>
+      <H2 id="description" className="text-base text-foreground-muted">
         Inject Live Feedback script and start getting feedback on your website
         in real time from your developers, designers and collaborators.
       </H2>
-      <section id="cta" className="flex gap-3 items-center mt-8">
-        <Link
-          href="/auth"
-          className="text-foreground bg-background/10 px-4 py-2 rounded-lg flex items-center gap-2 transition-all hover:transition-all hover:shadow-white-outline duration-200 border border-white/10"
-        >
-          Get started
-        </Link>
+      <section
+        id="cta"
+        className="flex flex-col items-center gap-3 mt-8 sm:flex-row"
+      >
         <Link
           href="/?demo=true"
-          className="text-foreground bg-primary px-4 py-3 rounded-lg hover:bg-primary-accent flex items-center gap-2 transition-all hover:transition-all hover:shadow-primary-outline duration-200 relative"
+          className="relative flex items-center gap-2 px-4 py-3 transition-all duration-200 rounded-lg text-foreground bg-primary hover:bg-primary-accent hover:transition-all hover:shadow-primary-outline"
         >
           Try right here <RocketLaunch weight="fill" />
+        </Link>
+        <Link
+          href="/auth"
+          className="flex items-center gap-2 px-4 py-2 transition-all duration-200 border rounded-lg text-foreground bg-background/10 hover:transition-all hover:shadow-white-outline border-white/10"
+        >
+          Get started
         </Link>
       </section>
       <section className="relative mt-16">
         <Image
           src={ToolbarImage}
           alt="Toolbar"
-          className="h-16 w-auto object-contain rounded-full mix-blend-screen shadow-xl backdrop-blur-md backdrop-brightness-[0.7]"
+          className="object-contain w-auto h-16 rounded-full"
         />
       </section>
       <div
