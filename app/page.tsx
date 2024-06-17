@@ -6,6 +6,11 @@ import FirstSteps from "./fragments/FirstSteps";
 import Hero from "./fragments/Hero";
 import Integration from "./fragments/Integration";
 import SecurityAndPrivacy from "./fragments/SecurityAndPrivacy";
+console.log("Hello from app/page.tsx", process.env.NODE_ENV);
+const scriptSrc =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:5000/build/bundle-dev.js"
+    : "https://cdn.jsdelivr.net/gh/JulianKominovic/live-feedback@latest/build/bundle.js";
 
 export default function IndexPage({
   searchParams,
@@ -29,7 +34,7 @@ export default function IndexPage({
           // @ts-expect-error - TS doesn't know about the `repo` prop
           repo="live-feedback"
           owner="JulianKominovic"
-          src="https://cdn.jsdelivr.net/gh/JulianKominovic/live-feedback@latest/build/bundle.js"
+          src={scriptSrc}
         />
       )}
     </>
