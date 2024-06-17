@@ -58,6 +58,7 @@ const TemporalThreadBubble = () => {
             left: x,
             position: "absolute",
             zIndex: Z_INDEXES.HOVERED_BUBBLE,
+            border: "1px solid rgba(255,255,255,0.5)",
           }}
         >
           <div

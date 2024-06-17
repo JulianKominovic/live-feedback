@@ -9,7 +9,7 @@ import SecurityAndPrivacy from "./fragments/SecurityAndPrivacy";
 console.log("Hello from app/page.tsx", process.env.NODE_ENV);
 const scriptSrc =
   process.env.NODE_ENV === "development"
-    ? "http://localhost:5000/build/bundle-dev.js"
+    ? "http://192.168.1.48:5000/bundle-dev.js"
     : "https://cdn.jsdelivr.net/gh/JulianKominovic/live-feedback@latest/build/bundle.js";
 
 export default function IndexPage({
