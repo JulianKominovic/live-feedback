@@ -392,9 +392,13 @@ async function openThread(thread: Thread) {
     .then((element) => {
       if (element === "Timeout") return;
       const bubble = element as HTMLElement;
-      bubble.scrollIntoView({ behavior: "smooth" });
-      bubble.click();
+      bubble.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "center",
+      });
       bubble.focus();
+      bubble.click();
     })
     .catch((err) => {
       log(err);
@@ -413,10 +417,15 @@ export async function focusThreadIfUrlMatches(threads: Thread[]) {
   thread.tracking.show = true;
   const coords = calculateBubblePosition(thread).tracking.liveCoords;
   if (coords) {
-    const x = coords.x - window.innerWidth / 2;
-    const y = coords.y - window.innerHeight / 2;
+    const halfWidth = window.innerWidth / 2;
+    const halfHeight = window.innerHeight / 2;
+    const x =
+      coords.x > window.innerWidth ? coords.x - halfWidth : coords.x - 200;
+    const y =
+      coords.y > window.innerHeight ? coords.y - halfHeight : coords.y - 200;
+
     window.scrollTo(x, y);
-    openThread(thread);
+    await openThread(thread);
   }
 }
 
