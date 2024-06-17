@@ -1,6 +1,7 @@
 import { getCssSelector } from "css-selector-generator";
 import { finder } from "@medv/finder";
 import { MINIMUM_CSS_SELECTORS_FOR_ELEMENT_TO_SHOW_BUBBLE } from "../const";
+import { tryOrIgnoreError } from "../utils";
 
 // Temporal thread bubble is using radix, and it adds a focus guard that we don't want to include in the selectors since it adds noise to the body
 export const removeRadixFocusGuard = () => {
@@ -13,86 +14,160 @@ export const buildSelectors = (target: HTMLElement) => {
   // Temporal thread bubble is using radix, and it adds a focus guard that we don't want to include in the selectors since it adds noise to the body
   removeRadixFocusGuard();
   const selectors = new Set<string>();
-  selectors.add(
-    finder(target, {
-      idName: () => true,
-      className: () => false,
-      tagName: () => false,
-      attr: () => false,
-    })
-  );
-  selectors.add(
-    finder(target, {
-      tagName: (tag) => tag !== "script",
-    })
-  );
-
-  selectors.add(
-    finder(target, {
-      idName: () => false,
-      className: () => true,
-      tagName: () => false,
-      attr: () => false,
-    })
-  );
-
-  selectors.add(
-    finder(target, {
-      idName: () => false,
-      className: () => false,
-      tagName: () => true,
-      attr: () => false,
-    })
-  );
-
-  selectors.add(
-    finder(target, {
-      idName: () => false,
-      className: () => false,
-      tagName: () => false,
-      attr: () => true,
-    })
-  );
-
-  selectors.add(getCssSelector(target));
-
-  selectors.add(
-    getCssSelector(target, {
-      includeTag: true,
-    })
-  );
-  selectors.add(
-    getCssSelector(target, {
-      includeTag: false,
-    })
-  );
-
-  getCssSelector(target, {
-    includeTag: true,
-    selectors: ["id", "attribute", "class", "tag", "nthoftype", "nthchild"],
-    blacklist: [/.*\[style(=.*)?\].*/],
+  tryOrIgnoreError(() => {
+    selectors.add(
+      finder(target, {
+        idName: () => true,
+        className: () => false,
+        tagName: () => false,
+        attr: () => false,
+      })
+    );
+  });
+  tryOrIgnoreError(() => {
+    selectors.add(
+      finder(target, {
+        tagName: (tag) => tag !== "script",
+      })
+    );
   });
 
-  selectors.add(
-    getCssSelector(target, {
-      includeTag: true,
-      selectors: ["id"],
-    })
-  );
+  tryOrIgnoreError(() => {
+    selectors.add(
+      finder(target, {
+        idName: () => false,
+        className: () => true,
+        tagName: () => false,
+        attr: () => false,
+      })
+    );
+  });
 
-  selectors.add(
-    getCssSelector(target, {
-      includeTag: true,
-      selectors: ["id", "class"],
-    })
-  );
+  tryOrIgnoreError(() => {
+    selectors.add(
+      finder(target, {
+        idName: () => false,
+        className: () => false,
+        tagName: () => true,
+        attr: () => false,
+      })
+    );
+  });
 
-  selectors.add(
-    getCssSelector(target, {
-      includeTag: true,
-      selectors: ["id", "class", "tag"],
-    })
-  );
+  tryOrIgnoreError(() => {
+    selectors.add(
+      finder(target, {
+        idName: () => false,
+        className: () => false,
+        tagName: () => false,
+        attr: () => true,
+      })
+    );
+  });
+
+  tryOrIgnoreError(() => {
+    selectors.add(getCssSelector(target));
+  });
+  tryOrIgnoreError(() => {
+    selectors.add(
+      getCssSelector(target, {
+        combineBetweenSelectors: true,
+        combineWithinSelector: true,
+      })
+    );
+  });
+
+  tryOrIgnoreError(() => {
+    selectors.add(
+      getCssSelector(target, {
+        includeTag: true,
+      })
+    );
+  });
+  tryOrIgnoreError(() => {
+    selectors.add(
+      getCssSelector(target, {
+        includeTag: false,
+      })
+    );
+  });
+
+  tryOrIgnoreError(() => {
+    selectors.add(
+      getCssSelector(target, {
+        includeTag: true,
+        selectors: ["id", "attribute", "class", "tag", "nthoftype", "nthchild"],
+        blacklist: [/.*\[style(=.*)?\].*/],
+      })
+    );
+  });
+  tryOrIgnoreError(() => {
+    selectors.add(
+      getCssSelector(target, {
+        includeTag: true,
+        selectors: ["id", "attribute", "class", "tag", "nthoftype", "nthchild"],
+        blacklist: [/.*\[style(=.*)?\].*/],
+        combineWithinSelector: true,
+      })
+    );
+  });
+  tryOrIgnoreError(() => {
+    selectors.add(
+      getCssSelector(target, {
+        includeTag: true,
+        selectors: ["id", "attribute", "class", "tag", "nthoftype", "nthchild"],
+        blacklist: [/.*\[style(=.*)?\].*/],
+        combineWithinSelector: true,
+        combineBetweenSelectors: true,
+      })
+    );
+  });
+
+  tryOrIgnoreError(() => {
+    selectors.add(
+      getCssSelector(target, {
+        includeTag: true,
+        selectors: ["id"],
+      })
+    );
+  });
+
+  tryOrIgnoreError(() => {
+    selectors.add(
+      getCssSelector(target, {
+        includeTag: true,
+        selectors: ["id", "class"],
+      })
+    );
+  });
+
+  tryOrIgnoreError(() => {
+    selectors.add(
+      getCssSelector(target, {
+        includeTag: true,
+        selectors: ["id", "class", "tag"],
+      })
+    );
+  });
+  tryOrIgnoreError(() => {
+    selectors.add(
+      getCssSelector(target, {
+        includeTag: true,
+        selectors: ["id", "class", "tag"],
+        combineWithinSelector: true,
+      })
+    );
+  });
+  tryOrIgnoreError(() => {
+    selectors.add(
+      getCssSelector(target, {
+        includeTag: true,
+        selectors: ["id", "class", "tag"],
+        combineWithinSelector: true,
+        combineBetweenSelectors: true,
+      })
+    );
+  });
   return Array.from(selectors);
 };
 

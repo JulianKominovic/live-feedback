@@ -44,6 +44,12 @@ i.e:
 />
 ```
 
+### Script source url
+
+- `master (latest stable version)`: https://cdn.jsdelivr.net/gh/JulianKominovic/live-feedback@latest/build/bundle.js
+- `specific dev branch`: https://cdn.jsdelivr.net/gh/JulianKominovic/live-feedback@{branch}/build/bundle-dev.js
+- `specific version`: https://cdn.jsdelivr.net/gh/JulianKominovic/live-feedback@{version}/build/bundle.js
+
 ### We are ready!
 
 ![image](https://github.com/JulianKominovic/live-feedback/assets/70329467/64d1d32c-e1e8-4544-8a05-edfb1980b04a)

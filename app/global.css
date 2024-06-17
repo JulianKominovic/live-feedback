@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  text-wrap: pretty;
+  scroll-behavior: smooth !important;
+}

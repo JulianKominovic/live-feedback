@@ -6,8 +6,14 @@ import {
   autoPlacement,
   autoUpdate,
   shift,
+  ReferenceType,
+  UseFloatingOptions,
+  useClick,
+  useInteractions,
+  useDismiss,
+  UseInteractionsReturn,
 } from "@floating-ui/react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const StyledTrigger = styled(motion.button)`
@@ -96,9 +102,10 @@ type PopoverProps = {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   children: React.ReactNode;
-};
+} & Pick<UseFloatingOptions<ReferenceType>, "placement">;
 type PopoverContextType = Pick<PopoverProps, "open"> &
-  Pick<ReturnType<typeof useFloating>, "refs" | "floatingStyles"> & {
+  Pick<ReturnType<typeof useFloating>, "refs" | "floatingStyles"> &
+  Pick<UseInteractionsReturn, "getFloatingProps" | "getReferenceProps"> & {
     setOpen: (open: boolean) => void;
   };
 
@@ -108,23 +115,47 @@ function Context({
   open: externalOpen,
   onOpenChange: externalOnOpenChange,
   children,
+  placement,
 }: PopoverProps) {
   const [internalOpen, setInternalOpen] = useState(false);
   const open = externalOpen ?? internalOpen;
-  const { refs, floatingStyles } = useFloating({
+  const { refs, floatingStyles, context } = useFloating({
     open,
     onOpenChange: setOpen,
-    placement: "right",
+    placement: placement ?? "right-start",
     strategy: "absolute",
-    middleware: [offset(12), autoPlacement(), shift({ padding: 8 })],
+    middleware: [
+      offset(12),
+      autoPlacement({
+        padding: 16,
+        alignment: "start",
+      }),
+      shift({ padding: 8 }),
+    ],
     whileElementsMounted: autoUpdate,
   });
+  const click = useClick(context);
+  const dismiss = useDismiss(context);
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    click,
+    dismiss,
+  ]);
+
   function setOpen(open: boolean) {
     externalOnOpenChange?.(open);
     setInternalOpen(open);
   }
   return (
-    <PopoverContext.Provider value={{ open, setOpen, floatingStyles, refs }}>
+    <PopoverContext.Provider
+      value={{
+        open,
+        setOpen,
+        floatingStyles,
+        refs,
+        getReferenceProps,
+        getFloatingProps,
+      }}
+    >
       {children}
     </PopoverContext.Provider>
   );
@@ -149,7 +180,8 @@ Popover.Trigger = function Trigger({
   style,
   ...props
 }: TriggerProps) {
-  const { refs, setOpen, open } = useContext(PopoverContext)!;
+  const { refs, setOpen, open, getReferenceProps } =
+    useContext(PopoverContext)!;
   return (
     <StyledTrigger
       initial={{ opacity: 0, scale: 0 }}
@@ -164,6 +196,7 @@ Popover.Trigger = function Trigger({
       onClick={() => setOpen(!open)}
       aria-expanded={open}
       {...props}
+      {...getReferenceProps()}
     >
       {children}
     </StyledTrigger>
@@ -178,31 +211,20 @@ Popover.Content = function Content({
   style,
   ...props
 }: ContentProps) {
-  const { refs, floatingStyles, open, setOpen } = useContext(PopoverContext)!;
-  useEffect(() => {
-    if (open) {
-      refs.floating?.current?.focus();
-    }
-  }, [open, refs.floating]);
+  const { refs, floatingStyles, open, getFloatingProps } =
+    useContext(PopoverContext)!;
+
   return (
     <AnimatePresence>
       {open ? (
         <StyledContent
-          tabIndex={-1}
-          onBlur={(e) => {
-            if (
-              !e.currentTarget.contains(e.relatedTarget as Node) &&
-              e.relatedTarget !== refs.reference.current
-            ) {
-              setOpen(false);
-            }
-          }}
           ref={refs.setFloating}
           style={{ ...style, ...floatingStyles }}
           initial={{ opacity: 0, filter: "blur(8px)" }}
           animate={{ opacity: 1, filter: "blur(0px)" }}
           exit={{ opacity: 0, filter: "blur(8px)" }}
           {...props}
+          {...getFloatingProps()}
         >
           {open ? children : null}
         </StyledContent>

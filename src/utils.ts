@@ -108,3 +108,11 @@ export function useDebounceFunction(delay: number) {
     debounce,
   };
 }
+
+export function tryOrIgnoreError<T>(fn: () => T): T | null {
+  try {
+    return fn();
+  } catch {
+    return null;
+  }
+}
