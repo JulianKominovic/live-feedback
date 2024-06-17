@@ -211,22 +211,13 @@ Popover.Content = function Content({
   style,
   ...props
 }: ContentProps) {
-  const { refs, floatingStyles, open, setOpen, getFloatingProps } =
+  const { refs, floatingStyles, open, getFloatingProps } =
     useContext(PopoverContext)!;
 
   return (
     <AnimatePresence>
       {open ? (
         <StyledContent
-          // tabIndex={-1}
-          // onBlur={(e) => {
-          //   if (
-          //     !e.currentTarget.contains(e.relatedTarget as Node) &&
-          //     e.relatedTarget !== refs.reference.current
-          //   ) {
-          //     setOpen(false);
-          //   }
-          // }}
           ref={refs.setFloating}
           style={{ ...style, ...floatingStyles }}
           initial={{ opacity: 0, filter: "blur(8px)" }}
