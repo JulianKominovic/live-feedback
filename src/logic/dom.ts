@@ -55,6 +55,12 @@ export const buildSelectors = (target: HTMLElement) => {
   );
 
   selectors.add(getCssSelector(target));
+  selectors.add(
+    getCssSelector(target, {
+      combineBetweenSelectors: true,
+      combineWithinSelector: true,
+    })
+  );
 
   selectors.add(
     getCssSelector(target, {
@@ -67,11 +73,30 @@ export const buildSelectors = (target: HTMLElement) => {
     })
   );
 
-  getCssSelector(target, {
-    includeTag: true,
-    selectors: ["id", "attribute", "class", "tag", "nthoftype", "nthchild"],
-    blacklist: [/.*\[style(=.*)?\].*/],
-  });
+  selectors.add(
+    getCssSelector(target, {
+      includeTag: true,
+      selectors: ["id", "attribute", "class", "tag", "nthoftype", "nthchild"],
+      blacklist: [/.*\[style(=.*)?\].*/],
+    })
+  );
+  selectors.add(
+    getCssSelector(target, {
+      includeTag: true,
+      selectors: ["id", "attribute", "class", "tag", "nthoftype", "nthchild"],
+      blacklist: [/.*\[style(=.*)?\].*/],
+      combineWithinSelector: true,
+    })
+  );
+  selectors.add(
+    getCssSelector(target, {
+      includeTag: true,
+      selectors: ["id", "attribute", "class", "tag", "nthoftype", "nthchild"],
+      blacklist: [/.*\[style(=.*)?\].*/],
+      combineWithinSelector: true,
+      combineBetweenSelectors: true,
+    })
+  );
 
   selectors.add(
     getCssSelector(target, {
@@ -91,6 +116,21 @@ export const buildSelectors = (target: HTMLElement) => {
     getCssSelector(target, {
       includeTag: true,
       selectors: ["id", "class", "tag"],
+    })
+  );
+  selectors.add(
+    getCssSelector(target, {
+      includeTag: true,
+      selectors: ["id", "class", "tag"],
+      combineWithinSelector: true,
+    })
+  );
+  selectors.add(
+    getCssSelector(target, {
+      includeTag: true,
+      selectors: ["id", "class", "tag"],
+      combineWithinSelector: true,
+      combineBetweenSelectors: true,
     })
   );
   return Array.from(selectors);
