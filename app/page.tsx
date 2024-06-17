@@ -6,7 +6,6 @@ import FirstSteps from "./fragments/FirstSteps";
 import Hero from "./fragments/Hero";
 import Integration from "./fragments/Integration";
 import SecurityAndPrivacy from "./fragments/SecurityAndPrivacy";
-console.log("Hello from app/page.tsx", process.env.NODE_ENV);
 const scriptSrc =
   process.env.NODE_ENV === "development"
     ? "http://192.168.1.48:5000/bundle-dev.js"

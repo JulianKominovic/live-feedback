@@ -6,7 +6,7 @@ export default function FAQItem({
   answer: React.ReactNode;
 }) {
   return (
-    <details className="w-full max-w-screen-sm overflow-hidden duration-300 border group border-white/10 rounded-2xl">
+    <details className="w-full max-w-screen-sm overflow-hidden duration-300 border select-none group border-white/10 rounded-2xl">
       <summary className="block px-4 py-5 border-b cursor-pointer border-white/10">
         {question}
       </summary>
