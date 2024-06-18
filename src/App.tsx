@@ -9,7 +9,9 @@ import { CacheProvider } from "@emotion/react";
 import ThreadSelectionRange from "./ui/ThreadSelectionRange";
 import { TRACKING_INTERVAL } from "./const";
 import { focusThreadIfUrlMatches } from "./logic/threads";
+import Cmdk from "./ui/Cmdk";
 import ThreadsPanel from "./ui/ThreadsPanel";
+import { KBarProvider } from "kbar";
 
 function RegisterEvents() {
   const populateThreads = useThreadsStore((state) => state.populateThreads);
@@ -83,11 +85,14 @@ function App({ shadowRoot }: { shadowRoot: ShadowRoot }) {
       >
         <GlobalStyles />
         <RegisterEvents />
-        <Navbar />
         <TemporalThreadBubble />
         <ThreadBubbles />
         <ThreadSelectionRange />
         <ThreadsPanel />
+        <KBarProvider>
+          <Navbar />
+          <Cmdk shadowRoot={shadowRoot} />
+        </KBarProvider>
       </ResetCSS>
     </CacheProvider>
   );
