@@ -295,3 +295,23 @@ export function checkVisibility(element: HTMLElement) {
     checkVisibilityCSS: true,
   });
 }
+
+export function focusAndAnimateElement(element: HTMLElement) {
+  element.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+    inline: "center",
+  });
+  element.focus();
+  element.classList.add("live-feedback-link-focus-animation");
+  element.getAnimations().forEach((animation) => {
+    if (
+      (animation as any).animationName === "live-feedback-link-focus-animation"
+    ) {
+      animation.onfinish = () => {
+        element.classList.remove("live-feedback-link-focus-animation");
+        animation.onfinish = null;
+      };
+    }
+  });
+}

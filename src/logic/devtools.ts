@@ -42,11 +42,13 @@ export async function searchBrokenResources() {
                 | "IMG"
                 | "IFRAME"
                 | "A",
+              element,
             });
           }
         })
         .catch(() => {
           brokenResources.push({
+            element,
             url: src,
             statusCode: "CORS",
             type: element.tagName as "VIDEO" | "AUDIO" | "IMG" | "IFRAME" | "A",

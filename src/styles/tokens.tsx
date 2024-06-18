@@ -575,8 +575,27 @@ export const COLORS = {
   "blue-grey-800-contrast": "white",
   "blue-grey-900-contrast": "white",
 };
-
 export const GlobalStyles = () => (
+  <Global
+    styles={css`
+      .live-feedback-link-focus-animation {
+        animation: live-feedback-link-focus-animation 3s ease-in-out;
+      }
+      @keyframes live-feedback-link-focus-animation {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(2);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    `}
+  />
+);
+export const LiveFeedbackGlobalStyles = () => (
   <Global
     styles={css`
       *:not(input, textarea) {

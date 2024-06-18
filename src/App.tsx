@@ -3,13 +3,17 @@ import Navbar from "./ui/Navbar";
 import useThreadsStore from "./store/threads";
 import ThreadBubbles from "./ui/ThreadBubbles";
 import TemporalThreadBubble from "./ui/TemporalThreadBubble";
-import { GlobalStyles, ResetCSS } from "./styles/tokens";
+import {
+  GlobalStyles,
+  LiveFeedbackGlobalStyles,
+  ResetCSS,
+} from "./styles/tokens";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import ThreadSelectionRange from "./ui/ThreadSelectionRange";
 import { TRACKING_INTERVAL } from "./const";
 import { focusThreadIfUrlMatches } from "./logic/threads";
-import Cmdk from "./ui/Cmdk";
+import Cmdk from "./ui/command-menu/CommandMenu";
 import ThreadsPanel from "./ui/ThreadsPanel";
 import { KBarProvider } from "kbar";
 
@@ -59,42 +63,45 @@ function App({ shadowRoot }: { shadowRoot: ShadowRoot }) {
     []
   );
   return (
-    <CacheProvider value={cache}>
-      <ResetCSS
-        id="live-feedback-styles-wrapper"
-        data-is-picking={isPicking}
-        onClick={(e) => {
-          if (!isPicking) return;
-          setIsPicking(false);
-          const elementsFromPoint = document.elementsFromPoint(
-            e.clientX,
-            e.clientY
-          );
-          const target = elementsFromPoint.filter(
-            (el) => el.id !== "live-feedback"
-          )[0];
-          if (target) {
-            setTempThreadCreationIntent({
-              target: target as HTMLElement,
-              type: "ELEMENT",
-              x: e.pageX,
-              y: e.pageY,
-            });
-          }
-        }}
-      >
-        <GlobalStyles />
-        <RegisterEvents />
-        <TemporalThreadBubble />
-        <ThreadBubbles />
-        <ThreadSelectionRange />
-        <ThreadsPanel />
-        <KBarProvider>
-          <Navbar />
-          <Cmdk shadowRoot={shadowRoot} />
-        </KBarProvider>
-      </ResetCSS>
-    </CacheProvider>
+    <>
+      <GlobalStyles />
+      <CacheProvider value={cache}>
+        <ResetCSS
+          id="live-feedback-styles-wrapper"
+          data-is-picking={isPicking}
+          onClick={(e) => {
+            if (!isPicking) return;
+            setIsPicking(false);
+            const elementsFromPoint = document.elementsFromPoint(
+              e.clientX,
+              e.clientY
+            );
+            const target = elementsFromPoint.filter(
+              (el) => el.id !== "live-feedback"
+            )[0];
+            if (target) {
+              setTempThreadCreationIntent({
+                target: target as HTMLElement,
+                type: "ELEMENT",
+                x: e.pageX,
+                y: e.pageY,
+              });
+            }
+          }}
+        >
+          <LiveFeedbackGlobalStyles />
+          <RegisterEvents />
+          <TemporalThreadBubble />
+          <ThreadBubbles />
+          <ThreadSelectionRange />
+          <ThreadsPanel />
+          <KBarProvider>
+            <Navbar />
+            <Cmdk shadowRoot={shadowRoot} />
+          </KBarProvider>
+        </ResetCSS>
+      </CacheProvider>
+    </>
   );
 }
 

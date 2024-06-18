@@ -140,10 +140,9 @@ initPerfume({
         });
         break;
       case "resourceTiming":
-        console.log(data as PerformanceResourceTiming);
         if (
           (data as PerformanceResourceTiming).transferSize > 0 &&
-          (data as PerformanceResourceTiming).duration > 0 &&
+          (data as PerformanceResourceTiming).duration > 1000 &&
           (data as PerformanceResourceTiming).decodedBodySize > 0
         )
           deepMergeDevtools({
