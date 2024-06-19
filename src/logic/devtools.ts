@@ -1,5 +1,4 @@
 import { BrokenResources } from "../types/Devtoolts";
-
 export async function searchBrokenResources() {
   const links = document.querySelectorAll("a");
   const imgs = document.querySelectorAll("img");

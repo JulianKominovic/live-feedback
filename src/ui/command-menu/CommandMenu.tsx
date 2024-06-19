@@ -92,9 +92,13 @@ export default function Cmdk({ shadowRoot }: { shadowRoot: ShadowRoot }) {
   const isShowing = Object.values(visualState)
     .join("")
     .includes(VisualState.showing);
-
   useEffect(() => {
-    if (brokenResources.length === 0 && isShowing) findBrokenResources();
+    function onWindowUrlChange() {
+      if (brokenResources.length === 0 && isShowing) findBrokenResources();
+    }
+    onWindowUrlChange();
+    window.addEventListener("popstate", onWindowUrlChange);
+    return () => window.removeEventListener("popstate", onWindowUrlChange);
   }, [isShowing, brokenResources]);
 
   const fixedActions: CommandMenuAction[] = [
