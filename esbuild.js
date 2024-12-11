@@ -1,5 +1,5 @@
 import esbuild from "esbuild";
-import packageJson from "./package.json" assert { type: "json" };
+import packageJson from "./package.json" with { type: "json" };
 
 const isDev = process.env.NODE_ENV === "development";
 
