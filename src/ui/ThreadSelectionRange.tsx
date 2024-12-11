@@ -6,7 +6,7 @@ import {
   getElementFromCssSelectorAndChildrenIndex,
 } from "../logic/dom";
 import { pipe } from "../utils";
-import { Z_INDEXES } from "../styles/tokens";
+import { Z_INDEXES } from "../styles";
 import { motion } from "framer-motion";
 
 const SelectionRangeOverlay = styled(motion.div)`

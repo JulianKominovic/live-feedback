@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
-import { COLORS } from "../../styles/tokens";
+import { COLORS } from "../../styles";
 export const Dot = styled(motion.span)<{ color: keyof typeof COLORS }>`
   width: 6px;
   height: 6px;

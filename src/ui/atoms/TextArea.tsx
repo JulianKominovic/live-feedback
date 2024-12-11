@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
-import { CSS_FRAGMENTS } from "../../styles/tokens";
+import { CSS_FRAGMENTS } from "../../styles";
 export const TextArea = styled(motion.textarea)`
   color: white !important;
   background-color: rgba(0, 0, 0, 0.2) !important;

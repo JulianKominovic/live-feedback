@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { CSS_FRAGMENTS } from "../../styles/tokens";
+import { CSS_FRAGMENTS } from "../../styles";
 export const Select = styled.select<
   React.SelectHTMLAttributes<HTMLSelectElement> & {
     variant?: "flat";

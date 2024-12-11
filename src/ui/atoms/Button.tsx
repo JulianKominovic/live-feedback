@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { HTMLMotionProps, motion, ForwardRefComponent } from "framer-motion";
-import { CSS_FRAGMENTS } from "../../styles/tokens";
+import { CSS_FRAGMENTS } from "../../styles";
 export const Button = styled<
   ForwardRefComponent<
     HTMLButtonElement,

@@ -2,7 +2,7 @@ import Popover from "./atoms/Popover";
 import useThreadsStore from "../store/threads";
 import { CommentForm } from "./bubbles/CommentForm";
 import { useMemo } from "react";
-import { Z_INDEXES } from "../styles/tokens";
+import { Z_INDEXES } from "../styles";
 
 const TemporalThreadBubble = () => {
   const tempThreadCreationIntent = useThreadsStore(

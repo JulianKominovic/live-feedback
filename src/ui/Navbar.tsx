@@ -8,7 +8,7 @@ import {
   PlusIcon,
 } from "@radix-ui/react-icons";
 import styled from "@emotion/styled";
-import { COLORS, CSS_FRAGMENTS, Z_INDEXES } from "../styles/tokens";
+import { COLORS, CSS_FRAGMENTS, Z_INDEXES } from "../styles";
 import { useEffect } from "react";
 import { VerticalDivider } from "./atoms/VerticalDivider";
 import { Button } from "./atoms/Button";
@@ -22,7 +22,6 @@ import useAuthStore from "../store/auth";
 import { useDebounceFunction } from "../utils";
 import { TEXT_RANGE_BUBBLE_THREAD_CREATION_DEBOUNCE } from "../const";
 import useUIStore from "../store/ui";
-import { useKBar } from "kbar";
 
 function AsyncOperationsStatus() {
   const asyncOperations = useSystemStore((state) => state.asyncOperations);
@@ -74,8 +73,7 @@ function AuthenticatedNavbar() {
     (state) => state.setTempThreadCreationIntent
   );
   // https://github.com/timc1/kbar/issues/118#issuecomment-966449430 Kbar is not well typed
-  const { query } = useKBar();
-  const toggle = query.toggle;
+  const setIsCmdKOpen = useUIStore((state) => state.setIsCmdkOpen);
   const { pending } = useSystemStore((state) => state.asyncOperations);
   const setIsThreadListOpen = useUIStore((state) => state.setIsThreadListOpen);
   const isThreadListOpen = useUIStore((state) => state.isThreadListOpen);
@@ -282,7 +280,12 @@ function AuthenticatedNavbar() {
       >
         <GearIcon />
       </Button>
-      <Button variant="flat" layout key="cmdk" onClick={toggle}>
+      <Button
+        variant="flat"
+        layout
+        key="cmdk"
+        onClick={() => setIsCmdKOpen(true)}
+      >
         <HamburgerMenuIcon />
       </Button>
       <AsyncOperationsStatus />

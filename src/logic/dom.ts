@@ -298,9 +298,9 @@ export function checkVisibility(element: HTMLElement) {
 
 export function focusAndAnimateElement(element: HTMLElement) {
   element.scrollIntoView({
-    behavior: "smooth",
     block: "center",
     inline: "center",
+    behavior: "instant",
   });
   element.focus();
   element.classList.add("live-feedback-link-focus-animation");

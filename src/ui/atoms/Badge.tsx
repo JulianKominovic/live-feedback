@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
-import { CSS_FRAGMENTS } from "../../styles/tokens";
+import { CSS_FRAGMENTS } from "../../styles";
 
 export const Badge = styled(motion.div)<{
   clickable?: boolean;

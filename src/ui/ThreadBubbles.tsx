@@ -6,7 +6,7 @@ import {
 import { Thread } from "../types/Threads";
 import { GH_OWNER, GH_REPO, TOOLTIP_DELAY } from "../const";
 import useThreadsStore from "../store/threads";
-import { COLORS } from "../styles/tokens";
+import { COLORS } from "../styles";
 import { getRelativeTimeString } from "../utils";
 import Popover from "./atoms/Popover";
 import { ConversationalCommentForm } from "./bubbles/ConversationalCommentForm";

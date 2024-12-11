@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import * as TooltipRadix from "@radix-ui/react-tooltip";
-import { CSS_FRAGMENTS, Z_INDEXES } from "../../styles/tokens";
+import { CSS_FRAGMENTS, Z_INDEXES } from "../../styles";
 
 export default function Tooltip({
   children,

@@ -3,11 +3,7 @@ import Navbar from "./ui/Navbar";
 import useThreadsStore from "./store/threads";
 import ThreadBubbles from "./ui/ThreadBubbles";
 import TemporalThreadBubble from "./ui/TemporalThreadBubble";
-import {
-  GlobalStyles,
-  LiveFeedbackGlobalStyles,
-  ResetCSS,
-} from "./styles/tokens";
+import { GlobalStyles, LiveFeedbackGlobalStyles, ResetCSS } from "./styles";
 import createCache from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import ThreadSelectionRange from "./ui/ThreadSelectionRange";
@@ -15,7 +11,6 @@ import { TRACKING_INTERVAL } from "./const";
 import { focusThreadIfUrlMatches } from "./logic/threads";
 import Cmdk from "./ui/command-menu/CommandMenu";
 import ThreadsPanel from "./ui/ThreadsPanel";
-import { KBarProvider } from "kbar";
 
 function RegisterEvents() {
   const populateThreads = useThreadsStore((state) => state.populateThreads);
@@ -95,10 +90,8 @@ function App({ shadowRoot }: { shadowRoot: ShadowRoot }) {
           <ThreadBubbles />
           <ThreadSelectionRange />
           <ThreadsPanel />
-          <KBarProvider>
-            <Navbar />
-            <Cmdk shadowRoot={shadowRoot} />
-          </KBarProvider>
+          <Navbar />
+          <Cmdk shadowRoot={shadowRoot} />
         </ResetCSS>
       </CacheProvider>
     </>

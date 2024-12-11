@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { COLORS, CSS_FRAGMENTS, Z_INDEXES } from "../styles/tokens";
+import { COLORS, CSS_FRAGMENTS, Z_INDEXES } from "../styles";
 import styled from "@emotion/styled";
 import useUIStore from "../store/ui";
 import { Button } from "./atoms/Button";

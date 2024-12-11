@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { CSS_FRAGMENTS, Z_INDEXES } from "../../styles/tokens";
+import { CSS_FRAGMENTS, Z_INDEXES } from "../../styles";
 import {
   useFloating,
   offset,
