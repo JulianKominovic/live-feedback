@@ -36,7 +36,7 @@ export default function Demo() {
         repo="live-feedback"
         owner="JulianKominovic"
         // src="https://cdn.jsdelivr.net/gh/JulianKominovic/live-feedback@latest/build/bundle.js"
-        src="http://192.168.1.48:5000/bundle-dev.js"
+        src="http://192.168.0.10:5000/bundle-dev.js"
       />
       <h1>Page</h1>
       <button

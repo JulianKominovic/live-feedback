@@ -8,7 +8,7 @@ import Integration from "./fragments/Integration";
 import SecurityAndPrivacy from "./fragments/SecurityAndPrivacy";
 const scriptSrc =
   process.env.NODE_ENV === "development"
-    ? "http://192.168.1.48:5000/bundle-dev.js"
+    ? "http://192.168.0.10:5000/bundle-dev.js"
     : "https://cdn.jsdelivr.net/gh/JulianKominovic/live-feedback@latest/build/bundle.js";
 
 export default function IndexPage({
