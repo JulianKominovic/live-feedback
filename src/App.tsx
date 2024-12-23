@@ -91,7 +91,7 @@ function App({ shadowRoot }: { shadowRoot: ShadowRoot }) {
           <ThreadSelectionRange />
           <ThreadsPanel />
           <Navbar />
-          <Cmdk shadowRoot={shadowRoot} />
+          <Cmdk />
         </ResetCSS>
       </CacheProvider>
     </>

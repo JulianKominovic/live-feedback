@@ -39,7 +39,7 @@ export const StyledItem = forwardRef(
       onHighlight,
       ...rest
     }: React.ComponentProps<typeof StyledCmdkItem> & {
-      onHighlight: () => void;
+      onHighlight?: () => void;
     },
     ref
   ) => {

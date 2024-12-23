@@ -422,11 +422,7 @@ function CommandMenu() {
         <Command.Empty>No results found.</Command.Empty>
 
         <StyledGroup heading="Actions">
-          <StyledItem
-            onHighlight={}
-            value="logout"
-            onSelect={() => setIsAuthed(false)}
-          >
+          <StyledItem value="logout" onSelect={() => setIsAuthed(false)}>
             <div>
               <span>
                 <ExitIcon />
