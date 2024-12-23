@@ -16,7 +16,11 @@ In a few steps you can get feedback on your website:
 
 ## Demo
 
-https://github.com/JulianKominovic/live-feedback/assets/70329467/b6847ac8-128a-4bd9-8fe4-46280fa1533e
+
+
+https://github.com/user-attachments/assets/07daff00-c68c-48af-86f7-17732ab75492
+
+
 
 ## Instructions
 
