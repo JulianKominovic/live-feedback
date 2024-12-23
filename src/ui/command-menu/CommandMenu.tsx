@@ -271,7 +271,11 @@ export default function Cmdk({ shadowRoot }: { shadowRoot: ShadowRoot }) {
       });
     }
 
-    if (metrics?.storageEstimate !== undefined) {
+    if (
+      metrics?.storageEstimate !== undefined &&
+      metrics?.storageEstimate.score &&
+      metrics.storageEstimate.value
+    ) {
       fixedActions.push({
         perform: () => {},
         id: "Storage Estimate",
